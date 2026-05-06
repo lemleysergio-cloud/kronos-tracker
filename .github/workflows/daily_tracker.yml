@@ -1,0 +1,82 @@
+name: Kronos Daily Tracker
+
+on:
+  schedule:
+    # Runs at 16:30 UTC daily — 30 min after the demo's hourly refresh at 16:00
+    # This gives Binance time to finalize the candle AND the demo time to update
+    - cron: "30 16 * * *"
+
+  # Allow manual triggering from GitHub UI (Actions tab → Run workflow)
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Tracker mode"
+        required: false
+        default: "all"
+        type: choice
+        options:
+          - all
+          - scrape
+          - score
+          - report
+
+jobs:
+  track:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # needed to commit scores.json back to the repo
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Fetch full history so git log works correctly
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tracker
+        id: tracker
+        run: |
+          MODE="${{ github.event.inputs.mode || 'all' }}"
+          python tracker/kronos_tracker.py --${MODE} 2>&1 | tee tracker_output.txt
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
+
+      - name: Upload tracker output as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tracker-output-${{ github.run_id }}
+          path: tracker_output.txt
+          retention-days: 90
+
+      - name: Commit updated data files
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Stage data files (scores.json always; pending.json if it exists)
+          git add scores.json || true
+          git add pending.json || true
+
+          # Only commit if there are actual changes
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            DATE=$(date -u +"%Y-%m-%d %H:%M UTC")
+            git commit -m "chore: kronos tracker update ${DATE} [skip ci]"
+            git push
+          fi
+
+      - name: Print summary to Actions log
+        run: |
+          echo "### Kronos Tracker Run Summary" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat tracker_output.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
