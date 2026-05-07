@@ -74,6 +74,13 @@ jobs:
             git push
           fi
 
+      - name: Send daily email report
+        env:
+          GMAIL_USERNAME: ${{ secrets.GMAIL_USERNAME }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          RECIPIENT_EMAIL: lemleysergio@gmail.com
+        run: python tracker/send_email.py
+
       - name: Print summary to Actions log
         run: |
           echo "### Kronos Tracker Run Summary" >> $GITHUB_STEP_SUMMARY
