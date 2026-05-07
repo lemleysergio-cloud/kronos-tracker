@@ -153,9 +153,16 @@ def fetch_btc_klines(start_utc: datetime, count: int = 25) -> list[dict]:
 
 
 def get_price_at(dt_utc: datetime) -> float:
-    """Return the closing price of the 1h candle that contains dt_utc."""
-    # Align to the start of the hour
+    """Return the closing price of the 1h candle that contains dt_utc.
+
+    If the requested candle is still open or in the future, falls back to
+    the most recently closed candle so scoring never fails on timing.
+    """
     aligned = dt_utc.replace(minute=0, second=0, microsecond=0)
+    now_hour = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0)
+    if aligned >= now_hour:
+        # Candle not closed yet — use the last completed candle
+        aligned = now_hour - timedelta(hours=1)
     candles = fetch_btc_klines(aligned, count=2)
     if not candles:
         raise ValueError(f"No Binance data returned for {dt_utc}")
