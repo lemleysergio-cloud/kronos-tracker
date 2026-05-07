@@ -39,7 +39,7 @@ SCORES_FILE = REPO_ROOT / "scores.json"
 PENDING_FILE = REPO_ROOT / "pending.json"
 
 DEMO_URL = "https://shiyu-coder.github.io/Kronos-demo/"
-BINANCE_KLINES_URL = "https://api.binance.com/api/v3/klines"
+BINANCE_KLINES_URL = "https://api.binance.us/api/v3/klines"
 SYMBOL = "BTCUSDT"
 INTERVAL = "1h"
 
