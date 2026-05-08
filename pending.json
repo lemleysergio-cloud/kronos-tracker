@@ -1,7 +1,7 @@
 {
-  "upside_prob": 0.5,
-  "vol_amplification_prob": 0.633,
-  "demo_last_updated": "2026-05-07 18:00:25",
-  "prediction_timestamp": "2026-05-07 18:00:25",
-  "scrape_timestamp": "2026-05-07T18:19:33.032867+00:00"
+  "upside_prob": 0.7,
+  "vol_amplification_prob": 0.36700000000000005,
+  "demo_last_updated": "2026-05-08 00:00:25",
+  "prediction_timestamp": "2026-05-08 00:00:25",
+  "scrape_timestamp": "2026-05-08T00:13:38.728732+00:00"
 }
