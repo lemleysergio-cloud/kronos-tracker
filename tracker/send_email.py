@@ -1,13 +1,10 @@
 """
-Kronos daily email sender.
-Reads scores.json and pending.json, sends an HTML summary email via Gmail SMTP.
-
-Usage:
-  python tracker/send_email.py
+Kronos daily email sender — Hourly Edition.
+Reads scores.json and pending.json, sends a rich HTML report grouped by day.
 
 Env vars required:
-  GMAIL_USERNAME     — Gmail address to send from (must have an App Password enabled)
-  GMAIL_APP_PASSWORD — Gmail App Password (Settings → Security → App passwords)
+  GMAIL_USERNAME     — Gmail address to send from
+  GMAIL_APP_PASSWORD — Gmail App Password
 
 Optional:
   RECIPIENT_EMAIL    — defaults to lemleysergio@gmail.com
@@ -31,69 +28,83 @@ GMAIL_USER = os.environ.get("GMAIL_USERNAME")
 GMAIL_PASS = os.environ.get("GMAIL_APP_PASSWORD")
 
 
-def load_scores() -> list[dict]:
-    if not SCORES_FILE.exists():
-        return []
-    with open(SCORES_FILE) as f:
-        return json.load(f)
+# ---------------------------------------------------------------------------
+# Data loading
+# ---------------------------------------------------------------------------
+
+def load_json(path, default):
+    if path.exists():
+        with open(path) as f:
+            return json.load(f)
+    return default
 
 
-def load_pending() -> dict | None:
-    if not PENDING_FILE.exists():
-        return None
-    with open(PENDING_FILE) as f:
-        return json.load(f)
+# ---------------------------------------------------------------------------
+# Stats
+# ---------------------------------------------------------------------------
 
-
-def compute_streak(records: list[dict]) -> tuple[int, bool]:
+def compute_stats(records):
     if not records:
-        return 0, True
-    last_val = records[-1].get("direction_correct", False)
-    streak = 1
-    for r in reversed(records[:-1]):
-        if r.get("direction_correct") == last_val:
+        return {}
+    n = len(records)
+    dir_correct = sum(1 for r in records if r.get("direction_correct"))
+    vol_correct = sum(1 for r in records if r.get("vol_correct"))
+    avg_brier = sum(r.get("brier_score", 0.5) for r in records) / n
+    avg_vol_brier = sum(r.get("vol_brier_score", 0.5) for r in records) / n
+    streak = 0
+    for r in reversed(records):
+        if r.get("direction_correct"):
             streak += 1
         else:
             break
-    return streak, last_val
+    return {
+        "n": n,
+        "dir_correct": dir_correct,
+        "direction_accuracy_pct": round(dir_correct / n * 100, 1),
+        "vol_accuracy_pct": round(vol_correct / n * 100, 1),
+        "avg_brier_score": round(avg_brier, 4),
+        "avg_vol_brier_score": round(avg_vol_brier, 4),
+        "correct_streak": streak,
+    }
 
 
-def bottom_line(pct: float, total: int, streak: int, streak_correct: bool) -> str:
-    if total < 5:
-        return (
-            f"Only {total} day{'s' if total != 1 else ''} in — way too early to call "
-            f"anything. Come back in a week."
-        )
+def group_by_day(records):
+    days = {}
+    for r in records:
+        date = r.get("prediction_timestamp", "")[:10]
+        if date not in days:
+            days[date] = []
+        days[date].append(r)
+    return days
+
+
+def bottom_line(pct, total):
+    if total < 24:
+        return f"Only {total} predictions in — need at least a full day of hourly data to draw conclusions."
     if pct >= 65:
-        return (
-            f"{pct}% over {total} days — ok that's actually impressive, Kronos is "
-            f"genuinely beating a coin flip. I'd pay attention."
-        )
+        return f"{pct}% over {total} predictions — genuinely impressive, Kronos is beating a coin flip by a real margin. Pay attention."
     if pct >= 60:
-        return (
-            f"{pct}% is solid — beating random by a real margin over {total} days. "
-            f"Not financial advice but it's doing something right."
-        )
+        return f"{pct}% is solid over {total} predictions — beating random by a meaningful margin. Something's working."
     if pct >= 55:
-        return (
-            f"{pct}% — slightly above a coin flip, could still be noise at {total} "
-            f"days. Mildly interesting, keep watching."
-        )
+        return f"{pct}% — slightly above a coin flip over {total} predictions. Mildly interesting, keep watching."
     if pct >= 45:
-        return (
-            f"{pct}% across {total} days — basically indistinguishable from guessing "
-            f"right now. Don't read too much into it yet."
-        )
-    return (
-        f"Oof — {pct}% means Kronos is actually worse than flipping a coin right now "
-        f"over {total} days. Hopefully just a rough patch."
-    )
+        return f"{pct}% across {total} predictions — basically indistinguishable from guessing right now."
+    return f"Oof — {pct}% over {total} predictions means Kronos is worse than a coin flip right now. Rough patch."
 
 
-def build_pending_block(pending: dict) -> str:
+# ---------------------------------------------------------------------------
+# HTML builders
+# ---------------------------------------------------------------------------
+
+def build_pending_block(pending_list):
+    if not pending_list:
+        return ""
+    # Show the most recent pending prediction
+    pending = sorted(pending_list, key=lambda p: p.get("scrape_timestamp", ""))[-1]
     upside_pct = round(pending["upside_prob"] * 100, 1)
     vol_pct = round(pending["vol_amplification_prob"] * 100, 1)
     ts = pending.get("prediction_timestamp", "")[:16]
+    total_pending = len(pending_list)
 
     if pending["upside_prob"] > 0.5:
         dir_label = f"&#9650; BULLISH ({upside_pct}%)"
@@ -113,17 +124,36 @@ def build_pending_block(pending: dict) -> str:
 
     return f"""
 <div style="background:#e3f2fd; border-left:4px solid #1976d2; padding:16px; border-radius:8px; margin:16px 0;">
-  <p style="margin:0 0 6px; font-weight:bold; color:#1a1a2e;">&#128313; Today's prediction <span style="font-size:12px;font-weight:normal;color:#888">(results in tomorrow's report)</span></p>
+  <p style="margin:0 0 6px; font-weight:bold; color:#1a1a2e;">&#128313; Latest prediction
+    <span style="font-size:12px;font-weight:normal;color:#888">({total_pending} pending, scoring in 24h)</span>
+  </p>
   <p style="margin:4px 0; font-size:15px; color:{dir_color};"><strong>Direction:</strong> {dir_label}</p>
   <p style="margin:4px 0; font-size:15px; color:#444;"><strong>Volatility:</strong> {vol_label}</p>
   <p style="margin:8px 0 0; font-size:11px; color:#999;">Kronos timestamp: {ts} UTC</p>
 </div>"""
 
 
-def build_history_table(records: list[dict]) -> str:
+def build_day_block(date, records):
+    stats = compute_stats(records)
+    pct = stats["direction_accuracy_pct"]
+    n = stats["n"]
+    dir_correct = stats["dir_correct"]
+
+    # Day header color
+    if pct >= 65:
+        header_bg = "#e8f5e9"; header_color = "#2e7d32"; grade = "&#128293;"
+    elif pct >= 55:
+        header_bg = "#fff8e1"; header_color = "#f57f17"; grade = "&#128578;"
+    elif pct >= 45:
+        header_bg = "#f5f5f5"; header_color = "#555"; grade = "&#127922;"
+    else:
+        header_bg = "#ffebee"; header_color = "#c62828"; grade = "&#128531;"
+
+    # Build hourly rows sorted by hour
+    sorted_records = sorted(records, key=lambda r: r.get("prediction_timestamp", ""), reverse=True)
     rows = ""
-    for r in reversed(records):
-        date = r.get("prediction_timestamp", "")[:10]
+    for r in sorted_records:
+        hour = r.get("prediction_timestamp", "")[11:16]  # HH:MM
         upside_pct = round(r["upside_prob"] * 100, 1)
         vol_pct = round(r["vol_amplification_prob"] * 100, 1)
         price_change = r.get("price_change_pct", 0.0)
@@ -142,126 +172,128 @@ def build_history_table(records: list[dict]) -> str:
         elif upside_pct <= 35:
             up_bg = "#ffebee"; up_color = "#c62828"
         else:
-            up_bg = "#f5f5f5"; up_color = "#444"
+            up_bg = "#f5f5f5"; up_color = "#555"
 
         rows += f"""
         <tr style="border-bottom:1px solid #f0f0f0;">
-          <td style="padding:8px 10px;font-size:12px;color:#888;white-space:nowrap;">{date}</td>
-          <td style="padding:8px 10px;text-align:center;background:{up_bg};color:{up_color};font-weight:500;font-size:13px;">{upside_pct}%</td>
-          <td style="padding:8px 10px;text-align:center;font-size:13px;color:#444;">{vol_pct}%</td>
-          <td style="padding:8px 10px;text-align:center;font-size:13px;font-weight:500;color:{change_color};">{change_str}</td>
-          <td style="padding:8px 10px;text-align:center;font-size:15px;">{dir_icon}</td>
-          <td style="padding:8px 10px;text-align:center;font-size:15px;">{vol_icon}</td>
-          <td style="padding:8px 10px;text-align:center;font-size:12px;color:#888;">{brier:.3f} / {vol_brier:.3f}</td>
+          <td style="padding:6px 10px;font-size:12px;color:#888;white-space:nowrap;">{hour} UTC</td>
+          <td style="padding:6px 10px;text-align:center;background:{up_bg};color:{up_color};font-weight:500;font-size:12px;">{upside_pct}%</td>
+          <td style="padding:6px 10px;text-align:center;font-size:12px;color:#444;">{vol_pct}%</td>
+          <td style="padding:6px 10px;text-align:center;font-size:12px;font-weight:500;color:{change_color};">{change_str}</td>
+          <td style="padding:6px 10px;text-align:center;font-size:14px;">{dir_icon}</td>
+          <td style="padding:6px 10px;text-align:center;font-size:14px;">{vol_icon}</td>
+          <td style="padding:6px 10px;text-align:center;font-size:11px;color:#888;">{brier:.3f} / {vol_brier:.3f}</td>
         </tr>"""
 
     return f"""
-<div style="background:#f9f9f9; padding:16px; border-radius:8px; margin:16px 0;">
-  <p style="margin:0 0 10px; font-weight:bold;">Full prediction history</p>
+<div style="margin:16px 0; border:1px solid #e0e0e0; border-radius:8px; overflow:hidden;">
+  <!-- Day header -->
+  <div style="background:{header_bg}; padding:12px 16px; display:flex; justify-content:space-between; align-items:center;">
+    <div>
+      <span style="font-size:15px; font-weight:600; color:{header_color};">{grade} {date}</span>
+      <span style="font-size:13px; color:{header_color}; margin-left:12px;">{dir_correct}/{n} correct &nbsp;·&nbsp; {pct}% &nbsp;·&nbsp; Avg Brier: {stats['avg_brier_score']}</span>
+    </div>
+    <span style="font-size:12px; color:#888;">Vol acc: {stats['vol_accuracy_pct']}%</span>
+  </div>
+  <!-- Hourly table -->
   <div style="overflow-x:auto;">
     <table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;">
       <thead>
-        <tr style="background:#eeeeee;">
-          <th style="padding:8px 10px;text-align:left;font-size:11px;color:#666;font-weight:600;">Date</th>
-          <th style="padding:8px 10px;text-align:center;font-size:11px;color:#666;font-weight:600;">Upside %</th>
-          <th style="padding:8px 10px;text-align:center;font-size:11px;color:#666;font-weight:600;">Vol amp %</th>
-          <th style="padding:8px 10px;text-align:center;font-size:11px;color:#666;font-weight:600;">BTC &#916;</th>
-          <th style="padding:8px 10px;text-align:center;font-size:11px;color:#666;font-weight:600;">Dir</th>
-          <th style="padding:8px 10px;text-align:center;font-size:11px;color:#666;font-weight:600;">Vol</th>
-          <th style="padding:8px 10px;text-align:center;font-size:11px;color:#666;font-weight:600;">Brier (dir/vol)</th>
+        <tr style="background:#fafafa;">
+          <th style="padding:7px 10px;text-align:left;font-size:10px;color:#999;font-weight:600;text-transform:uppercase;">Hour</th>
+          <th style="padding:7px 10px;text-align:center;font-size:10px;color:#999;font-weight:600;text-transform:uppercase;">Upside %</th>
+          <th style="padding:7px 10px;text-align:center;font-size:10px;color:#999;font-weight:600;text-transform:uppercase;">Vol amp %</th>
+          <th style="padding:7px 10px;text-align:center;font-size:10px;color:#999;font-weight:600;text-transform:uppercase;">BTC &#916;</th>
+          <th style="padding:7px 10px;text-align:center;font-size:10px;color:#999;font-weight:600;text-transform:uppercase;">Dir</th>
+          <th style="padding:7px 10px;text-align:center;font-size:10px;color:#999;font-weight:600;text-transform:uppercase;">Vol</th>
+          <th style="padding:7px 10px;text-align:center;font-size:10px;color:#999;font-weight:600;text-transform:uppercase;">Brier (d/v)</th>
         </tr>
       </thead>
       <tbody>{rows}</tbody>
     </table>
   </div>
-  <p style="margin:10px 0 0;font-size:11px;color:#999;">Upside % green &#8805;65% (confident bullish) · red &#8804;35% (confident bearish) · newest first</p>
 </div>"""
 
 
-def build_html(records: list[dict], pending: dict | None, today_str: str) -> str:
-    yesterday = records[-1]
-    direction_correct = yesterday.get("direction_correct", False)
-    went_up = yesterday.get("went_up", False)
-    kronos_said = "UP" if yesterday.get("upside_prob", 0.5) > 0.5 else "DOWN"
-    btc_went = "UP" if went_up else "DOWN"
-    price_change = yesterday.get("price_change_pct", 0.0)
-
-    total = len(records)
-    correct = sum(1 for r in records if r.get("direction_correct"))
-    pct = round(correct / total * 100, 1)
-
-    streak_count, streak_correct = compute_streak(records)
-
-    history_emojis = "".join(
-        "✅" if r.get("direction_correct") else "❌" for r in records
-    )
-
-    yesterday_bg = "#e8f5e9" if direction_correct else "#ffebee"
-    yesterday_border = "#4caf50" if direction_correct else "#f44336"
-    yesterday_label = "✅ RIGHT" if direction_correct else "❌ WRONG"
-
+def build_overall_scoreboard(records):
+    stats = compute_stats(records)
+    if not stats:
+        return ""
+    pct = stats["direction_accuracy_pct"]
     bar_color = "#4caf50" if pct > 55 else ("#ff9800" if pct >= 45 else "#f44336")
+    verdict = bottom_line(pct, stats["n"])
 
-    streak_label = "correct ✅" if streak_correct else "wrong ❌"
-    streak_text = f"{streak_count} day{'s' if streak_count != 1 else ''} in a row {streak_label}"
+    return f"""
+<div style="background:#f5f5f5; padding:16px; border-radius:8px; margin:16px 0;">
+  <p style="margin:0 0 4px; font-weight:bold; font-size:14px;">&#128202; Overall score — all history</p>
+  <p style="font-size:32px; font-weight:bold; margin:0; color:#1a1a2e;">{pct}%
+    <span style="font-size:14px; font-weight:normal; color:#666;">({stats['dir_correct']} of {stats['n']} predictions)</span>
+  </p>
+  <div style="background:#ddd; border-radius:4px; height:10px; margin:10px 0;">
+    <div style="background:{bar_color}; width:{min(pct,100):.1f}%; height:10px; border-radius:4px;"></div>
+  </div>
+  <table style="width:100%;margin-top:8px;">
+    <tr>
+      <td style="font-size:12px;color:#888;">Vol accuracy</td>
+      <td style="font-size:12px;color:#888;">Avg Brier</td>
+      <td style="font-size:12px;color:#888;">Avg Vol Brier</td>
+      <td style="font-size:12px;color:#888;">Streak</td>
+    </tr>
+    <tr>
+      <td style="font-size:14px;font-weight:500;color:#1a1a2e;">{stats['vol_accuracy_pct']}%</td>
+      <td style="font-size:14px;font-weight:500;color:#1a1a2e;">{stats['avg_brier_score']}</td>
+      <td style="font-size:14px;font-weight:500;color:#1a1a2e;">{stats['avg_vol_brier_score']}</td>
+      <td style="font-size:14px;font-weight:500;color:#1a1a2e;">{stats['correct_streak']} &#9989;</td>
+    </tr>
+  </table>
+  <p style="font-size:12px;color:#999;margin:10px 0 0;">&#127922; Coin flip = 50% &middot; &#128578; Decent = 55% &middot; &#128293; Good = 60%+</p>
+</div>
+<div style="background:#e3f2fd; padding:16px; border-radius:8px; margin:16px 0;">
+  <p style="margin:0 0 4px; font-weight:bold;">&#127919; Bottom line</p>
+  <p style="margin:0;">{verdict}</p>
+</div>"""
 
-    verdict = bottom_line(pct, total, streak_count, streak_correct)
 
-    pending_block = build_pending_block(pending) if pending else ""
-    history_table = build_history_table(records)
+def build_html(records, pending_list, today_str):
+    pending_block = build_pending_block(pending_list)
 
-    return f"""<div style="font-family: Arial, sans-serif; max-width: 560px; margin: 0 auto; padding: 20px;">
+    # Group scored records by day, show most recent 7 days
+    days = group_by_day(records)
+    sorted_dates = sorted(days.keys(), reverse=True)[:7]
 
-<h2 style="color: #1a1a2e;">&#128202; Kronos BTC Tracker</h2>
-<p style="color: #888; font-size: 13px;">{today_str} &middot; Every day counts</p>
+    day_blocks = ""
+    for date in sorted_dates:
+        day_blocks += build_day_block(date, days[date])
+
+    overall = build_overall_scoreboard(records)
+
+    return f"""<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+
+<h2 style="color: #1a1a2e; margin-bottom:4px;">&#128202; Kronos BTC Tracker</h2>
+<p style="color: #888; font-size: 13px; margin-top:0;">{today_str} &middot; Hourly predictions</p>
 
 {pending_block}
 
-<!-- YESTERDAY -->
-<div style="background: {yesterday_bg}; border-left: 4px solid {yesterday_border}; padding: 16px; border-radius: 8px; margin: 16px 0;">
-  <p style="margin:0; font-size: 20px;">{yesterday_label} yesterday</p>
-  <p style="margin: 8px 0 0; color: #444;">Kronos said {kronos_said}. BTC went {btc_went} {abs(price_change):.1f}%.</p>
-</div>
+<p style="font-size:13px;font-weight:600;color:#555;margin:20px 0 8px;text-transform:uppercase;letter-spacing:.05em;">Daily breakdown — last 7 days</p>
+{day_blocks}
 
-{history_table}
+{overall}
 
-<!-- EMOJI STRIP -->
-<div style="background: #f9f9f9; padding: 12px 16px; border-radius: 8px; margin: 16px 0;">
-  <p style="font-family: monospace; font-size: 22px; letter-spacing: 3px; margin: 0; line-height: 1.8;">{history_emojis}</p>
-  <p style="margin: 6px 0 0; font-size: 12px; color: #999;">&#10003; = correct &middot; &#10007; = missed &middot; left = oldest, right = newest</p>
-</div>
-
-<!-- SCOREBOARD -->
-<div style="background: #f5f5f5; padding: 16px; border-radius: 8px; margin: 16px 0;">
-  <p style="margin: 0 0 4px; font-weight: bold;">Overall score</p>
-  <p style="font-size: 32px; font-weight: bold; margin: 0; color: #1a1a2e;">{pct}% <span style="font-size: 14px; font-weight: normal; color: #666;">({correct} of {total} days)</span></p>
-  <div style="background: #ddd; border-radius: 4px; height: 10px; margin: 10px 0;">
-    <div style="background: {bar_color}; width: {min(pct, 100):.1f}%; height: 10px; border-radius: 4px;"></div>
-  </div>
-  <p style="font-size: 12px; color: #999; margin: 0;">&#127922; Coin flip = 50% &middot; &#128578; Decent = 55% &middot; &#128293; Good = 60%+</p>
-</div>
-
-<!-- STREAK -->
-<div style="padding: 0 0 16px;">
-  <p style="margin: 0;"><strong>Current streak:</strong> {streak_text}</p>
-</div>
-
-<!-- VERDICT -->
-<div style="background: #e3f2fd; padding: 16px; border-radius: 8px;">
-  <p style="margin: 0 0 4px; font-weight: bold;">&#127919; Bottom line</p>
-  <p style="margin: 0;">{verdict}</p>
-</div>
-
-<p style="color: #bbb; font-size: 11px; margin-top: 20px; border-top: 1px solid #eee; padding-top: 12px;">Kronos Tracker &middot; github.com/lemleysergio-cloud/kronos-tracker</p>
+<p style="color: #bbb; font-size: 11px; margin-top: 20px; border-top: 1px solid #eee; padding-top: 12px;">
+  Upside % green &#8805;65% (confident bullish) · red &#8804;35% (confident bearish)<br>
+  Brier: 0.0 = perfect · 0.25 = random · 1.0 = perfectly wrong<br>
+  Kronos Tracker &middot; github.com/lemleysergio-cloud/kronos-tracker
+</p>
 </div>"""
 
 
-def send_email(html_body: str, today_str: str) -> None:
+# ---------------------------------------------------------------------------
+# Send
+# ---------------------------------------------------------------------------
+
+def send_email(html_body, today_str):
     if not GMAIL_USER or not GMAIL_PASS:
-        print(
-            "ERROR: Set GMAIL_USERNAME and GMAIL_APP_PASSWORD env vars.\n"
-            "  Generate an App Password at: myaccount.google.com/apppasswords"
-        )
+        print("ERROR: Set GMAIL_USERNAME and GMAIL_APP_PASSWORD env vars.")
         sys.exit(1)
 
     subject = f"📊 Kronos — {today_str}"
@@ -278,16 +310,16 @@ def send_email(html_body: str, today_str: str) -> None:
     print(f"✓ Email sent → {RECIPIENT}  [{subject}]")
 
 
-def main() -> None:
+def main():
     today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    records = load_scores()
-    pending = load_pending()
+    records = load_json(SCORES_FILE, [])
+    pending_list = load_json(PENDING_FILE, [])
 
     if not records:
         print("No scored records in scores.json yet — skipping email.")
         return
 
-    html = build_html(records, pending, today_str)
+    html = build_html(records, pending_list, today_str)
     send_email(html, today_str)
 
 
