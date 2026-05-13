@@ -1,12 +1,9 @@
-name: Kronos Daily Tracker
+name: Kronos Hourly Tracker
 
 on:
   schedule:
-    # Runs at 23:30 UTC daily — after the demo's last nightly refresh (~22:00 UTC)
-    # ensures T+24h candles are always closed before we score
-    - cron: "30 23 * * *"
-
-  # Allow manual triggering from GitHub UI (Actions tab → Run workflow)
+    # Runs at the top of every hour
+    - cron: "0 * * * *"
   workflow_dispatch:
     inputs:
       mode:
@@ -24,13 +21,11 @@ jobs:
   track:
     runs-on: ubuntu-latest
     permissions:
-      contents: write   # needed to commit scores.json back to the repo
-
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          # Fetch full history so git log works correctly
           fetch-depth: 0
 
       - name: Set up Python
@@ -47,25 +42,20 @@ jobs:
         run: |
           MODE="${{ github.event.inputs.mode || 'all' }}"
           python tracker/kronos_tracker.py --${MODE} 2>&1 | tee tracker_output.txt
-          echo "exit_code=$?" >> $GITHUB_OUTPUT
 
       - name: Upload tracker output as artifact
         uses: actions/upload-artifact@v4
         with:
           name: tracker-output-${{ github.run_id }}
           path: tracker_output.txt
-          retention-days: 90
+          retention-days: 30
 
       - name: Commit updated data files
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          # Stage data files (scores.json always; pending.json if it exists)
           git add scores.json || true
           git add pending.json || true
-
-          # Only commit if there are actual changes
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
@@ -74,12 +64,20 @@ jobs:
             git push
           fi
 
-      - name: Send daily email report
+      - name: Send daily email report (23:00 UTC only)
+        if: github.event.schedule == '0 * * * *' && format('{0}', github.event.schedule) == '0 * * * *' || github.event_name == 'workflow_dispatch'
         env:
           GMAIL_USERNAME: ${{ secrets.GMAIL_USERNAME }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
           RECIPIENT_EMAIL: lemleysergio@gmail.com
-        run: python tracker/send_email.py
+        run: |
+          HOUR=$(date -u +"%H")
+          if [ "$HOUR" = "23" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Sending daily email report..."
+            python tracker/send_email.py
+          else
+            echo "Not 23:00 UTC (current hour: $HOUR) — skipping email."
+          fi
 
       - name: Print summary to Actions log
         run: |
