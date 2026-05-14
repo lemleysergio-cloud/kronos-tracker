@@ -1,1 +1,9 @@
-[]
+[
+  {
+    "upside_prob": 0.633,
+    "vol_amplification_prob": 0.6,
+    "demo_last_updated": "2026-05-14 03:00:25",
+    "prediction_timestamp": "2026-05-14 03:00:25",
+    "scrape_timestamp": "2026-05-14T04:00:36.028985+00:00"
+  }
+]
