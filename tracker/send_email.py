@@ -76,6 +76,19 @@ def hours_remaining(scrape_timestamp_str):
         return 24.0
 
 
+
+def utc_to_eastern(hour_str):
+    """Convert HH:MM UTC string to Eastern time label (handles EDT/EST)."""
+    try:
+        h, m = int(hour_str[:2]), int(hour_str[3:5])
+        # EDT = UTC-4, EST = UTC-5. Use EDT (UTC-4) as Detroit is EDT May-Nov
+        et_h = (h - 4) % 24
+        period = "AM" if et_h < 12 else "PM"
+        et_h12 = et_h % 12 or 12
+        return f"{et_h12}:{m:02d} {period} ET"
+    except Exception:
+        return ""
+
 def bottom_line(pct, total):
     if total < 24:
         return f"Only {total} predictions scored so far — need at least a full day of hourly data to draw conclusions."
@@ -159,7 +172,7 @@ def build_pending_section(pending_list):
 
             blocks += f"""
   <tr style="border-bottom:1px solid #eef3ff;">
-    <td style="padding:5px 10px;font-size:11px;color:#777;">{hour} UTC</td>
+    <td style="padding:5px 10px;font-size:11px;color:#777;">{hour} UTC<br><span style="font-size:10px;color:#aaa;">{utc_to_eastern(hour)}</span></td>
     <td style="padding:5px 10px;text-align:center;font-size:11px;font-weight:500;color:{up_color};">{upside_pct}% <span style="font-weight:normal;font-size:10px;">{dir_word}</span></td>
     <td style="padding:5px 10px;text-align:center;font-size:11px;color:#555;">{vol_pct}% <span style="font-size:10px;color:#888;">{vol_word}</span></td>
     <td style="padding:5px 10px;text-align:center;font-size:11px;color:#aaa;font-style:italic;">pending</td>
@@ -247,7 +260,7 @@ def build_scored_section(records):
 
             blocks += f"""
   <tr style="border-bottom:1px solid #f2f2f2;">
-    <td style="padding:5px 10px;font-size:11px;color:#aaa;">{hour} UTC</td>
+    <td style="padding:5px 10px;font-size:11px;color:#aaa;">{hour} UTC<br><span style="font-size:10px;color:#ccc;">{utc_to_eastern(hour)}</span></td>
     <td style="padding:5px 10px;text-align:center;font-size:11px;font-weight:500;color:{up_color};">{upside_pct}%</td>
     <td style="padding:5px 10px;text-align:center;font-size:11px;color:#888;">{vol_pct}%</td>
     <td style="padding:5px 10px;text-align:center;font-size:11px;font-weight:500;color:{change_color};">{change_str}</td>
