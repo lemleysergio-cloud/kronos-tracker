@@ -64,19 +64,18 @@ jobs:
             git push
           fi
 
-      - name: Send daily email report (23:00 UTC only)
-        if: github.event.schedule == '0 * * * *' && format('{0}', github.event.schedule) == '0 * * * *' || github.event_name == 'workflow_dispatch'
+      - name: Send email report (17:00 UTC = noon EDT, 23:00 UTC = 7pm EDT)
         env:
           GMAIL_USERNAME: ${{ secrets.GMAIL_USERNAME }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
           RECIPIENT_EMAIL: lemleysergio@gmail.com
         run: |
           HOUR=$(date -u +"%H")
-          if [ "$HOUR" = "23" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "Sending daily email report..."
+          if [ "$HOUR" = "17" ] || [ "$HOUR" = "23" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Sending email report (hour: $HOUR UTC)..."
             python tracker/send_email.py
           else
-            echo "Not 23:00 UTC (current hour: $HOUR) — skipping email."
+            echo "Not a send hour (current: ${HOUR} UTC) — skipping email."
           fi
 
       - name: Print summary to Actions log
