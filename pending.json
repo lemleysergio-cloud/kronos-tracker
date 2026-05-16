@@ -68,5 +68,12 @@
     "demo_last_updated": "2026-05-16 06:00:25",
     "prediction_timestamp": "2026-05-16 06:00:25",
     "scrape_timestamp": "2026-05-16T06:23:29.125418+00:00"
+  },
+  {
+    "upside_prob": 0.4,
+    "vol_amplification_prob": 0.0,
+    "demo_last_updated": "2026-05-16 08:00:25",
+    "prediction_timestamp": "2026-05-16 08:00:25",
+    "scrape_timestamp": "2026-05-16T08:49:25.703234+00:00"
   }
 ]
