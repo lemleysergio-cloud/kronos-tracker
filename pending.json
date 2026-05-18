@@ -1,26 +1,5 @@
 [
   {
-    "upside_prob": 0.667,
-    "vol_amplification_prob": 1.0,
-    "demo_last_updated": "2026-05-17 13:00:25",
-    "prediction_timestamp": "2026-05-17 13:00:25",
-    "scrape_timestamp": "2026-05-17T13:24:29.598370+00:00"
-  },
-  {
-    "upside_prob": 0.867,
-    "vol_amplification_prob": 0.9,
-    "demo_last_updated": "2026-05-17 14:00:25",
-    "prediction_timestamp": "2026-05-17 14:00:25",
-    "scrape_timestamp": "2026-05-17T14:58:32.497398+00:00"
-  },
-  {
-    "upside_prob": 0.7,
-    "vol_amplification_prob": 0.9329999999999999,
-    "demo_last_updated": "2026-05-17 16:00:25",
-    "prediction_timestamp": "2026-05-17 16:00:25",
-    "scrape_timestamp": "2026-05-17T16:04:29.839630+00:00"
-  },
-  {
     "upside_prob": 0.7,
     "vol_amplification_prob": 0.9670000000000001,
     "demo_last_updated": "2026-05-17 17:00:25",
@@ -75,5 +54,12 @@
     "demo_last_updated": "2026-05-18 12:00:25",
     "prediction_timestamp": "2026-05-18 12:00:25",
     "scrape_timestamp": "2026-05-18T12:33:47.120893+00:00"
+  },
+  {
+    "upside_prob": 0.9329999999999999,
+    "vol_amplification_prob": 0.1,
+    "demo_last_updated": "2026-05-18 16:00:26",
+    "prediction_timestamp": "2026-05-18 16:00:26",
+    "scrape_timestamp": "2026-05-18T16:26:10.212260+00:00"
   }
 ]
