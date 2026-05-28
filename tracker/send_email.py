@@ -1,12 +1,12 @@
+
 """
-Kronos daily email sender — Hourly Edition, Apple Mail compatible.
-Day headers bold + colored, hourly rows muted underneath.
+Kronos daily email — v3
+Mobile-first responsive HTML email.
+Uses hybrid approach: table structure + media queries + fluid widths.
+Tested patterns: Gmail Android, Gmail iOS, Apple Mail iOS, Apple Mail macOS.
 """
 
-import json
-import os
-import smtplib
-import sys
+import json, os, smtplib, sys, urllib.request
 from datetime import datetime, timezone, timedelta
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -15,374 +15,600 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).parent.parent
 SCORES_FILE = REPO_ROOT / "scores.json"
 PENDING_FILE = REPO_ROOT / "pending.json"
-
 RECIPIENT = os.environ.get("RECIPIENT_EMAIL", "lemleysergio@gmail.com")
 GMAIL_USER = os.environ.get("GMAIL_USERNAME")
 GMAIL_PASS = os.environ.get("GMAIL_APP_PASSWORD")
 
-
+# ─── helpers ──────────────────────────────────────────────────────────────────
 def load_json(path, default):
     if path.exists():
-        with open(path) as f:
-            return json.load(f)
+        with open(path) as f: return json.load(f)
     return default
 
-
-def compute_stats(records):
-    if not records:
-        return {}
-    n = len(records)
-    dir_correct = sum(1 for r in records if r.get("direction_correct"))
-    vol_correct = sum(1 for r in records if r.get("vol_correct"))
-    avg_brier = sum(r.get("brier_score", 0.5) for r in records) / n
-    avg_vol_brier = sum(r.get("vol_brier_score", 0.5) for r in records) / n
+def compute_stats(recs):
+    if not recs: return {}
+    n = len(recs)
+    dc = sum(1 for r in recs if r.get("direction_correct"))
+    vc = sum(1 for r in recs if r.get("vol_correct"))
+    ab = sum(r.get("brier_score", 0.5) for r in recs) / n
+    avb = sum(r.get("vol_brier_score", 0.5) for r in recs) / n
     streak = 0
-    for r in reversed(records):
-        if r.get("direction_correct"):
-            streak += 1
-        else:
-            break
-    return {
-        "n": n,
-        "dir_correct": dir_correct,
-        "direction_accuracy_pct": round(dir_correct / n * 100, 1),
-        "vol_accuracy_pct": round(vol_correct / n * 100, 1),
-        "avg_brier_score": round(avg_brier, 4),
-        "avg_vol_brier_score": round(avg_vol_brier, 4),
-        "correct_streak": streak,
-    }
+    for r in reversed(recs):
+        if r.get("direction_correct"): streak += 1
+        else: break
+    return {"n":n,"dir_correct":dc,
+            "direction_accuracy_pct":round(dc/n*100,1),
+            "vol_accuracy_pct":round(vc/n*100,1),
+            "avg_brier_score":round(ab,4),
+            "avg_vol_brier_score":round(avb,4),
+            "correct_streak":streak}
 
+def group_by_day(recs):
+    d = {}
+    for r in recs:
+        k = r.get("prediction_timestamp","")[:10]
+        d.setdefault(k,[]).append(r)
+    return d
 
-def group_by_day(records):
-    days = {}
-    for r in records:
-        date = r.get("prediction_timestamp", "")[:10]
-        if date not in days:
-            days[date] = []
-        days[date].append(r)
-    return days
-
-
-def hours_remaining(scrape_timestamp_str):
+def hours_remaining(ts):
     try:
-        scrape_ts = datetime.fromisoformat(scrape_timestamp_str)
-        if scrape_ts.tzinfo is None:
-            scrape_ts = scrape_ts.replace(tzinfo=timezone.utc)
-        scores_at = scrape_ts + timedelta(hours=24)
-        remaining = scores_at - datetime.now(timezone.utc)
-        hours = max(0, remaining.total_seconds() / 3600)
-        return hours
-    except Exception:
-        return 24.0
+        t = datetime.fromisoformat(ts)
+        if t.tzinfo is None: t = t.replace(tzinfo=timezone.utc)
+        rem = (t + timedelta(hours=24)) - datetime.now(timezone.utc)
+        return max(0, rem.total_seconds()/3600)
+    except: return 24.0
 
-
-
-def utc_to_eastern(hour_str):
-    """Convert HH:MM UTC string to Eastern time label (handles EDT/EST)."""
+def utc_to_et(h):
     try:
-        h, m = int(hour_str[:2]), int(hour_str[3:5])
-        # EDT = UTC-4, EST = UTC-5. Use EDT (UTC-4) as Detroit is EDT May-Nov
-        et_h = (h - 4) % 24
-        period = "AM" if et_h < 12 else "PM"
-        et_h12 = et_h % 12 or 12
-        return f"{et_h12}:{m:02d} {period} ET"
-    except Exception:
-        return ""
+        hh,mm = int(h[:2]),int(h[3:5])
+        et = (hh-4)%24
+        return f"{et%12 or 12}:{mm:02d} {'AM' if et<12 else 'PM'} ET"
+    except: return ""
+
+def prob_color(p):
+    return "#2e7d32" if p>=0.65 else "#c62828" if p<=0.35 else "#555"
+
+def score_color(s):
+    return "#00695c" if s>=8 else "#2e7d32" if s>=6 else "#e65100" if s>=4 else "#c62828"
+
+def score_bg(s):
+    return "#e0f2f1" if s>=8 else "#e8f5e9" if s>=6 else "#fff8e1" if s>=4 else "#ffebee"
+
+def fear_color(v):
+    return "#c62828" if v<=25 else "#e65100" if v<=45 else "#555" if v<=55 else "#2e7d32" if v<=75 else "#1b5e20"
+
+def get_signal(p): return "bearish" if p<=0.30 else "bullish" if p>=0.70 else "neutral"
+
+def calc_conviction(prob, vol, sig, align="unknown"):
+    s = 0
+    d = abs(prob-0.5)
+    if d>=0.4: s+=3
+    elif d>=0.3: s+=2
+    elif d>=0.2: s+=1
+    if vol is not None:
+        if sig=="bearish": s += 2 if vol>=0.7 else 1 if vol>=0.5 else -1
+        else: s += 2 if vol>=0.7 else 1 if vol>=0.5 else -1
+    if align=="aligned": s+=2
+    elif align=="counter": s-=2
+    if prob<=0.1 or prob>=0.9: s+=1
+    return max(1,min(10,s))
+
+def get_size(sc): return 50 if sc<=3 else 75 if sc<=5 else 100 if sc<=7 else 150
 
 def bottom_line(pct, total):
-    if total < 24:
-        return f"Only {total} predictions scored so far — need at least a full day of hourly data to draw conclusions."
-    if pct >= 65:
-        return f"{pct}% over {total} predictions — genuinely impressive, Kronos is beating a coin flip by a real margin. Pay attention."
-    if pct >= 60:
-        return f"{pct}% is solid over {total} predictions — beating random by a meaningful margin. Something's working."
-    if pct >= 55:
-        return f"{pct}% — slightly above a coin flip over {total} predictions. Mildly interesting, keep watching."
-    if pct >= 45:
-        return f"{pct}% across {total} predictions — basically indistinguishable from guessing right now."
-    return f"Oof — {pct}% over {total} predictions means Kronos is worse than a coin flip right now. Rough patch."
+    if total<24: return f"Only {total} predictions scored — keep collecting data."
+    if pct>=65: return f"{pct}% over {total} predictions — genuinely beating a coin flip. Pay attention."
+    if pct>=60: return f"{pct}% is solid over {total} predictions — something's working."
+    if pct>=55: return f"{pct}% — slightly above a coin flip. Mildly interesting, keep watching."
+    if pct>=45: return f"{pct}% across {total} predictions — basically indistinguishable from guessing."
+    return f"{pct}% over {total} predictions — Kronos is worse than a coin flip right now."
 
+def fetch_fear_greed():
+    try:
+        with urllib.request.urlopen("https://api.alternative.me/fng/?limit=1", timeout=8) as r:
+            data = json.loads(r.read())
+        v = int(data["data"][0]["value"])
+        return v, data["data"][0]["value_classification"]
+    except: return None, None
 
-# ---------------------------------------------------------------------------
-# Pending section
-# ---------------------------------------------------------------------------
+# ─── HEAD (responsive CSS lives here — Gmail strips <style> in body) ──────────
+HEAD = """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Kronos BTC Tracker</title>
+<style type="text/css">
+/* Reset */
+body,table,td,a{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}
+table,td{mso-table-lspace:0pt;mso-table-rspace:0pt}
+img{-ms-interpolation-mode:bicubic;border:0;outline:none;text-decoration:none}
 
-def build_pending_section(pending_list):
-    if not pending_list:
-        return ""
+/* Base */
+body{margin:0!important;padding:0!important;background:#e8e8e8!important}
+.email-wrapper{width:100%;background:#e8e8e8}
+.email-container{max-width:620px;margin:0 auto;background:#ffffff}
 
-    days = {}
-    for p in pending_list:
-        date = p.get("prediction_timestamp", "")[:10]
-        if date not in days:
-            days[date] = []
-        days[date].append(p)
+/* Mobile - anything under 620px */
+@media screen and (max-width:620px){
+  .email-container{width:100%!important}
+  .mob-pad{padding:12px!important}
+  .mob-full{width:100%!important;display:block!important}
+  .mob-stack{display:block!important;width:100%!important;padding:0 0 8px 0!important}
+  .mob-hide{display:none!important}
+  .mob-center{text-align:center!important}
+  .mob-font-lg{font-size:26px!important}
+  .mob-font-sm{font-size:11px!important}
+  .mob-metric-row td{display:block!important;width:100%!important;padding-bottom:8px!important}
 
-    blocks = ""
-    for date in sorted(days.keys(), reverse=True):
-        records = sorted(days[date], key=lambda r: r.get("prediction_timestamp", ""), reverse=True)
-        n = len(records)
+  /* Shrink table columns on mobile */
+  .score-col{display:none!important}
+  .vol-col{display:none!important}
+  .brier-col{display:none!important}
+  .et-col{display:none!important}
 
-        # Day header row
-        blocks += f"""
-<table style="width:100%;border-collapse:collapse;margin-bottom:2px;">
-  <tr style="background:#dbeafe;">
-    <td style="padding:10px 14px;font-size:14px;font-weight:600;color:#1565c0;border-radius:6px 6px 0 0;">
-      &#128313; {date}
-      <span style="font-size:12px;font-weight:normal;color:#1976d2;margin-left:10px;">{n} prediction{'s' if n != 1 else ''} pending — scoring in progress</span>
+  /* Paper trade table mobile */
+  .pt-score-col{display:none!important}
+  .pt-vol-col{display:none!important}
+}
+</style>
+</head>
+<body style="margin:0;padding:0;background:#e8e8e8;">
+<div class="email-wrapper">
+<table class="email-container" width="620" cellpadding="0" cellspacing="0" border="0" align="center" style="max-width:620px;background:#ffffff;">
+"""
+
+FOOT = """</table>
+</div>
+</body></html>"""
+
+# ─── section helpers ──────────────────────────────────────────────────────────
+
+def row(content, bg="#ffffff", pad="16px 20px"):
+    return f'<tr><td style="background:{bg};padding:{pad};">{content}</td></tr>\n'
+
+def divider(color="#e5e5e5", style="solid"):
+    border = f"border-top:1px {style} {color}"
+    return f'<tr><td style="{border};font-size:0;line-height:0;">&nbsp;</td></tr>\n'
+
+def section_label(text, color="#555"):
+    return f'<p style="font-size:11px;font-weight:700;color:{color};text-transform:uppercase;letter-spacing:.07em;margin:0 0 10px;">{text}</p>'
+
+def badge(text, bg, col):
+    return f'<span style="background:{bg};color:{col};font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;white-space:nowrap;">{text}</span>'
+
+# ─── header ──────────────────────────────────────────────────────────────────
+
+def build_header(today_str):
+    return row(f"""
+<table width="100%" cellpadding="0" cellspacing="0">
+<tr>
+  <td>
+    <p style="margin:0;font-size:22px;font-weight:800;color:#1a1a2e;letter-spacing:-.3px;">📊 Kronos BTC</p>
+    <p style="margin:3px 0 0;font-size:12px;color:#aaa;">{today_str} &nbsp;·&nbsp; Hourly predictions &nbsp;·&nbsp; Conviction-scored</p>
+  </td>
+</tr>
+</table>""", bg="#ffffff", pad="20px 20px 12px")
+
+# ─── fear & greed ─────────────────────────────────────────────────────────────
+
+def build_fg(fv, fl):
+    if fv is None: return ""
+    col = fear_color(fv)
+    emoji = "😱" if fv<=25 else "😟" if fv<=45 else "😐" if fv<=55 else "🙂" if fv<=75 else "🤑"
+    note = "Extreme fear = historically good buy zone" if fv<=25 else "Fear = cautious environment" if fv<=45 else "Neutral market sentiment" if fv<=55 else "Greed = be careful chasing" if fv<=75 else "Extreme greed = danger zone"
+    return row(f"""
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f9f9f9;border-radius:8px;border:1px solid #e5e5e5;">
+<tr><td style="padding:12px 14px;">
+  <table width="100%" cellpadding="0" cellspacing="0">
+  <tr>
+    <td style="font-size:28px;width:36px;vertical-align:middle;">{emoji}</td>
+    <td style="padding-left:10px;vertical-align:middle;">
+      <p style="margin:0;font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.06em;">Fear &amp; Greed Index</p>
+      <p style="margin:2px 0 0;font-size:22px;font-weight:800;color:{col};line-height:1;">{fv} <span style="font-size:13px;font-weight:600;">{fl}</span></p>
+    </td>
+    <td align="right" style="vertical-align:middle;">
+      <p style="margin:0;font-size:11px;color:#aaa;max-width:140px;text-align:right;">{note}</p>
     </td>
   </tr>
-</table>
-<table style="width:100%;border-collapse:collapse;margin-bottom:16px;border:1px solid #dbeafe;border-top:none;border-radius:0 0 6px 6px;">
-  <tr style="background:#f0f6ff;">
-    <th style="padding:5px 10px;text-align:left;font-size:10px;color:#999;font-weight:600;text-transform:uppercase;">Hour</th>
-    <th style="padding:5px 10px;text-align:center;font-size:10px;color:#999;font-weight:600;text-transform:uppercase;">Upside %</th>
-    <th style="padding:5px 10px;text-align:center;font-size:10px;color:#999;font-weight:600;text-transform:uppercase;">Vol amp %</th>
-    <th style="padding:5px 10px;text-align:center;font-size:10px;color:#999;font-weight:600;text-transform:uppercase;">Result</th>
-    <th style="padding:5px 10px;text-align:center;font-size:10px;color:#999;font-weight:600;text-transform:uppercase;">Scores in</th>
-  </tr>"""
-
-        for r in records:
-            hour = r.get("prediction_timestamp", "")[11:16]
-            upside_pct = round(r["upside_prob"] * 100, 1)
-            vol_pct = round(r["vol_amplification_prob"] * 100, 1)
-            hrs_left = hours_remaining(r.get("scrape_timestamp", ""))
-            hrs_int = int(hrs_left)
-            mins_int = int((hrs_left - hrs_int) * 60)
-
-            if hrs_left <= 2:
-                cd_color = "#c62828"
-                countdown = f"~{hrs_int}h {mins_int}m"
-            elif hrs_left <= 6:
-                cd_color = "#e65100"
-                countdown = f"~{hrs_int}h remaining"
-            else:
-                cd_color = "#888"
-                countdown = f"~{hrs_int}h remaining"
-
-            if upside_pct >= 65:
-                up_color = "#2e7d32"
-            elif upside_pct <= 35:
-                up_color = "#c62828"
-            else:
-                up_color = "#555"
-
-            dir_word = "&#9650; Bullish" if r["upside_prob"] > 0.5 else "&#9660; Bearish" if r["upside_prob"] < 0.5 else "&#8212; Neutral"
-            vol_word = "&#128308; Choppy" if r["vol_amplification_prob"] > 0.5 else "&#128994; Calm"
-
-            blocks += f"""
-  <tr style="border-bottom:1px solid #eef3ff;">
-    <td style="padding:5px 10px;font-size:11px;color:#777;">{hour} UTC<br><span style="font-size:10px;color:#aaa;">{utc_to_eastern(hour)}</span></td>
-    <td style="padding:5px 10px;text-align:center;font-size:11px;font-weight:500;color:{up_color};">{upside_pct}% <span style="font-weight:normal;font-size:10px;">{dir_word}</span></td>
-    <td style="padding:5px 10px;text-align:center;font-size:11px;color:#555;">{vol_pct}% <span style="font-size:10px;color:#888;">{vol_word}</span></td>
-    <td style="padding:5px 10px;text-align:center;font-size:11px;color:#aaa;font-style:italic;">pending</td>
-    <td style="padding:5px 10px;text-align:center;font-size:11px;font-weight:500;color:{cd_color};">{countdown}</td>
-  </tr>"""
-
-        blocks += "</table>"
-
-    return f"""
-<p style="font-size:12px;font-weight:600;color:#1565c0;margin:20px 0 8px;text-transform:uppercase;letter-spacing:.06em;">&#128313; Pending predictions</p>
-{blocks}"""
-
-
-# ---------------------------------------------------------------------------
-# Scored section
-# ---------------------------------------------------------------------------
-
-def build_scored_section(records):
-    if not records:
-        return ""
-
-    days = group_by_day(records)
-    sorted_dates = sorted(days.keys(), reverse=True)[:7]
-
-    blocks = ""
-    for date in sorted_dates:
-        day_records = days[date]
-        stats = compute_stats(day_records)
-        pct = stats["direction_accuracy_pct"]
-        n = stats["n"]
-        dir_correct = stats["dir_correct"]
-
-        if pct >= 65:
-            hdr_bg = "#e8f5e9"; hdr_color = "#2e7d32"; grade = "&#128293;"
-        elif pct >= 55:
-            hdr_bg = "#fff8e1"; hdr_color = "#f57f17"; grade = "&#128578;"
-        elif pct >= 45:
-            hdr_bg = "#f5f5f5"; hdr_color = "#555"; grade = "&#127922;"
-        else:
-            hdr_bg = "#ffebee"; hdr_color = "#c62828"; grade = "&#128531;"
-
-        # Day summary header
-        blocks += f"""
-<table style="width:100%;border-collapse:collapse;margin-bottom:2px;">
-  <tr style="background:{hdr_bg};">
-    <td style="padding:10px 14px;border-radius:6px 6px 0 0;">
-      <span style="font-size:14px;font-weight:600;color:{hdr_color};">{grade} {date}</span>
-      <span style="font-size:12px;color:{hdr_color};margin-left:10px;">{dir_correct}/{n} correct &nbsp;·&nbsp; {pct}% &nbsp;·&nbsp; Brier: {stats['avg_brier_score']} &nbsp;·&nbsp; Vol: {stats['vol_accuracy_pct']}%</span>
-    </td>
-  </tr>
-</table>
-<table style="width:100%;border-collapse:collapse;margin-bottom:16px;border:1px solid #e8e8e8;border-top:none;border-radius:0 0 6px 6px;">
-  <tr style="background:#fafafa;">
-    <th style="padding:5px 10px;text-align:left;font-size:10px;color:#bbb;font-weight:600;text-transform:uppercase;">Hour</th>
-    <th style="padding:5px 10px;text-align:center;font-size:10px;color:#bbb;font-weight:600;text-transform:uppercase;">Upside %</th>
-    <th style="padding:5px 10px;text-align:center;font-size:10px;color:#bbb;font-weight:600;text-transform:uppercase;">Vol amp %</th>
-    <th style="padding:5px 10px;text-align:center;font-size:10px;color:#bbb;font-weight:600;text-transform:uppercase;">BTC &#916;</th>
-    <th style="padding:5px 10px;text-align:center;font-size:10px;color:#bbb;font-weight:600;text-transform:uppercase;">Dir</th>
-    <th style="padding:5px 10px;text-align:center;font-size:10px;color:#bbb;font-weight:600;text-transform:uppercase;">Vol</th>
-    <th style="padding:5px 10px;text-align:center;font-size:10px;color:#bbb;font-weight:600;text-transform:uppercase;">Brier d/v</th>
-  </tr>"""
-
-        sorted_records = sorted(day_records, key=lambda r: r.get("prediction_timestamp", ""), reverse=True)
-        for r in sorted_records:
-            hour = r.get("prediction_timestamp", "")[11:16]
-            upside_pct = round(r["upside_prob"] * 100, 1)
-            vol_pct = round(r["vol_amplification_prob"] * 100, 1)
-            price_change = r.get("price_change_pct", 0.0)
-            brier = r.get("brier_score", 0.0)
-            vol_brier = r.get("vol_brier_score", 0.0)
-            dir_ok = r.get("direction_correct", False)
-            vol_ok = r.get("vol_correct", False)
-
-            dir_icon = "&#9989;" if dir_ok else "&#10060;"
-            vol_icon = "&#9989;" if vol_ok else "&#10060;"
-            change_color = "#2e7d32" if price_change > 0 else "#c62828" if price_change < 0 else "#777"
-            change_str = f"{price_change:+.2f}%"
-
-            if upside_pct >= 65:
-                up_color = "#2e7d32"
-            elif upside_pct <= 35:
-                up_color = "#c62828"
-            else:
-                up_color = "#777"
-
-            blocks += f"""
-  <tr style="border-bottom:1px solid #f2f2f2;">
-    <td style="padding:5px 10px;font-size:11px;color:#aaa;">{hour} UTC<br><span style="font-size:10px;color:#ccc;">{utc_to_eastern(hour)}</span></td>
-    <td style="padding:5px 10px;text-align:center;font-size:11px;font-weight:500;color:{up_color};">{upside_pct}%</td>
-    <td style="padding:5px 10px;text-align:center;font-size:11px;color:#888;">{vol_pct}%</td>
-    <td style="padding:5px 10px;text-align:center;font-size:11px;font-weight:500;color:{change_color};">{change_str}</td>
-    <td style="padding:5px 10px;text-align:center;font-size:13px;">{dir_icon}</td>
-    <td style="padding:5px 10px;text-align:center;font-size:13px;">{vol_icon}</td>
-    <td style="padding:5px 10px;text-align:center;font-size:11px;color:#bbb;">{brier:.3f}/{vol_brier:.3f}</td>
-  </tr>"""
-
-        blocks += "</table>"
-
-    return f"""
-<p style="font-size:12px;font-weight:600;color:#555;margin:24px 0 8px;text-transform:uppercase;letter-spacing:.06em;">Scored history — last 7 days</p>
-{blocks}"""
-
-
-# ---------------------------------------------------------------------------
-# Overall scoreboard
-# ---------------------------------------------------------------------------
-
-def build_overall_scoreboard(records):
-    stats = compute_stats(records)
-    if not stats:
-        return ""
-    pct = stats["direction_accuracy_pct"]
-    bar_color = "#4caf50" if pct > 55 else ("#ff9800" if pct >= 45 else "#f44336")
-    verdict = bottom_line(pct, stats["n"])
-
-    return f"""
-<table style="width:100%;border-collapse:collapse;background:#f5f5f5;border-radius:8px;margin:8px 0 0;">
-  <tr><td style="padding:16px;">
-    <p style="margin:0 0 4px;font-weight:bold;font-size:14px;color:#1a1a2e;">&#128202; Overall score — all history</p>
-    <p style="font-size:30px;font-weight:bold;margin:4px 0;color:#1a1a2e;">{pct}%
-      <span style="font-size:13px;font-weight:normal;color:#888;">({stats['dir_correct']} of {stats['n']} predictions)</span>
-    </p>
-    <table style="width:100%;border-collapse:collapse;margin:6px 0;">
-      <tr>
-        <td style="width:{min(pct,100):.1f}%;background:{bar_color};height:8px;border-radius:4px 0 0 4px;"></td>
-        <td style="background:#ddd;height:8px;border-radius:0 4px 4px 0;"></td>
-      </tr>
-    </table>
-    <table style="width:100%;border-collapse:collapse;margin-top:10px;">
-      <tr>
-        <td style="font-size:11px;color:#aaa;">Vol accuracy</td>
-        <td style="font-size:11px;color:#aaa;">Avg Brier</td>
-        <td style="font-size:11px;color:#aaa;">Avg Vol Brier</td>
-        <td style="font-size:11px;color:#aaa;">Streak</td>
-      </tr>
-      <tr>
-        <td style="font-size:14px;font-weight:500;color:#1a1a2e;">{stats['vol_accuracy_pct']}%</td>
-        <td style="font-size:14px;font-weight:500;color:#1a1a2e;">{stats['avg_brier_score']}</td>
-        <td style="font-size:14px;font-weight:500;color:#1a1a2e;">{stats['avg_vol_brier_score']}</td>
-        <td style="font-size:14px;font-weight:500;color:#1a1a2e;">{stats['correct_streak']} &#9989;</td>
-      </tr>
-    </table>
-    <p style="font-size:11px;color:#bbb;margin:8px 0 0;">&#127922; Coin flip = 50% &middot; &#128578; Decent = 55% &middot; &#128293; Good = 60%+</p>
+  <tr><td colspan="3" style="padding-top:8px;">
+    <table width="100%" cellpadding="0" cellspacing="0"><tr>
+      <td style="width:{fv}%;background:{col};height:5px;border-radius:3px 0 0 3px;"></td>
+      <td style="background:#e5e5e5;height:5px;border-radius:0 3px 3px 0;"></td>
+    </tr></table>
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:3px;"><tr>
+      <td style="font-size:9px;color:#ccc;">0 — extreme fear</td>
+      <td align="right" style="font-size:9px;color:#ccc;">100 — extreme greed</td>
+    </tr></table>
   </td></tr>
-</table>
-<table style="width:100%;border-collapse:collapse;background:#e3f2fd;border-radius:8px;margin:10px 0 0;">
-  <tr><td style="padding:14px 16px;">
-    <p style="margin:0 0 4px;font-weight:bold;color:#1a1a2e;">&#127919; Bottom line</p>
-    <p style="margin:0;color:#333;">{verdict}</p>
+  </table>
+</td></tr></table>""", bg="#ffffff", pad="0 20px 12px")
+
+# ─── pending ─────────────────────────────────────────────────────────────────
+
+def build_pending(pending_list):
+    if not pending_list: return ""
+    # sort newest first, group by day
+    days = {}
+    for r in pending_list:
+        d = r.get("prediction_timestamp","")[:10]
+        days.setdefault(d,[]).append(r)
+
+    blocks = section_label("🕐 Pending — awaiting scoring", "#1565c0")
+    for date in sorted(days.keys(), reverse=True):
+        recs = sorted(days[date], key=lambda x: x.get("prediction_timestamp",""), reverse=True)
+        rows_html = ""
+        for r in recs:
+            hour = r.get("prediction_timestamp","")[11:16]
+            up = round(r["upside_prob"]*100,1)
+            vp = round(r["vol_amplification_prob"]*100,1)
+            sig = get_signal(r["upside_prob"])
+            sc = calc_conviction(r["upside_prob"], r["vol_amplification_prob"], sig)
+            sz = get_size(sc)
+            hrs = hours_remaining(r.get("scrape_timestamp",""))
+            cd_col = "#c62828" if hrs<=2 else "#e65100" if hrs<=6 else "#888"
+            up_col = prob_color(r["upside_prob"])
+            dw = "▼ Bear" if sig=="bearish" else "▲ Bull" if sig=="bullish" else "— Neutral"
+            sc_b = badge(f"{sc}/10 · ${sz}", score_bg(sc), score_color(sc))
+            rows_html += f"""
+<tr style="border-bottom:1px solid #f0f0f0;">
+  <td style="padding:7px 10px;font-size:11px;color:#aaa;">{hour}<br>
+    <span class="et-col" style="font-size:10px;color:#ccc;">{utc_to_et(hour)}</span>
+  </td>
+  <td style="padding:7px 10px;font-size:13px;font-weight:700;color:{up_col};">{up}%
+    <br><span style="font-size:10px;font-weight:500;">{dw}</span>
+  </td>
+  <td class="vol-col" style="padding:7px 10px;font-size:11px;color:#777;text-align:center;">{vp}%</td>
+  <td class="score-col" style="padding:7px 10px;text-align:center;">{sc_b}</td>
+  <td style="padding:7px 10px;font-size:11px;font-weight:700;color:{cd_col};text-align:right;">~{int(hrs)}h</td>
+</tr>"""
+
+        blocks += f"""
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:10px;border-radius:8px;overflow:hidden;border:1px solid #dbeafe;">
+  <tr style="background:#dbeafe;">
+    <td style="padding:9px 12px;font-size:12px;font-weight:700;color:#1565c0;">{date} &nbsp;<span style="font-weight:500;font-size:11px;">({len(recs)} prediction{'s' if len(recs)!=1 else ''})</span></td>
+  </tr>
+  <tr><td>
+    <table width="100%" cellpadding="0" cellspacing="0">
+    <tr style="background:#f0f6ff;">
+      <th style="padding:5px 10px;font-size:9px;color:#999;font-weight:700;text-transform:uppercase;text-align:left;">Hour</th>
+      <th style="padding:5px 10px;font-size:9px;color:#999;font-weight:700;text-transform:uppercase;text-align:left;">Upside</th>
+      <th class="vol-col" style="padding:5px 10px;font-size:9px;color:#999;font-weight:700;text-transform:uppercase;text-align:center;">Vol</th>
+      <th class="score-col" style="padding:5px 10px;font-size:9px;color:#999;font-weight:700;text-transform:uppercase;text-align:center;">Score / Size</th>
+      <th style="padding:5px 10px;font-size:9px;color:#999;font-weight:700;text-transform:uppercase;text-align:right;">In</th>
+    </tr>
+    {rows_html}
+    </table>
   </td></tr>
 </table>"""
 
+    return row(blocks, pad="12px 20px")
 
-# ---------------------------------------------------------------------------
-# Main builder + send
-# ---------------------------------------------------------------------------
+# ─── scored ──────────────────────────────────────────────────────────────────
 
-def build_html(records, pending_list, today_str):
-    pending_section = build_pending_section(pending_list)
-    scored_section = build_scored_section(records)
-    overall = build_overall_scoreboard(records)
+def build_scored(records):
+    if not records: return ""
+    days = group_by_day(records)
+    blocks = section_label("Scored history — last 7 days")
 
-    return f"""<div style="font-family:-apple-system,Arial,sans-serif;max-width:620px;margin:0 auto;padding:20px;">
+    for date in sorted(days.keys(), reverse=True)[:7]:
+        dr = days[date]
+        st = compute_stats(dr)
+        pct = st["direction_accuracy_pct"]
+        hbg,hcol,grade = ("#e8f5e9","#2e7d32","🔥") if pct>=65 else ("#fff8e1","#e65100","🙂") if pct>=55 else ("#f5f5f5","#555","🎲") if pct>=45 else ("#ffebee","#c62828","😬")
+        rows_html = ""
+        for r in sorted(dr, key=lambda x: x.get("prediction_timestamp",""), reverse=True):
+            hour = r.get("prediction_timestamp","")[11:16]
+            up = round(r["upside_prob"]*100,1)
+            vp = round(r.get("vol_amplification_prob",0)*100,1)
+            sig = get_signal(r["upside_prob"])
+            sc = calc_conviction(r["upside_prob"], r.get("vol_amplification_prob"), sig)
+            sz = get_size(sc)
+            chg = r.get("price_change_pct",0)
+            dok = r.get("direction_correct",False)
+            vok = r.get("vol_correct",False)
+            br = r.get("brier_score",0)
+            cc = "#2e7d32" if chg>0 else "#c62828" if chg<0 else "#777"
+            sc_b = badge(f"{sc}/10", score_bg(sc), score_color(sc))
+            rows_html += f"""
+<tr style="border-bottom:1px solid #f5f5f5;">
+  <td style="padding:6px 10px;font-size:11px;color:#aaa;">{hour}
+    <br><span class="et-col" style="font-size:10px;color:#ccc;">{utc_to_et(hour)}</span>
+  </td>
+  <td style="padding:6px 10px;font-size:12px;font-weight:700;color:{prob_color(r['upside_prob'])};">{up}%</td>
+  <td class="vol-col" style="padding:6px 10px;font-size:11px;color:#777;text-align:center;">{vp}%</td>
+  <td class="score-col" style="padding:6px 10px;text-align:center;">{sc_b}<br><span style="font-size:9px;color:#bbb;">${sz}</span></td>
+  <td style="padding:6px 10px;font-size:12px;font-weight:700;color:{cc};text-align:center;">{chg:+.1f}%</td>
+  <td style="padding:6px 10px;font-size:14px;text-align:center;">{"✅" if dok else "❌"}</td>
+  <td class="vol-col" style="padding:6px 10px;font-size:14px;text-align:center;">{"✅" if vok else "❌"}</td>
+  <td class="brier-col" style="padding:6px 10px;font-size:10px;color:#ccc;text-align:center;">{br:.3f}</td>
+</tr>"""
 
-<h2 style="color:#1a1a2e;margin-bottom:4px;">&#128202; Kronos BTC Tracker</h2>
-<p style="color:#888;font-size:13px;margin-top:0;">{today_str} &middot; Hourly predictions</p>
+        blocks += f"""
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:10px;border-radius:8px;overflow:hidden;border:1px solid #e5e5e5;">
+  <tr style="background:{hbg};">
+    <td style="padding:9px 12px;">
+      <span style="font-size:13px;font-weight:700;color:{hcol};">{grade} {date}</span>
+      <span style="font-size:11px;color:{hcol};margin-left:8px;">{st['dir_correct']}/{st['n']} correct &nbsp;·&nbsp; {pct}% &nbsp;·&nbsp; Brier: {st['avg_brier_score']}</span>
+    </td>
+  </tr>
+  <tr><td>
+    <table width="100%" cellpadding="0" cellspacing="0">
+    <tr style="background:#fafafa;">
+      <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:left;">Hour</th>
+      <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:left;">Upside</th>
+      <th class="vol-col" style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Vol</th>
+      <th class="score-col" style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Score/$</th>
+      <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">BTC Δ</th>
+      <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Dir</th>
+      <th class="vol-col" style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Vol</th>
+      <th class="brier-col" style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Brier</th>
+    </tr>
+    {rows_html}
+    </table>
+  </td></tr>
+</table>"""
 
-{pending_section}
-{scored_section}
-{overall}
+    return row(blocks, pad="12px 20px")
 
-<p style="color:#ccc;font-size:11px;margin-top:20px;border-top:1px solid #eee;padding-top:12px;">
-  Upside % green &#8805;65% bullish · red &#8804;35% bearish &middot;
-  Brier: 0.0 perfect · 0.25 random &middot;
-  Kronos Tracker · github.com/lemleysergio-cloud/kronos-tracker
-</p>
-</div>"""
+# ─── scoreboard ───────────────────────────────────────────────────────────────
 
+def build_scoreboard(records, fv, fl):
+    st = compute_stats(records)
+    if not st: return ""
+    pct = st["direction_accuracy_pct"]
+    bc = "#4caf50" if pct>55 else "#ff9800" if pct>=45 else "#f44336"
+    bh = [r for r in records if r["upside_prob"]<=0.30]
+    bu = [r for r in records if r["upside_prob"]>=0.80]
+    bha = round(sum(1 for r in bh if r.get("direction_correct"))/len(bh)*100) if bh else None
+    bua = round(sum(1 for r in bu if r.get("direction_correct"))/len(bu)*100) if bu else None
+
+    # emoji history — last 20 scored
+    recent = records[-20:] if len(records)>20 else records
+    emoji_chain = " ".join("✅" if r.get("direction_correct") else "❌" for r in recent)
+
+    hc_rows = ""
+    if bha is not None:
+        hc_rows += f"""<tr>
+<td style="padding:5px 0;font-size:12px;color:#888;">Bearish signals (0–30%)</td>
+<td align="right" style="padding:5px 0;font-size:13px;font-weight:700;color:#c62828;">{bha}% <span style="font-size:11px;font-weight:400;color:#bbb;">({len(bh)} calls)</span></td></tr>"""
+    if bua is not None:
+        hc_rows += f"""<tr>
+<td style="padding:5px 0;font-size:12px;color:#888;">Bullish signals (80%+)</td>
+<td align="right" style="padding:5px 0;font-size:13px;font-weight:700;color:#2e7d32;">{bua}% <span style="font-size:11px;font-weight:400;color:#bbb;">({len(bu)} calls)</span></td></tr>"""
+    if fv:
+        fc = fear_color(fv)
+        hc_rows += f"""<tr style="border-top:1px solid #f0f0f0;">
+<td style="padding:8px 0 4px;font-size:12px;color:#888;">Fear &amp; Greed today</td>
+<td align="right" style="padding:8px 0 4px;font-size:13px;font-weight:700;color:{fc};">{fv} — {fl}</td></tr>"""
+
+    return row(f"""
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f9f9f9;border-radius:8px;border:1px solid #e5e5e5;">
+<tr><td style="padding:16px;">
+
+  <p style="margin:0 0 2px;font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.06em;">Overall accuracy — all history</p>
+  <p class="mob-font-lg" style="font-size:32px;font-weight:800;color:#1a1a2e;margin:4px 0;">{pct}%
+    <span style="font-size:13px;font-weight:400;color:#aaa;">({st['dir_correct']} of {st['n']})</span>
+  </p>
+
+  <table width="100%" cellpadding="0" cellspacing="0" style="margin:8px 0;">
+    <tr>
+      <td style="width:{min(pct,100):.1f}%;background:{bc};height:8px;border-radius:4px 0 0 4px;"></td>
+      <td style="background:#ddd;height:8px;border-radius:0 4px 4px 0;"></td>
+    </tr>
+  </table>
+  <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:3px;">
+    <tr>
+      <td style="font-size:9px;color:#ccc;">🎲 50% = coin flip</td>
+      <td align="center" style="font-size:9px;color:#ccc;">🙂 55% = decent</td>
+      <td align="right" style="font-size:9px;color:#ccc;">🔥 60%+ = good</td>
+    </tr>
+  </table>
+
+  <table width="100%" cellpadding="0" cellspacing="0" style="margin:12px 0;border-top:1px solid #eeeeee;border-bottom:1px solid #eeeeee;padding:10px 0;">
+    <tr>
+      <td style="text-align:center;padding:4px 8px;border-right:1px solid #eee;">
+        <p style="margin:0;font-size:10px;color:#aaa;">Vol accuracy</p>
+        <p style="margin:2px 0 0;font-size:18px;font-weight:700;color:#1a1a2e;">{st['vol_accuracy_pct']}%</p>
+      </td>
+      <td style="text-align:center;padding:4px 8px;border-right:1px solid #eee;">
+        <p style="margin:0;font-size:10px;color:#aaa;">Avg Brier</p>
+        <p style="margin:2px 0 0;font-size:18px;font-weight:700;color:#1a1a2e;">{st['avg_brier_score']}</p>
+      </td>
+      <td style="text-align:center;padding:4px 8px;">
+        <p style="margin:0;font-size:10px;color:#aaa;">Streak</p>
+        <p style="margin:2px 0 0;font-size:18px;font-weight:700;color:#1a1a2e;">{st['correct_streak']} ✅</p>
+      </td>
+    </tr>
+  </table>
+
+  <p style="margin:0 0 4px;font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.05em;">Recent call history</p>
+  <p style="margin:0 0 12px;font-size:16px;letter-spacing:3px;line-height:1.8;">{emoji_chain}</p>
+
+  <table width="100%" cellpadding="0" cellspacing="0">
+    {hc_rows}
+  </table>
+
+</td></tr>
+</table>
+
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-top:10px;background:#e3f2fd;border-radius:8px;border:1px solid #bbdefb;">
+<tr><td style="padding:14px 16px;">
+  <p style="margin:0 0 4px;font-weight:700;font-size:13px;color:#1a1a2e;">🎯 Bottom line</p>
+  <p style="margin:0;font-size:13px;color:#333;line-height:1.5;">{bottom_line(pct, st['n'])}</p>
+</td></tr>
+</table>""", pad="12px 20px")
+
+# ─── paper trading ────────────────────────────────────────────────────────────
+
+def build_paper_trading(trades, balance, pnl):
+    if not trades: return ""
+    wins  = sum(1 for t in trades if t["outcome"] in ("win","take-profit"))
+    losses= sum(1 for t in trades if t["outcome"]=="loss")
+    sls   = sum(1 for t in trades if t["outcome"]=="stop-loss")
+    tps   = sum(1 for t in trades if t["outcome"]=="take-profit")
+    total = len(trades)
+    wr    = round(wins/total*100) if total else 0
+    bal_col = "#2e7d32" if pnl>=0 else "#c62828"
+    pnl_str = ("+$" if pnl>=0 else "-$") + f"{abs(pnl):.2f}"
+    pnl_pct = round(pnl/1000*100,1)
+
+    # metric cards — stack on mobile
+    metric_cards = f"""
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:12px;">
+<tr class="mob-metric-row">
+  <td style="width:40%;padding-right:6px;vertical-align:top;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f9f9f9;border:1px solid #e5e5e5;border-radius:8px;">
+    <tr><td style="padding:14px;">
+      <p style="margin:0;font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.05em;">Paper balance</p>
+      <p style="margin:4px 0 0;font-size:26px;font-weight:800;color:{bal_col};">${balance:.2f}</p>
+      <p style="margin:2px 0 0;font-size:12px;font-weight:600;color:{bal_col};">{pnl_str} &nbsp;({pnl_pct:+.1f}%)</p>
+      <p style="margin:4px 0 0;font-size:10px;color:#ccc;">started $1,000</p>
+    </td></tr></table>
+  </td>
+  <td style="width:30%;padding-right:6px;vertical-align:top;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f9f9f9;border:1px solid #e5e5e5;border-radius:8px;">
+    <tr><td style="padding:14px;">
+      <p style="margin:0;font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.05em;">Win rate</p>
+      <p style="margin:4px 0 0;font-size:26px;font-weight:800;color:#1a1a2e;">{wr}%</p>
+      <p style="margin:2px 0 0;font-size:11px;color:#aaa;">{wins}W &nbsp;{losses}L &nbsp;{sls}SL</p>
+      <p style="margin:2px 0 0;font-size:10px;color:#ccc;">{total} trades total</p>
+    </td></tr></table>
+  </td>
+  <td style="width:30%;vertical-align:top;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f9f9f9;border:1px solid #e5e5e5;border-radius:8px;">
+    <tr><td style="padding:14px;">
+      <p style="margin:0;font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.05em;">Sizing</p>
+      <table cellpadding="0" cellspacing="0" style="margin-top:4px;">
+        <tr><td style="font-size:10px;font-weight:700;color:#c62828;padding-right:8px;">1–3<br><span style="font-size:12px;">$50</span></td>
+            <td style="font-size:10px;font-weight:700;color:#e65100;padding-right:8px;">4–5<br><span style="font-size:12px;">$75</span></td></tr>
+        <tr><td style="font-size:10px;font-weight:700;color:#2e7d32;padding-right:8px;padding-top:4px;">6–7<br><span style="font-size:12px;">$100</span></td>
+            <td style="font-size:10px;font-weight:700;color:#00695c;padding-top:4px;">8–10<br><span style="font-size:12px;">$150</span></td></tr>
+      </table>
+    </td></tr></table>
+  </td>
+</tr>
+</table>"""
+
+    rows_html = ""
+    for t in reversed(trades):
+        oc = t["outcome"]
+        sig_bg  = "#ffebee" if t["signal"]=="bearish" else "#e8f5e9"
+        sig_col = "#c62828" if t["signal"]=="bearish" else "#2e7d32"
+        sig_lbl = f"▼ {t['prob']}%" if t["signal"]=="bearish" else f"▲ {t['prob']}%"
+        out_bg  = "#e8f5e9" if oc in("win","take-profit") else "#fff8e1" if oc=="stop-loss" else "#ffebee"
+        out_col = "#2e7d32" if oc in("win","take-profit") else "#e65100" if oc=="stop-loss" else "#c62828"
+        out_lbl = "✅ Win" if oc=="win" else "🎯 TP" if oc=="take-profit" else "🛡️ SL" if oc=="stop-loss" else "❌ Loss"
+        pc  = "#2e7d32" if t["pnl"]>=0 else "#c62828"
+        ps  = ("+$" if t["pnl"]>=0 else "-$")+f"{abs(t['pnl']):.2f}"
+        sc_b = badge(f"{t['score']}/10", score_bg(t['score']), score_color(t['score']))
+        rows_html += f"""
+<tr style="border-bottom:1px solid #f5f5f5;">
+  <td style="padding:7px 10px;font-size:11px;color:#aaa;">{t['date']}</td>
+  <td style="padding:7px 10px;">
+    <span style="background:{sig_bg};color:{sig_col};font-size:11px;font-weight:700;padding:3px 7px;border-radius:4px;">{sig_lbl}</span>
+  </td>
+  <td class="pt-score-col" style="padding:7px 10px;text-align:center;">{sc_b}</td>
+  <td style="padding:7px 10px;font-size:11px;color:#888;text-align:center;">${t['size']}</td>
+  <td class="pt-vol-col" style="padding:7px 10px;font-size:11px;color:#777;text-align:center;">{t['vol']}%</td>
+  <td style="padding:7px 10px;font-size:13px;font-weight:700;color:{pc};text-align:right;">{ps}</td>
+  <td style="padding:7px 10px;">
+    <span style="background:{out_bg};color:{out_col};font-size:10px;font-weight:700;padding:3px 7px;border-radius:4px;white-space:nowrap;">{out_lbl}</span>
+  </td>
+</tr>"""
+
+    return (
+        divider(color="#e5e5e5", style="dashed") +
+        row(f"""
+{section_label("📋 Paper trading — $1,000 simulated")}
+<p style="margin:-6px 0 12px;font-size:11px;color:#aaa;">Tracked separately from live Kronos accuracy</p>
+{metric_cards}
+<table width="100%" cellpadding="0" cellspacing="0" style="border-radius:8px;overflow:hidden;border:1px solid #e5e5e5;">
+<tr style="background:#f5f5f5;">
+  <th style="padding:6px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:left;">Date</th>
+  <th style="padding:6px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:left;">Signal</th>
+  <th class="pt-score-col" style="padding:6px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Score</th>
+  <th style="padding:6px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Size</th>
+  <th class="pt-vol-col" style="padding:6px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Vol%</th>
+  <th style="padding:6px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:right;">P&amp;L</th>
+  <th style="padding:6px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:left;">Result</th>
+</tr>
+{rows_html}
+</table>
+<p style="margin:8px 0 0;font-size:10px;color:#ccc;">Simulated only. Not financial advice.</p>""", pad="12px 20px")
+    )
+
+# ─── footer ───────────────────────────────────────────────────────────────────
+
+def build_footer():
+    return row("""
+<p style="margin:0;font-size:10px;color:#ccc;line-height:1.6;">
+Upside % green ≥65% bullish · red ≤35% bearish &nbsp;·&nbsp;
+Score = conviction 1–10 · $ = suggested position &nbsp;·&nbsp;
+Brier: 0.0 perfect, 0.25 random &nbsp;·&nbsp;
+<a href="https://github.com/lemleysergio-cloud/kronos-tracker" style="color:#aaa;text-decoration:none;">kronos-tracker on GitHub</a>
+</p>""", bg="#f9f9f9", pad="14px 20px")
+
+# ─── assemble ─────────────────────────────────────────────────────────────────
+
+def build_html(records, pending_list, paper_trades, paper_balance, paper_pnl,
+               today_str, fg_val, fg_label):
+    return (
+        HEAD
+        + build_header(today_str)
+        + divider()
+        + build_fg(fg_val, fg_label)
+        + build_pending(pending_list)
+        + build_scored(records)
+        + build_scoreboard(records, fg_val, fg_label)
+        + build_paper_trading(paper_trades, paper_balance, paper_pnl)
+        + divider()
+        + build_footer()
+        + FOOT
+    )
+
+# ─── send ─────────────────────────────────────────────────────────────────────
 
 def send_email(html_body, today_str):
     if not GMAIL_USER or not GMAIL_PASS:
-        print("ERROR: Set GMAIL_USERNAME and GMAIL_APP_PASSWORD env vars.")
+        print("ERROR: Set GMAIL_USERNAME and GMAIL_APP_PASSWORD secrets.")
         sys.exit(1)
-
     subject = f"📊 Kronos — {today_str}"
     msg = MIMEMultipart("alternative")
     msg["Subject"] = subject
     msg["From"] = GMAIL_USER
     msg["To"] = RECIPIENT
     msg.attach(MIMEText(html_body, "html", "utf-8"))
-
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
         server.login(GMAIL_USER, GMAIL_PASS)
         server.sendmail(GMAIL_USER, RECIPIENT, msg.as_string())
+    print(f"✓ Email sent → {RECIPIENT} [{subject}]")
 
-    print(f"✓ Email sent → {RECIPIENT}  [{subject}]")
-
+# ─── main ─────────────────────────────────────────────────────────────────────
 
 def main():
     today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     records = load_json(SCORES_FILE, [])
     pending_list = load_json(PENDING_FILE, [])
 
+    # Load paper trades if file exists
+    paper_trades_file = REPO_ROOT / "paper_trades.json"
+    paper_trades = load_json(paper_trades_file, [])
+    paper_pnl = sum(t.get("pnl", 0) for t in paper_trades)
+    paper_balance = 1000 + paper_pnl
+
     if not records and not pending_list:
         print("No data yet — skipping email.")
         return
 
-    html = build_html(records, pending_list, today_str)
-    send_email(html, today_str)
+    print("Fetching Fear & Greed index...")
+    fg_val, fg_label = fetch_fear_greed()
+    print(f"  {fg_val} ({fg_label})" if fg_val else "  Could not fetch.")
 
+    html = build_html(records, pending_list, paper_trades, paper_balance,
+                      paper_pnl, today_str, fg_val, fg_label)
+    send_email(html, today_str)
 
 if __name__ == "__main__":
     main()
