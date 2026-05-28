@@ -1,4 +1,3 @@
-
 """
 Kronos daily email — v3
 Mobile-first responsive HTML email.
@@ -442,57 +441,90 @@ def build_scoreboard(records, fv, fl):
 
 # ─── paper trading ────────────────────────────────────────────────────────────
 
-def build_paper_trading(trades, balance, pnl):
+def build_paper_trading(trades, balance, pnl, exposure=0):
     if not trades: return ""
-    wins  = sum(1 for t in trades if t["outcome"] in ("win","take-profit"))
-    losses= sum(1 for t in trades if t["outcome"]=="loss")
-    sls   = sum(1 for t in trades if t["outcome"]=="stop-loss")
-    tps   = sum(1 for t in trades if t["outcome"]=="take-profit")
-    total = len(trades)
-    wr    = round(wins/total*100) if total else 0
+
+    closed_trades = [t for t in trades if t.get("status") == "closed"]
+    open_trades   = [t for t in trades if t.get("status") == "open"]
+    wins   = sum(1 for t in closed_trades if t["outcome"] in ("win","take-profit"))
+    losses = sum(1 for t in closed_trades if t["outcome"] == "loss")
+    sls    = sum(1 for t in closed_trades if t["outcome"] == "stop-loss")
+    tps    = sum(1 for t in closed_trades if t["outcome"] == "take-profit")
+    total_closed = len(closed_trades)
+    total_fees = sum(t.get("fees",0) or 0 for t in closed_trades)
+    wr     = round(wins/total_closed*100) if total_closed else 0
     bal_col = "#2e7d32" if pnl>=0 else "#c62828"
     pnl_str = ("+$" if pnl>=0 else "-$") + f"{abs(pnl):.2f}"
     pnl_pct = round(pnl/1000*100,1)
+    avail   = round(1000 - exposure, 2)
 
-    # metric cards — stack on mobile
+    # Open trades alert
+    open_alert = ""
+    if open_trades:
+        open_rows = ""
+        for t in open_trades:
+            sig_col = "#c62828" if t["signal"]=="bearish" else "#2e7d32"
+            sl = t.get("sl") or 0
+            tp = t.get("tp") or 0
+            open_rows += f"""<tr style="border-bottom:1px solid #f0f0f0;">
+  <td style="padding:6px 10px;font-size:11px;color:#aaa;">{t['date']}</td>
+  <td style="padding:6px 10px;"><span style="color:{sig_col};font-size:12px;font-weight:700;">{'▼' if t['signal']=='bearish' else '▲'} {t['prob']}%</span></td>
+  <td style="padding:6px 10px;font-size:11px;color:#888;text-align:center;">${t['size']}</td>
+  <td style="padding:6px 10px;font-size:11px;color:#555;text-align:center;">${t.get('entry',0):,.0f}</td>
+  <td style="padding:6px 10px;font-size:10px;color:#e65100;text-align:center;">${sl:,.0f}</td>
+  <td style="padding:6px 10px;font-size:10px;color:#2e7d32;text-align:center;">${tp:,.0f}</td>
+  <td style="padding:6px 10px;font-size:10px;color:#888;text-align:right;">{t.get('trend','—')} · F&G:{t.get('fg','—')}</td>
+</tr>"""
+        open_alert = f"""
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:12px;border-radius:8px;overflow:hidden;border:1px solid #fff3cd;">
+<tr style="background:#fff3cd;"><td style="padding:9px 12px;font-size:12px;font-weight:700;color:#856404;">
+  ⏳ {len(open_trades)} open trade{'s' if len(open_trades)!=1 else ''} — awaiting 24h close
+</td></tr>
+<tr><td>
+<table width="100%" cellpadding="0" cellspacing="0">
+<tr style="background:#fffdf0;">
+  <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:left;">Date</th>
+  <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:left;">Signal</th>
+  <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Size</th>
+  <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Entry</th>
+  <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Stop</th>
+  <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Target</th>
+  <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:right;">Context</th>
+</tr>
+{open_rows}
+</table>
+</td></tr></table>"""
+
+    # Prominent balance hero card
     metric_cards = f"""
-<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:12px;">
-<tr class="mob-metric-row">
-  <td style="width:40%;padding-right:6px;vertical-align:top;">
-    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f9f9f9;border:1px solid #e5e5e5;border-radius:8px;">
-    <tr><td style="padding:14px;">
-      <p style="margin:0;font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.05em;">Paper balance</p>
-      <p style="margin:4px 0 0;font-size:26px;font-weight:800;color:{bal_col};">${balance:.2f}</p>
-      <p style="margin:2px 0 0;font-size:12px;font-weight:600;color:{bal_col};">{pnl_str} &nbsp;({pnl_pct:+.1f}%)</p>
-      <p style="margin:4px 0 0;font-size:10px;color:#ccc;">started $1,000</p>
-    </td></tr></table>
-  </td>
-  <td style="width:30%;padding-right:6px;vertical-align:top;">
-    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f9f9f9;border:1px solid #e5e5e5;border-radius:8px;">
-    <tr><td style="padding:14px;">
-      <p style="margin:0;font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.05em;">Win rate</p>
-      <p style="margin:4px 0 0;font-size:26px;font-weight:800;color:#1a1a2e;">{wr}%</p>
-      <p style="margin:2px 0 0;font-size:11px;color:#aaa;">{wins}W &nbsp;{losses}L &nbsp;{sls}SL</p>
-      <p style="margin:2px 0 0;font-size:10px;color:#ccc;">{total} trades total</p>
-    </td></tr></table>
-  </td>
-  <td style="width:30%;vertical-align:top;">
-    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f9f9f9;border:1px solid #e5e5e5;border-radius:8px;">
-    <tr><td style="padding:14px;">
-      <p style="margin:0;font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.05em;">Sizing</p>
-      <table cellpadding="0" cellspacing="0" style="margin-top:4px;">
-        <tr><td style="font-size:10px;font-weight:700;color:#c62828;padding-right:8px;">1–3<br><span style="font-size:12px;">$50</span></td>
-            <td style="font-size:10px;font-weight:700;color:#e65100;padding-right:8px;">4–5<br><span style="font-size:12px;">$75</span></td></tr>
-        <tr><td style="font-size:10px;font-weight:700;color:#2e7d32;padding-right:8px;padding-top:4px;">6–7<br><span style="font-size:12px;">$100</span></td>
-            <td style="font-size:10px;font-weight:700;color:#00695c;padding-top:4px;">8–10<br><span style="font-size:12px;">$150</span></td></tr>
-      </table>
-    </td></tr></table>
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:12px;border-radius:10px;overflow:hidden;border:2px solid {bal_col};">
+<tr style="background:{'#f0faf0' if pnl>=0 else '#fff5f5'};">
+  <td style="padding:18px 20px;">
+    <table width="100%" cellpadding="0" cellspacing="0">
+    <tr>
+      <td style="vertical-align:top;">
+        <p style="margin:0;font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.07em;">Paper trading balance</p>
+        <p style="margin:4px 0 0;font-size:38px;font-weight:900;color:{bal_col};letter-spacing:-1px;line-height:1;">${balance:.2f}</p>
+        <p style="margin:4px 0 0;font-size:14px;font-weight:600;color:{bal_col};">{pnl_str} &nbsp;<span style="font-size:12px;opacity:.8;">({pnl_pct:+.1f}% return)</span></p>
+        <p style="margin:6px 0 0;font-size:10px;color:#aaa;">Started $1,000.00 · Fees paid: ${total_fees:.2f}</p>
+      </td>
+      <td style="vertical-align:top;text-align:right;padding-left:16px;">
+        <p style="margin:0;font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.06em;">Available</p>
+        <p style="margin:4px 0 0;font-size:22px;font-weight:800;color:#1a1a2e;">${avail:.2f}</p>
+        <p style="margin:2px 0 0;font-size:10px;color:#aaa;">${exposure:.2f} in {len(open_trades)} open trade{'s' if len(open_trades)!=1 else ''}</p>
+        <br>
+        <p style="margin:0;font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.06em;">Win rate</p>
+        <p style="margin:4px 0 0;font-size:22px;font-weight:800;color:#1a1a2e;">{wr}%</p>
+        <p style="margin:2px 0 0;font-size:10px;color:#aaa;">{wins}W · {losses}L · {sls}SL · {total_closed} total</p>
+      </td>
+    </tr>
+    </table>
   </td>
 </tr>
 </table>"""
 
     rows_html = ""
-    for t in reversed(trades):
+    for t in reversed(closed_trades):
         oc = t["outcome"]
         sig_bg  = "#ffebee" if t["signal"]=="bearish" else "#e8f5e9"
         sig_col = "#c62828" if t["signal"]=="bearish" else "#2e7d32"
@@ -500,19 +532,21 @@ def build_paper_trading(trades, balance, pnl):
         out_bg  = "#e8f5e9" if oc in("win","take-profit") else "#fff8e1" if oc=="stop-loss" else "#ffebee"
         out_col = "#2e7d32" if oc in("win","take-profit") else "#e65100" if oc=="stop-loss" else "#c62828"
         out_lbl = "✅ Win" if oc=="win" else "🎯 TP" if oc=="take-profit" else "🛡️ SL" if oc=="stop-loss" else "❌ Loss"
-        pc  = "#2e7d32" if t["pnl"]>=0 else "#c62828"
-        ps  = ("+$" if t["pnl"]>=0 else "-$")+f"{abs(t['pnl']):.2f}"
+        pnl_val = t.get("pnl",0) or 0
+        pc  = "#2e7d32" if pnl_val>=0 else "#c62828"
+        ps  = ("+$" if pnl_val>=0 else "-$")+f"{abs(pnl_val):.2f}"
+        fees_str = f"${t.get('fees',0) or 0:.2f}"
         sc_b = badge(f"{t['score']}/10", score_bg(t['score']), score_color(t['score']))
         rows_html += f"""
 <tr style="border-bottom:1px solid #f5f5f5;">
-  <td style="padding:7px 10px;font-size:11px;color:#aaa;">{t['date']}</td>
+  <td style="padding:7px 10px;font-size:11px;color:#aaa;">{t['date']}<br><span style="font-size:9px;color:#ddd;">ID: {t.get('id','—')}</span></td>
   <td style="padding:7px 10px;">
     <span style="background:{sig_bg};color:{sig_col};font-size:11px;font-weight:700;padding:3px 7px;border-radius:4px;">{sig_lbl}</span>
   </td>
   <td class="pt-score-col" style="padding:7px 10px;text-align:center;">{sc_b}</td>
   <td style="padding:7px 10px;font-size:11px;color:#888;text-align:center;">${t['size']}</td>
-  <td class="pt-vol-col" style="padding:7px 10px;font-size:11px;color:#777;text-align:center;">{t['vol']}%</td>
-  <td style="padding:7px 10px;font-size:13px;font-weight:700;color:{pc};text-align:right;">{ps}</td>
+  <td class="pt-vol-col" style="padding:7px 10px;font-size:11px;color:#777;text-align:center;">{t.get('vol',0) or 0}%</td>
+  <td style="padding:7px 10px;font-size:13px;font-weight:700;color:{pc};text-align:right;">{ps}<br><span style="font-size:9px;color:#ccc;font-weight:400;">fee {fees_str}</span></td>
   <td style="padding:7px 10px;">
     <span style="background:{out_bg};color:{out_col};font-size:10px;font-weight:700;padding:3px 7px;border-radius:4px;white-space:nowrap;">{out_lbl}</span>
   </td>
@@ -521,9 +555,10 @@ def build_paper_trading(trades, balance, pnl):
     return (
         divider(color="#e5e5e5", style="dashed") +
         row(f"""
-{section_label("📋 Paper trading — $1,000 simulated")}
-<p style="margin:-6px 0 12px;font-size:11px;color:#aaa;">Tracked separately from live Kronos accuracy</p>
+{section_label("📋 Paper trading — auto-executed · $1,000 simulated")}
+<p style="margin:-6px 0 12px;font-size:11px;color:#aaa;">Trades auto-executed when all 3 filters align · Separate from Kronos accuracy tracker</p>
 {metric_cards}
+{open_alert}
 <table width="100%" cellpadding="0" cellspacing="0" style="border-radius:8px;overflow:hidden;border:1px solid #e5e5e5;">
 <tr style="background:#f5f5f5;">
   <th style="padding:6px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:left;">Date</th>
@@ -552,8 +587,8 @@ Brier: 0.0 perfect, 0.25 random &nbsp;·&nbsp;
 
 # ─── assemble ─────────────────────────────────────────────────────────────────
 
-def build_html(records, pending_list, paper_trades, paper_balance, paper_pnl,
-               today_str, fg_val, fg_label):
+def build_html(records, pending_list, paper_trades, paper_balance,
+               paper_pnl, paper_exposure, today_str, fg_val, fg_label):
     return (
         HEAD
         + build_header(today_str)
@@ -562,7 +597,7 @@ def build_html(records, pending_list, paper_trades, paper_balance, paper_pnl,
         + build_pending(pending_list)
         + build_scored(records)
         + build_scoreboard(records, fg_val, fg_label)
-        + build_paper_trading(paper_trades, paper_balance, paper_pnl)
+        + build_paper_trading(paper_trades, paper_balance, paper_pnl, paper_exposure)
         + divider()
         + build_footer()
         + FOOT
@@ -587,16 +622,55 @@ def send_email(html_body, today_str):
 
 # ─── main ─────────────────────────────────────────────────────────────────────
 
+def load_paper_trades():
+    """Load paper_trades.json and compute balance from auto_trader format."""
+    path = REPO_ROOT / "paper_trades.json"
+    trades = load_json(path, [])
+    balance  = 1000.0
+    exposure = 0.0
+    for t in trades:
+        if t.get("status") == "closed":
+            balance += t.get("net_pnl", 0) or 0
+        elif t.get("status") == "open":
+            exposure += t.get("size", 0) or 0
+    return trades, round(balance, 2), round(exposure, 2)
+
+
+def fmt_paper_trade(t):
+    """Normalise auto_trader trade dict for email rendering."""
+    status = t.get("status","closed")
+    outcome = t.get("outcome") or ("open" if status=="open" else "unknown")
+    pnl = t.get("net_pnl") or 0
+    return {
+        "id":      t.get("id","—"),
+        "date":    (t.get("entry_timestamp") or t.get("date",""))[:10],
+        "signal":  t.get("signal","—"),
+        "prob":    t.get("prob", 0),
+        "vol":     t.get("vol_prob") or 0,
+        "score":   t.get("conviction_score", 0),
+        "size":    t.get("size", 0),
+        "entry":   t.get("entry_price"),
+        "exit":    t.get("exit_price"),
+        "sl":      t.get("sl_price"),
+        "tp":      t.get("tp_price"),
+        "fg":      t.get("fear_greed"),
+        "trend":   t.get("btc_trend_7d","—"),
+        "fees":    t.get("fees") or t.get("entry_fee") or 0,
+        "pnl":     pnl,
+        "outcome": outcome,
+        "status":  status,
+        "reason":  t.get("filter_reason",""),
+    }
+
+
 def main():
     today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     records = load_json(SCORES_FILE, [])
     pending_list = load_json(PENDING_FILE, [])
 
-    # Load paper trades if file exists
-    paper_trades_file = REPO_ROOT / "paper_trades.json"
-    paper_trades = load_json(paper_trades_file, [])
-    paper_pnl = sum(t.get("pnl", 0) for t in paper_trades)
-    paper_balance = 1000 + paper_pnl
+    raw_trades, paper_balance, paper_exposure = load_paper_trades()
+    paper_trades = [fmt_paper_trade(t) for t in raw_trades]
+    paper_pnl = round(paper_balance - 1000, 2)
 
     if not records and not pending_list:
         print("No data yet — skipping email.")
@@ -607,7 +681,7 @@ def main():
     print(f"  {fg_val} ({fg_label})" if fg_val else "  Could not fetch.")
 
     html = build_html(records, pending_list, paper_trades, paper_balance,
-                      paper_pnl, today_str, fg_val, fg_label)
+                      paper_pnl, paper_exposure, today_str, fg_val, fg_label)
     send_email(html, today_str)
 
 if __name__ == "__main__":
