@@ -2,7 +2,6 @@ name: Kronos Hourly Tracker
 
 on:
   schedule:
-    # Runs at the top of every hour
     - cron: "0 * * * *"
   workflow_dispatch:
     inputs:
@@ -37,13 +36,16 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run tracker
-        id: tracker
+      - name: Run Kronos tracker
         run: |
           MODE="${{ github.event.inputs.mode || 'all' }}"
           python tracker/kronos_tracker.py --${MODE} 2>&1 | tee tracker_output.txt
 
-      - name: Upload tracker output as artifact
+      - name: Run auto paper trader
+        run: |
+          python tracker/auto_trader.py 2>&1 | tee -a tracker_output.txt
+
+      - name: Upload tracker output
         uses: actions/upload-artifact@v4
         with:
           name: tracker-output-${{ github.run_id }}
@@ -54,17 +56,18 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add scores.json || true
-          git add pending.json || true
+          git add scores.json      || true
+          git add pending.json     || true
+          git add paper_trades.json || true
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
             DATE=$(date -u +"%Y-%m-%d %H:%M UTC")
-            git commit -m "chore: kronos tracker update ${DATE} [skip ci]"
+            git commit -m "chore: kronos + auto-trader update ${DATE} [skip ci]"
             git push
           fi
 
-      - name: Send email report (17:00 UTC = noon EDT, 23:00 UTC = 7pm EDT)
+      - name: Send email report
         env:
           GMAIL_USERNAME: ${{ secrets.GMAIL_USERNAME }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
@@ -72,15 +75,15 @@ jobs:
         run: |
           HOUR=$(date -u +"%H")
           if [ "$HOUR" = "17" ] || [ "$HOUR" = "23" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "Sending email report (hour: $HOUR UTC)..."
+            echo "Sending email report..."
             python tracker/send_email.py
           else
-            echo "Not a send hour (current: ${HOUR} UTC) — skipping email."
+            echo "Not a send hour (${HOUR} UTC) — skipping email."
           fi
 
-      - name: Print summary to Actions log
+      - name: Print summary
         run: |
-          echo "### Kronos Tracker Run Summary" >> $GITHUB_STEP_SUMMARY
+          echo "### Kronos + Auto Trader Run" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
           cat tracker_output.txt >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
