@@ -442,7 +442,7 @@ def build_scoreboard(records, fv, fl):
 # ─── paper trading ────────────────────────────────────────────────────────────
 
 def build_paper_trading(trades, balance, pnl, exposure=0):
-    if not trades: return ""
+    # Always render — show empty state if no trades yet
 
     closed_trades = [t for t in trades if t.get("status") == "closed"]
     open_trades   = [t for t in trades if t.get("status") == "open"]
@@ -473,7 +473,7 @@ def build_paper_trading(trades, balance, pnl, exposure=0):
   <td style="padding:6px 10px;font-size:11px;color:#555;text-align:center;">${t.get('entry',0):,.0f}</td>
   <td style="padding:6px 10px;font-size:10px;color:#e65100;text-align:center;">${sl:,.0f}</td>
   <td style="padding:6px 10px;font-size:10px;color:#2e7d32;text-align:center;">${tp:,.0f}</td>
-  <td style="padding:6px 10px;font-size:10px;color:#888;text-align:right;">{t.get('trend','—')} · F&G:{t.get('fg','—')}</td>
+  <td style="padding:6px 10px;font-size:10px;color:#888;text-align:right;">{t.get('mode','—')} · F&G:{t.get('fg','—')}</td>
 </tr>"""
         open_alert = f"""
 <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:12px;border-radius:8px;overflow:hidden;border:1px solid #fff3cd;">
@@ -523,6 +523,26 @@ def build_paper_trading(trades, balance, pnl, exposure=0):
 </tr>
 </table>"""
 
+    # Empty state message
+    if not closed_trades and not open_trades:
+        empty_section = f"""
+<table width="100%" cellpadding="0" cellspacing="0" style="border-radius:8px;border:1px solid #e5e5e5;margin-bottom:12px;">
+<tr><td style="padding:20px;text-align:center;">
+  <p style="margin:0;font-size:24px;">🔍</p>
+  <p style="margin:8px 0 4px;font-size:13px;font-weight:600;color:#1a1a2e;">No trades executed yet</p>
+  <p style="margin:0;font-size:12px;color:#aaa;line-height:1.6;">The system is monitoring Kronos signals every hour.<br>
+  A trade triggers when all 3 filters align:<br>
+  <strong>Kronos confidence + Fear &amp; Greed + BTC trend</strong></p>
+</td></tr></table>"""
+        return (
+            divider(color="#e5e5e5", style="dashed") +
+            row(f"""
+{section_label("📋 Paper trading — auto-executed · $1,000 simulated")}
+<p style="margin:-6px 0 12px;font-size:11px;color:#aaa;">Trades fire automatically when all 3 market filters align · Separate from Kronos accuracy</p>
+{metric_cards}
+{empty_section}""", pad="12px 20px")
+        )
+
     rows_html = ""
     for t in reversed(closed_trades):
         oc = t["outcome"]
@@ -536,6 +556,9 @@ def build_paper_trading(trades, balance, pnl, exposure=0):
         pc  = "#2e7d32" if pnl_val>=0 else "#c62828"
         ps  = ("+$" if pnl_val>=0 else "-$")+f"{abs(pnl_val):.2f}"
         fees_str = f"${t.get('fees',0) or 0:.2f}"
+        mode_lbl = t.get('mode','—')
+        mode_col = "#c62828" if "BEAR" in mode_lbl else "#2e7d32" if "BULL" in mode_lbl else "#888"
+        tp_info  = f"TP {t.get('tp_pct',1.5)}%"
         sc_b = badge(f"{t['score']}/10", score_bg(t['score']), score_color(t['score']))
         rows_html += f"""
 <tr style="border-bottom:1px solid #f5f5f5;">
@@ -546,7 +569,7 @@ def build_paper_trading(trades, balance, pnl, exposure=0):
   <td class="pt-score-col" style="padding:7px 10px;text-align:center;">{sc_b}</td>
   <td style="padding:7px 10px;font-size:11px;color:#888;text-align:center;">${t['size']}</td>
   <td class="pt-vol-col" style="padding:7px 10px;font-size:11px;color:#777;text-align:center;">{t.get('vol',0) or 0}%</td>
-  <td style="padding:7px 10px;font-size:13px;font-weight:700;color:{pc};text-align:right;">{ps}<br><span style="font-size:9px;color:#ccc;font-weight:400;">fee {fees_str}</span></td>
+  <td style="padding:7px 10px;font-size:13px;font-weight:700;color:{pc};text-align:right;">{ps}<br><span style="font-size:9px;color:#ccc;font-weight:400;">fee {fees_str} · {tp_info}</span></td>
   <td style="padding:7px 10px;">
     <span style="background:{out_bg};color:{out_col};font-size:10px;font-weight:700;padding:3px 7px;border-radius:4px;white-space:nowrap;">{out_lbl}</span>
   </td>
@@ -637,10 +660,10 @@ def load_paper_trades():
 
 
 def fmt_paper_trade(t):
-    """Normalise auto_trader trade dict for email rendering."""
-    status = t.get("status","closed")
+    """Normalise auto_trader v2 trade dict for email rendering."""
+    status  = t.get("status","closed")
     outcome = t.get("outcome") or ("open" if status=="open" else "unknown")
-    pnl = t.get("net_pnl") or 0
+    pnl     = t.get("net_pnl") or 0
     return {
         "id":      t.get("id","—"),
         "date":    (t.get("entry_timestamp") or t.get("date",""))[:10],
@@ -649,17 +672,19 @@ def fmt_paper_trade(t):
         "vol":     t.get("vol_prob") or 0,
         "score":   t.get("conviction_score", 0),
         "size":    t.get("size", 0),
-        "entry":   t.get("entry_price"),
+        "entry":   t.get("entry_price") or 0,
         "exit":    t.get("exit_price"),
-        "sl":      t.get("sl_price"),
-        "tp":      t.get("tp_price"),
+        "sl":      t.get("sl_price") or 0,
+        "tp":      t.get("tp_price") or 0,
         "fg":      t.get("fear_greed"),
         "trend":   t.get("btc_trend_7d","—"),
+        "mode":    t.get("market_mode","—"),
+        "tp_pct":  t.get("take_profit_pct",1.5),
         "fees":    t.get("fees") or t.get("entry_fee") or 0,
         "pnl":     pnl,
         "outcome": outcome,
         "status":  status,
-        "reason":  t.get("filter_reason",""),
+        "reason":  t.get("trade_reason") or t.get("mode_reason") or t.get("filter_reason",""),
     }
 
 
