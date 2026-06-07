@@ -1,1 +1,31 @@
-[]
+[
+  {
+    "id": "PT-0001",
+    "status": "open",
+    "market_mode": "BEAR_TREND",
+    "signal": "bearish",
+    "prob": 16.7,
+    "vol_prob": 100.0,
+    "conviction_score": 5,
+    "size": 50.0,
+    "entry_price": 62451.9,
+    "entry_fee": 0.05,
+    "sl_price": 63076.42,
+    "tp_price": 61202.86,
+    "stop_loss_pct": 1.0,
+    "take_profit_pct": 2.0,
+    "fear_greed": 12,
+    "btc_trend_7d": "down",
+    "mode_reason": "Bear mode: F&G=12 (fear) + BTC falling \u2014 riding downtrend",
+    "trade_reason": "Bear trend entry: 17% upside prob, conv=5/10, TP=2.0%",
+    "kronos_timestamp": "2026-06-07 11:00:25",
+    "entry_timestamp": "2026-06-07T11:13:47.363535+00:00",
+    "outcome": null,
+    "exit_price": null,
+    "net_pnl": null,
+    "fees": null,
+    "low_24h": null,
+    "high_24h": null,
+    "close_24h": null
+  }
+]
