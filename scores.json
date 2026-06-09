@@ -4558,5 +4558,25 @@
     "vol_amplified": false,
     "vol_correct": false,
     "vol_brier_score": 0.537289
+  },
+  {
+    "upside_prob": 0.5,
+    "vol_amplification_prob": 0.867,
+    "demo_last_updated": "2026-06-08 20:00:28",
+    "prediction_timestamp": "2026-06-08 20:00:28",
+    "scrape_timestamp": "2026-06-08T20:22:12.336300+00:00",
+    "score_timestamp": "2026-06-09T20:59:42.171640+00:00",
+    "price_t0": 63470.13,
+    "price_t24": 62082.44,
+    "price_change_pct": -2.1864,
+    "went_up": false,
+    "direction_correct": true,
+    "brier_score": 0.25,
+    "hist_vol": 0.00537228,
+    "realized_vol": 0.00486977,
+    "realized_vol_ratio": 0.9065,
+    "vol_amplified": false,
+    "vol_correct": false,
+    "vol_brier_score": 0.751689
   }
 ]
