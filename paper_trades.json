@@ -331,7 +331,7 @@
   },
   {
     "id": "PT-0012",
-    "status": "open",
+    "status": "closed",
     "market_mode": "BEAR_TREND",
     "signal": "bearish",
     "prob": 13.3,
@@ -350,13 +350,14 @@
     "trade_reason": "Bear trend entry: 13% upside prob, conv=5/10, TP=2.0%",
     "kronos_timestamp": "2026-06-10 20:00:25",
     "entry_timestamp": "2026-06-10T20:42:10.434472+00:00",
-    "outcome": null,
-    "exit_price": null,
-    "net_pnl": null,
-    "fees": null,
-    "low_24h": null,
-    "high_24h": null,
-    "close_24h": null
+    "outcome": "stop-loss",
+    "exit_price": 62498.55,
+    "net_pnl": -0.6,
+    "fees": 0.1,
+    "low_24h": 61132.58,
+    "high_24h": 63908.87,
+    "close_24h": 63610.56,
+    "close_timestamp": "2026-06-11T21:22:36.677198+00:00"
   },
   {
     "id": "PT-0013",
