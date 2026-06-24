@@ -1,12 +1,5 @@
 [
   {
-    "upside_prob": 0.5329999999999999,
-    "vol_amplification_prob": 0.433,
-    "demo_last_updated": "2026-06-23 15:00:25",
-    "prediction_timestamp": "2026-06-23 15:00:25",
-    "scrape_timestamp": "2026-06-23T15:49:45.850669+00:00"
-  },
-  {
     "upside_prob": 0.5,
     "vol_amplification_prob": 0.467,
     "demo_last_updated": "2026-06-23 17:00:25",
@@ -61,5 +54,12 @@
     "demo_last_updated": "2026-06-24 14:00:25",
     "prediction_timestamp": "2026-06-24 14:00:25",
     "scrape_timestamp": "2026-06-24T14:34:34.720949+00:00"
+  },
+  {
+    "upside_prob": 0.9670000000000001,
+    "vol_amplification_prob": 0.267,
+    "demo_last_updated": "2026-06-24 17:00:25",
+    "prediction_timestamp": "2026-06-24 17:00:25",
+    "scrape_timestamp": "2026-06-24T17:06:12.308853+00:00"
   }
 ]
