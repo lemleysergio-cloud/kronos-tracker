@@ -183,6 +183,7 @@ def derive_signals(paths, current_price, hist_vol, pred_len):
         "forecast_low":           round(float(np.percentile(final_closes, 5)), 2),
         "forecast_high":          round(float(np.percentile(final_closes, 95)), 2),
         "paths_generated":        len(paths),
+        "mc_final_prices":        [round(c, 2) for c in final_closes],
     }
 
 
