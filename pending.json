@@ -41,5 +41,33 @@
     "mean_forecast_change_pct": 0.0979,
     "paths_generated": 30,
     "source": "kronos-mini-local"
+  },
+  {
+    "horizon": "1h",
+    "prediction_timestamp": "2026-08-02 23:00:00",
+    "scrape_timestamp": "2026-08-02T23:19:51.630000+00:00",
+    "current_price": 63454.85,
+    "source": "kronos-mini-local",
+    "upside_prob": 0.4,
+    "vol_amplification_prob": 0.9667,
+    "mean_forecast_close": 63436.09,
+    "mean_forecast_change_pct": -0.0296,
+    "forecast_low": 63278.23,
+    "forecast_high": 63553.55,
+    "paths_generated": 30
+  },
+  {
+    "horizon": "24h",
+    "prediction_timestamp": "2026-08-02 23:00:00",
+    "scrape_timestamp": "2026-08-02T23:19:51.630000+00:00",
+    "current_price": 63454.85,
+    "source": "kronos-mini-local",
+    "upside_prob": 0.4,
+    "vol_amplification_prob": 0.3,
+    "mean_forecast_close": 63364.84,
+    "mean_forecast_change_pct": -0.1419,
+    "forecast_low": 62255.92,
+    "forecast_high": 64560.14,
+    "paths_generated": 30
   }
 ]
