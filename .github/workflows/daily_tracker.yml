@@ -54,9 +54,9 @@ jobs:
           MODE="${{ github.event.inputs.mode || 'all' }}"
           python tracker/kronos_tracker.py --${MODE} 2>&1 | tee tracker_output.txt
 
-      - name: Run auto paper trader
+      - name: Run barbell tracker
         run: |
-          python tracker/auto_trader.py 2>&1 | tee -a tracker_output.txt
+          python tracker/barbell_tracker.py 2>&1 | tee -a tracker_output.txt
 
       - name: Upload tracker output
         uses: actions/upload-artifact@v4
@@ -71,7 +71,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add scores.json        || true
           git add pending.json       || true
-          git add paper_trades.json  || true
+          git add barbell_trades.json || true
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
