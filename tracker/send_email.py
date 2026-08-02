@@ -149,7 +149,6 @@ body{margin:0!important;padding:0!important;background:#e8e8e8!important}
 
   /* Shrink table columns on mobile */
   .score-col{display:none!important}
-  .vol-col{display:none!important}
   .brier-col{display:none!important}
   .et-col{display:none!important}
 
@@ -293,6 +292,11 @@ def build_pending(pending_list):
             sc_b = badge(f"{sc}/10 · ${sz}", score_bg(sc), score_color(sc))
             ref_price = r.get("current_price")
             ref_price_str = f"${ref_price:,.0f}" if ref_price else "—"
+            hz = r.get("horizon", "24h")
+            hz_b = badge(hz, "#eeedfe" if hz=="1h" else "#e6f1fb",
+                             "#3c3489" if hz=="1h" else "#0c447c")
+            tgt = r.get("mean_forecast_close")
+            tgt_str = f"${tgt:,.0f}" if tgt else "—"
             rows_html += f"""
 <tr style="border-bottom:1px solid #f0f0f0;">
   <td style="padding:7px 10px;font-size:11px;color:#aaa;">{hour}<br>
@@ -301,7 +305,8 @@ def build_pending(pending_list):
   <td style="padding:7px 10px;font-size:13px;font-weight:700;color:{up_col};">{up}%
     <br><span style="font-size:10px;font-weight:500;">{dw}</span>
   </td>
-  <td style="padding:7px 10px;font-size:11px;font-weight:600;color:#555;text-align:center;">{ref_price_str}</td>
+  <td style="padding:7px 10px;text-align:center;">{hz_b}</td>
+  <td style="padding:7px 10px;font-size:11px;font-weight:600;color:#555;text-align:center;">{ref_price_str}<br><span style="font-size:10px;color:#aaa;">→ {tgt_str}</span></td>
   <td class="vol-col" style="padding:7px 10px;font-size:11px;color:#777;text-align:center;">{vp}%</td>
   <td class="score-col" style="padding:7px 10px;text-align:center;">{sc_b}</td>
   <td style="padding:7px 10px;font-size:11px;font-weight:700;color:{cd_col};text-align:right;">~{int(hrs)}h</td>
@@ -317,7 +322,8 @@ def build_pending(pending_list):
     <tr style="background:#f0f6ff;">
       <th style="padding:5px 10px;font-size:9px;color:#999;font-weight:700;text-transform:uppercase;text-align:left;">Hour</th>
       <th style="padding:5px 10px;font-size:9px;color:#999;font-weight:700;text-transform:uppercase;text-align:left;">Upside</th>
-      <th style="padding:5px 10px;font-size:9px;color:#999;font-weight:700;text-transform:uppercase;text-align:center;">BTC @ call</th>
+      <th style="padding:5px 10px;font-size:9px;color:#999;font-weight:700;text-transform:uppercase;text-align:center;">Hz</th>
+      <th style="padding:5px 10px;font-size:9px;color:#999;font-weight:700;text-transform:uppercase;text-align:center;">BTC → target</th>
       <th class="vol-col" style="padding:5px 10px;font-size:9px;color:#999;font-weight:700;text-transform:uppercase;text-align:center;">Vol</th>
       <th class="score-col" style="padding:5px 10px;font-size:9px;color:#999;font-weight:700;text-transform:uppercase;text-align:center;">Score / Size</th>
       <th style="padding:5px 10px;font-size:9px;color:#999;font-weight:700;text-transform:uppercase;text-align:right;">In</th>
@@ -418,6 +424,35 @@ def build_scoreboard(records, fv, fl):
     recent = records[-20:] if len(records)>20 else records
     emoji_chain = " ".join("✅" if r.get("direction_correct") else "❌" for r in recent)
 
+    # Horizon split — which timeframe is Kronos actually good at
+    by_h = {"1h": [], "24h": []}
+    for r in records:
+        by_h.setdefault(r.get("horizon","24h"), []).append(r)
+
+    horizon_block = ""
+    h_cells = ""
+    for hz in ["1h", "24h"]:
+        recs = by_h.get(hz, [])
+        if not recs: continue
+        st_h = compute_stats(recs)
+        acc  = st_h["direction_accuracy_pct"]
+        col  = "#2e7d32" if acc > 55 else "#e65100" if acc >= 45 else "#c62828"
+        errs = [r.get("target_error_pct") for r in recs if r.get("target_error_pct") is not None]
+        avg_err = f"{sum(errs)/len(errs):.2f}% avg target error" if errs else "—"
+        h_cells += f"""
+      <td style="text-align:center;padding:8px;border-right:1px solid #eee;">
+        <p style="margin:0;font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;">{hz} horizon</p>
+        <p style="margin:3px 0 0;font-size:22px;font-weight:800;color:{col};">{acc}%</p>
+        <p style="margin:1px 0 0;font-size:10px;color:#bbb;">{st_h['dir_correct']}/{st_h['n']} · brier {st_h['avg_brier_score']}</p>
+        <p style="margin:1px 0 0;font-size:9px;color:#ccc;">{avg_err}</p>
+      </td>"""
+    if h_cells:
+        horizon_block = f"""
+  <p style="margin:12px 0 4px;font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.05em;">Accuracy by horizon</p>
+  <table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #eee;border-bottom:1px solid #eee;">
+    <tr>{h_cells}</tr>
+  </table>"""
+
     hc_rows = ""
     if bha is not None:
         hc_rows += f"""<tr>
@@ -473,7 +508,9 @@ def build_scoreboard(records, fv, fl):
     </tr>
   </table>
 
-  <p style="margin:0 0 4px;font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.05em;">Recent call history</p>
+  {horizon_block}
+
+  <p style="margin:12px 0 4px;font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.05em;">Recent call history</p>
   <p style="margin:0 0 12px;font-size:16px;letter-spacing:3px;line-height:1.8;">{emoji_chain}</p>
 
   <table width="100%" cellpadding="0" cellspacing="0">
@@ -492,161 +529,183 @@ def build_scoreboard(records, fv, fl):
 
 # ─── paper trading ────────────────────────────────────────────────────────────
 
-def build_paper_trading(trades, balance, pnl, exposure=0):
-    # Always render — show empty state if no trades yet
+def build_barbell(suggestions, trades, summary):
+    """Kalshi barbell strike suggestions + trade history.
+    Strikes are computed from Kronos's dollar target; sizing is deliberately
+    NOT shown because live Kalshi odds move constantly — you size in the moment."""
 
-    closed_trades = [t for t in trades if t.get("status") == "closed"]
-    open_trades   = [t for t in trades if t.get("status") == "open"]
-    wins   = sum(1 for t in closed_trades if t["outcome"] in ("win","take-profit"))
-    losses = sum(1 for t in closed_trades if t["outcome"] == "loss")
-    sls    = sum(1 for t in closed_trades if t["outcome"] == "stop-loss")
-    tps    = sum(1 for t in closed_trades if t["outcome"] == "take-profit")
-    total_closed = len(closed_trades)
-    total_fees = sum(t.get("fees",0) or 0 for t in closed_trades)
-    wr     = round(wins/total_closed*100) if total_closed else 0
-    bal_col = "#2e7d32" if pnl>=0 else "#c62828"
-    pnl_str = ("+$" if pnl>=0 else "-$") + f"{abs(pnl):.2f}"
-    pnl_pct = round(pnl/1000*100,1)
-    avail   = round(1000 - exposure, 2)
-
-    # Open trades alert
-    open_alert = ""
-    if open_trades:
-        open_rows = ""
-        for t in open_trades:
-            sig_col = "#c62828" if t["signal"]=="bearish" else "#2e7d32"
-            sl = t.get("sl") or 0
-            tp = t.get("tp") or 0
-            open_rows += f"""<tr style="border-bottom:1px solid #f0f0f0;">
-  <td style="padding:6px 10px;font-size:11px;color:#aaa;">{t['date']}</td>
-  <td style="padding:6px 10px;"><span style="color:{sig_col};font-size:12px;font-weight:700;">{'▼' if t['signal']=='bearish' else '▲'} {t['prob']}%</span></td>
-  <td style="padding:6px 10px;font-size:11px;color:#888;text-align:center;">${t['size']}</td>
-  <td style="padding:6px 10px;font-size:11px;color:#555;text-align:center;">${t.get('entry',0):,.0f}</td>
-  <td style="padding:6px 10px;font-size:10px;color:#e65100;text-align:center;">${sl:,.0f}</td>
-  <td style="padding:6px 10px;font-size:10px;color:#2e7d32;text-align:center;">${tp:,.0f}</td>
-  <td style="padding:6px 10px;font-size:10px;color:#888;text-align:right;">{t.get('mode','—')} · F&G:{t.get('fg','—')}</td>
-</tr>"""
-        open_alert = f"""
-<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:12px;border-radius:8px;overflow:hidden;border:1px solid #fff3cd;">
-<tr style="background:#fff3cd;"><td style="padding:9px 12px;font-size:12px;font-weight:700;color:#856404;">
-  ⏳ {len(open_trades)} open trade{'s' if len(open_trades)!=1 else ''} — awaiting 24h close
-</td></tr>
-<tr><td>
-<table width="100%" cellpadding="0" cellspacing="0">
-<tr style="background:#fffdf0;">
-  <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:left;">Date</th>
-  <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:left;">Signal</th>
-  <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Size</th>
-  <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Entry</th>
-  <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Stop</th>
-  <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Target</th>
-  <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:right;">Context</th>
-</tr>
-{open_rows}
-</table>
-</td></tr></table>"""
-
-    # Prominent balance hero card
-    metric_cards = f"""
-<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:12px;border-radius:10px;overflow:hidden;border:2px solid {bal_col};">
-<tr style="background:{'#f0faf0' if pnl>=0 else '#fff5f5'};">
-  <td style="padding:18px 20px;">
-    <table width="100%" cellpadding="0" cellspacing="0">
-    <tr>
-      <td style="vertical-align:top;">
-        <p style="margin:0;font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.07em;">Paper trading balance</p>
-        <p style="margin:4px 0 0;font-size:38px;font-weight:900;color:{bal_col};letter-spacing:-1px;line-height:1;">${balance:.2f}</p>
-        <p style="margin:4px 0 0;font-size:14px;font-weight:600;color:{bal_col};">{pnl_str} &nbsp;<span style="font-size:12px;opacity:.8;">({pnl_pct:+.1f}% return)</span></p>
-        <p style="margin:6px 0 0;font-size:10px;color:#aaa;">Started $1,000.00 · Fees paid: ${total_fees:.2f}</p>
-      </td>
-      <td style="vertical-align:top;text-align:right;padding-left:16px;">
-        <p style="margin:0;font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.06em;">Available</p>
-        <p style="margin:4px 0 0;font-size:22px;font-weight:800;color:#1a1a2e;">${avail:.2f}</p>
-        <p style="margin:2px 0 0;font-size:10px;color:#aaa;">${exposure:.2f} in {len(open_trades)} open trade{'s' if len(open_trades)!=1 else ''}</p>
-        <br>
-        <p style="margin:0;font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.06em;">Win rate</p>
-        <p style="margin:4px 0 0;font-size:22px;font-weight:800;color:#1a1a2e;">{wr}%</p>
-        <p style="margin:2px 0 0;font-size:10px;color:#aaa;">{wins}W · {losses}L · {sls}SL · {total_closed} total</p>
-      </td>
-    </tr>
-    </table>
-  </td>
-</tr>
-</table>"""
-
-    # Empty state message
-    if not closed_trades and not open_trades:
-        empty_section = f"""
-<table width="100%" cellpadding="0" cellspacing="0" style="border-radius:8px;border:1px solid #e5e5e5;margin-bottom:12px;">
+    if not suggestions and not trades:
+        return (divider(color="#e5e5e5", style="dashed") + row(f"""
+{section_label("🎯 Kalshi barbell — strike suggestions")}
+<table width="100%" cellpadding="0" cellspacing="0" style="border-radius:8px;border:1px solid #e5e5e5;">
 <tr><td style="padding:20px;text-align:center;">
   <p style="margin:0;font-size:24px;">🔍</p>
-  <p style="margin:8px 0 4px;font-size:13px;font-weight:600;color:#1a1a2e;">No trades executed yet</p>
-  <p style="margin:0;font-size:12px;color:#aaa;line-height:1.6;">The system is monitoring Kronos signals every hour.<br>
-  A trade triggers when all 3 filters align:<br>
-  <strong>Kronos confidence + Fear &amp; Greed + BTC trend</strong></p>
+  <p style="margin:8px 0 4px;font-size:13px;font-weight:600;color:#1a1a2e;">No qualifying signals right now</p>
+  <p style="margin:0;font-size:11px;color:#aaa;">Predicted move too small for a meaningful barbell.</p>
+</td></tr></table>""", pad="12px 20px"))
+
+    # ── suggestion cards ──
+    cards = ""
+    for horizon in ["1h", "24h"]:
+        s = suggestions.get(horizon)
+        if not s: continue
+        is_up   = s["direction"] == "up"
+        accent  = "#2e7d32" if is_up else "#c62828"
+        bg      = "#e8f5e9" if is_up else "#ffebee"
+        arrow   = "▲" if is_up else "▼"
+        side    = s["side"].upper()
+        rng = ""
+        if s.get("forecast_low") and s.get("forecast_high"):
+            rng = (f'<p style="margin:6px 0 0;font-size:10px;color:#bbb;">'
+                   f'Monte Carlo range: ${s["forecast_low"]:,.0f} – ${s["forecast_high"]:,.0f}</p>')
+
+        vol_lbl = s.get("vol_label", "moderate")
+        vol_col = "#c62828" if vol_lbl=="high" else "#2e7d32" if vol_lbl=="low" else "#e65100"
+        vol_note = {"high":"widened for expected chop","low":"tightened, calm move expected","moderate":"baseline width"}[vol_lbl]
+        vol_badge = badge(f"{vol_lbl} vol {s.get('vol_prob',0)}%", "#fff", vol_col)
+
+        kalshi_block = ""
+        kalshi = s.get("kalshi")
+        if kalshi:
+            kalshi_rows = ""
+            for leg_name, leg_label in [("conservative","🛡️ Cons"), ("aggressive","🎲 Aggr")]:
+                k = kalshi.get(leg_name)
+                if not k: continue
+                edge = k["edge_pts"]
+                edge_col = "#2e7d32" if edge > 3 else "#c62828" if edge < -3 else "#888"
+                edge_str = f"{'+' if edge>=0 else ''}{edge} pts"
+                kalshi_rows += (f'<span style="display:inline-block;margin-right:10px;">'
+                                f'{leg_label}: {k["yes_price_cents"]}¢ '
+                                f'<span style="color:{edge_col};font-weight:700;">({edge_str})</span></span>')
+            if kalshi_rows:
+                kalshi_block = f"""
+      <tr><td colspan="2" style="padding:8px 14px;background:#f5f7ff;border-top:1px solid #e5e5e5;">
+        <p style="margin:0 0 3px;font-size:9px;font-weight:700;color:#5a5fc7;text-transform:uppercase;letter-spacing:.05em;">Live Kalshi snapshot vs Kronos</p>
+        <p style="margin:0;font-size:11px;">{kalshi_rows}</p>
+        <p style="margin:3px 0 0;font-size:9px;color:#aaa;">Edge = Kronos % − Kalshi ¢. Positive = Kronos more bullish than the market. Snapshot only — check live price before acting.</p>
+      </td></tr>"""
+
+        cards += f"""
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:12px;border-radius:8px;overflow:hidden;border:1px solid {accent};">
+  <tr style="background:{bg};">
+    <td style="padding:10px 14px;">
+      <span style="font-size:13px;font-weight:800;color:{accent};">{arrow} {horizon.upper()} · {s['kronos_prob']}% upside</span>
+      <span style="font-size:11px;color:{accent};margin-left:8px;">
+        ${s['entry_price']:,.0f} → ${s['forecast_price']:,.0f} ({'+' if is_up else '-'}{s['move_pct']:.2f}%)
+      </span>
+      <br>{vol_badge}<span style="font-size:9px;color:#999;margin-left:6px;">{vol_note}</span>
+    </td>
+  </tr>
+  <tr><td style="padding:0;">
+    <table width="100%" cellpadding="0" cellspacing="0">
+      <tr class="mob-metric-row">
+        <td style="width:50%;padding:12px 14px;border-right:1px solid #f0f0f0;vertical-align:top;">
+          <p style="margin:0;font-size:9px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.06em;">🛡️ Conservative leg</p>
+          <p style="margin:4px 0 0;font-size:17px;font-weight:800;color:#1a1a2e;">{side} ${s['conservative_strike']:,}</p>
+          <p style="margin:2px 0 0;font-size:11px;color:#888;">{s['cushion_pct']:.2f}% cushion · bigger stake</p>
+        </td>
+        <td style="width:50%;padding:12px 14px;vertical-align:top;">
+          <p style="margin:0;font-size:9px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.06em;">🎲 Aggressive leg</p>
+          <p style="margin:4px 0 0;font-size:17px;font-weight:800;color:{accent};">{side} ${s['aggressive_strike']:,}</p>
+          <p style="margin:2px 0 0;font-size:11px;color:#888;">{s['stretch_pct']:.2f}% stretch · small stake</p>
+        </td>
+      </tr>
+    </table>
+    <table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #f0f0f0;">
+      <tr><td style="padding:8px 14px;background:#fafafa;">
+        <p style="margin:0;font-size:10px;color:#aaa;">Called at {s['kronos_timestamp']} UTC</p>
+        {rng}
+      </td></tr>
+      {kalshi_block}
+    </table>
+  </td></tr>
+</table>"""
+
+    # ── sizing reminder ──
+    sizing_note = f"""
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#fff8e1;border:1px solid #ffb300;border-radius:8px;margin-bottom:12px;">
+<tr><td style="padding:10px 14px;">
+  <p style="margin:0;font-size:11px;font-weight:700;color:#e65100;">⚠️ Size live — Kalshi/Robinhood prices move constantly</p>
 </td></tr></table>"""
-        return (
-            divider(color="#e5e5e5", style="dashed") +
-            row(f"""
-{section_label("📋 Paper trading — auto-executed · $1,000 simulated")}
-<p style="margin:-6px 0 12px;font-size:11px;color:#aaa;">Trades fire automatically when all 3 market filters align · Separate from Kronos accuracy</p>
-{metric_cards}
-{empty_section}""", pad="12px 20px")
-        )
 
-    rows_html = ""
-    for t in reversed(closed_trades):
-        oc = t["outcome"]
-        sig_bg  = "#ffebee" if t["signal"]=="bearish" else "#e8f5e9"
-        sig_col = "#c62828" if t["signal"]=="bearish" else "#2e7d32"
-        sig_lbl = f"▼ {t['prob']}%" if t["signal"]=="bearish" else f"▲ {t['prob']}%"
-        out_bg  = "#e8f5e9" if oc in("win","take-profit") else "#fff8e1" if oc=="stop-loss" else "#ffebee"
-        out_col = "#2e7d32" if oc in("win","take-profit") else "#e65100" if oc=="stop-loss" else "#c62828"
-        out_lbl = "✅ Win" if oc=="win" else "🎯 TP" if oc=="take-profit" else "🛡️ SL" if oc=="stop-loss" else "❌ Loss"
-        pnl_val = t.get("pnl",0) or 0
-        pc  = "#2e7d32" if pnl_val>=0 else "#c62828"
-        ps  = ("+$" if pnl_val>=0 else "-$")+f"{abs(pnl_val):.2f}"
-        fees_str = f"${t.get('fees',0) or 0:.2f}"
-        mode_lbl = t.get('mode','—')
-        mode_col = "#c62828" if "BEAR" in mode_lbl else "#2e7d32" if "BULL" in mode_lbl else "#888"
-        tp_info  = f"TP {t.get('tp_pct',1.5)}%"
-        sc_b = badge(f"{t['score']}/10", score_bg(t['score']), score_color(t['score']))
-        rows_html += f"""
+    # ── performance summary ──
+    pnl      = summary.get("total_pnl", 0) or 0
+    pnl_col  = "#2e7d32" if pnl >= 0 else "#c62828"
+    pnl_str  = ("+$" if pnl >= 0 else "-$") + f"{abs(pnl):.2f}"
+    cwp      = summary.get("conservative_win_pct")
+    awp      = summary.get("aggressive_win_pct")
+
+    perf = f"""
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f9f9f9;border:1px solid #e5e5e5;border-radius:8px;margin-bottom:12px;">
+<tr><td style="padding:14px;">
+  <p style="margin:0 0 8px;font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.06em;">Barbell track record</p>
+  <table width="100%" cellpadding="0" cellspacing="0">
+    <tr>
+      <td style="text-align:center;padding:4px;border-right:1px solid #eee;">
+        <p style="margin:0;font-size:10px;color:#aaa;">Realized P&amp;L</p>
+        <p style="margin:2px 0 0;font-size:20px;font-weight:800;color:{pnl_col};">{pnl_str}</p>
+      </td>
+      <td style="text-align:center;padding:4px;border-right:1px solid #eee;">
+        <p style="margin:0;font-size:10px;color:#aaa;">🛡️ Conservative</p>
+        <p style="margin:2px 0 0;font-size:20px;font-weight:800;color:#1a1a2e;">{str(cwp)+'%' if cwp is not None else '—'}</p>
+      </td>
+      <td style="text-align:center;padding:4px;border-right:1px solid #eee;">
+        <p style="margin:0;font-size:10px;color:#aaa;">🎲 Aggressive</p>
+        <p style="margin:2px 0 0;font-size:20px;font-weight:800;color:#1a1a2e;">{str(awp)+'%' if awp is not None else '—'}</p>
+      </td>
+      <td style="text-align:center;padding:4px;">
+        <p style="margin:0;font-size:10px;color:#aaa;">Trades</p>
+        <p style="margin:2px 0 0;font-size:20px;font-weight:800;color:#1a1a2e;">{summary.get('closed',0)}</p>
+        <p style="margin:0;font-size:9px;color:#ccc;">{summary.get('open',0)} open</p>
+      </td>
+    </tr>
+  </table>
+</td></tr></table>"""
+
+    # ── closed trade log ──
+    log = ""
+    closed = [t for t in trades if t.get("status") == "closed"]
+    if closed:
+        rows = ""
+        for t in reversed(closed[-10:]):
+            cw = t.get("conservative_won")
+            aw = t.get("aggressive_won")
+            tp = t.get("total_pnl", 0) or 0
+            tc = "#2e7d32" if tp >= 0 else "#c62828"
+            cons = t.get("conservative", {})
+            aggr = t.get("aggressive", {})
+            rows += f"""
 <tr style="border-bottom:1px solid #f5f5f5;">
-  <td style="padding:7px 10px;font-size:11px;color:#aaa;">{t['date']}<br><span style="font-size:9px;color:#ddd;">ID: {t.get('id','—')}</span></td>
-  <td style="padding:7px 10px;">
-    <span style="background:{sig_bg};color:{sig_col};font-size:11px;font-weight:700;padding:3px 7px;border-radius:4px;">{sig_lbl}</span>
-  </td>
-  <td class="pt-score-col" style="padding:7px 10px;text-align:center;">{sc_b}</td>
-  <td style="padding:7px 10px;font-size:11px;color:#888;text-align:center;">${t['size']}</td>
-  <td class="pt-vol-col" style="padding:7px 10px;font-size:11px;color:#777;text-align:center;">{t.get('vol',0) or 0}%</td>
-  <td style="padding:7px 10px;font-size:13px;font-weight:700;color:{pc};text-align:right;">{ps}<br><span style="font-size:9px;color:#ccc;font-weight:400;">fee {fees_str} · {tp_info}</span></td>
-  <td style="padding:7px 10px;">
-    <span style="background:{out_bg};color:{out_col};font-size:10px;font-weight:700;padding:3px 7px;border-radius:4px;white-space:nowrap;">{out_lbl}</span>
-  </td>
+  <td style="padding:6px 10px;font-size:11px;color:#aaa;">{t.get('kronos_timestamp','')[:10]}<br>
+    <span style="font-size:9px;color:#ddd;">{t.get('id','')}</span></td>
+  <td style="padding:6px 10px;">{badge(t.get('horizon','—'), '#e6f1fb', '#0c447c')}</td>
+  <td style="padding:6px 10px;font-size:11px;color:#666;text-align:center;">${cons.get('strike',0):,}<br>
+    <span style="font-size:13px;">{'✅' if cw else '❌'}</span></td>
+  <td style="padding:6px 10px;font-size:11px;color:#666;text-align:center;">${aggr.get('strike',0):,}<br>
+    <span style="font-size:13px;">{'✅' if aw else '❌'}</span></td>
+  <td style="padding:6px 10px;font-size:11px;color:#888;text-align:center;">${t.get('settle_price',0):,.0f}</td>
+  <td style="padding:6px 10px;font-size:13px;font-weight:700;color:{tc};text-align:right;">
+    {'+$' if tp>=0 else '-$'}{abs(tp):.2f}</td>
 </tr>"""
-
-    return (
-        divider(color="#e5e5e5", style="dashed") +
-        row(f"""
-{section_label("📋 Paper trading — auto-executed · $1,000 simulated")}
-<p style="margin:-6px 0 12px;font-size:11px;color:#aaa;">Trades auto-executed when all 3 filters align · Separate from Kronos accuracy tracker</p>
-{metric_cards}
-{open_alert}
+        log = f"""
 <table width="100%" cellpadding="0" cellspacing="0" style="border-radius:8px;overflow:hidden;border:1px solid #e5e5e5;">
 <tr style="background:#f5f5f5;">
   <th style="padding:6px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:left;">Date</th>
-  <th style="padding:6px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:left;">Signal</th>
-  <th class="pt-score-col" style="padding:6px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Score</th>
-  <th style="padding:6px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Size</th>
-  <th class="pt-vol-col" style="padding:6px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Vol%</th>
+  <th style="padding:6px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:left;">H</th>
+  <th style="padding:6px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">🛡️ Cons</th>
+  <th style="padding:6px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">🎲 Aggr</th>
+  <th style="padding:6px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Settled</th>
   <th style="padding:6px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:right;">P&amp;L</th>
-  <th style="padding:6px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:left;">Result</th>
-</tr>
-{rows_html}
-</table>
-<p style="margin:8px 0 0;font-size:10px;color:#ccc;">Simulated only. Not financial advice.</p>""", pad="12px 20px")
-    )
+</tr>{rows}</table>"""
+
+    return (divider(color="#e5e5e5", style="dashed") + row(f"""
+{section_label("🎯 Kalshi barbell — strike suggestions")}
+
+{cards}
+{sizing_note}
+{perf}
+{log}""", pad="12px 20px"))
+
 
 # ─── footer ───────────────────────────────────────────────────────────────────
 
@@ -661,8 +720,8 @@ Brier: 0.0 perfect, 0.25 random &nbsp;·&nbsp;
 
 # ─── assemble ─────────────────────────────────────────────────────────────────
 
-def build_html(records, pending_list, paper_trades, paper_balance,
-               paper_pnl, paper_exposure, today_str, fg_val, fg_label):
+def build_html(records, pending_list, barbell_suggestions, barbell_trades,
+               barbell_summary, today_str, fg_val, fg_label):
     return (
         HEAD
         + build_header(today_str)
@@ -672,7 +731,7 @@ def build_html(records, pending_list, paper_trades, paper_balance,
         + build_pending(pending_list)
         + build_scored(records)
         + build_scoreboard(records, fg_val, fg_label)
-        + build_paper_trading(paper_trades, paper_balance, paper_pnl, paper_exposure)
+        + build_barbell(barbell_suggestions, barbell_trades, barbell_summary)
         + divider()
         + build_footer()
         + FOOT
@@ -697,57 +756,36 @@ def send_email(html_body, today_str):
 
 # ─── main ─────────────────────────────────────────────────────────────────────
 
-def load_paper_trades():
-    """Load paper_trades.json and compute balance from auto_trader format."""
-    path = REPO_ROOT / "paper_trades.json"
-    trades = load_json(path, [])
-    balance  = 1000.0
-    exposure = 0.0
-    for t in trades:
-        if t.get("status") == "closed":
-            balance += t.get("net_pnl", 0) or 0
-        elif t.get("status") == "open":
-            exposure += t.get("size", 0) or 0
-    return trades, round(balance, 2), round(exposure, 2)
+def load_barbell_data():
+    """Load barbell trades + compute suggestions using barbell_tracker logic."""
+    trades_path = REPO_ROOT / "barbell_trades.json"
+    trades = load_json(trades_path, [])
 
+    suggestions = {}
+    summary = {"closed": 0, "open": 0, "open_stake": 0.0, "total_pnl": 0.0,
+               "conservative_win_pct": None, "aggressive_win_pct": None}
 
-def fmt_paper_trade(t):
-    """Normalise auto_trader v2 trade dict for email rendering."""
-    status  = t.get("status","closed")
-    outcome = t.get("outcome") or ("open" if status=="open" else "unknown")
-    pnl     = t.get("net_pnl") or 0
-    return {
-        "id":      t.get("id","—"),
-        "date":    (t.get("entry_timestamp") or t.get("date",""))[:10],
-        "signal":  t.get("signal","—"),
-        "prob":    t.get("prob", 0),
-        "vol":     t.get("vol_prob") or 0,
-        "score":   t.get("conviction_score", 0),
-        "size":    t.get("size", 0),
-        "entry":   t.get("entry_price") or 0,
-        "exit":    t.get("exit_price"),
-        "sl":      t.get("sl_price") or 0,
-        "tp":      t.get("tp_price") or 0,
-        "fg":      t.get("fear_greed"),
-        "trend":   t.get("btc_trend_7d","—"),
-        "mode":    t.get("market_mode","—"),
-        "tp_pct":  t.get("take_profit_pct",1.5),
-        "fees":    t.get("fees") or t.get("entry_fee") or 0,
-        "pnl":     pnl,
-        "outcome": outcome,
-        "status":  status,
-        "reason":  t.get("trade_reason") or t.get("mode_reason") or t.get("filter_reason",""),
-    }
+    try:
+        import importlib.util
+        bt_path = Path(__file__).parent / "barbell_tracker.py"
+        if bt_path.exists():
+            spec = importlib.util.spec_from_file_location("barbell_tracker", bt_path)
+            bt   = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(bt)
+            suggestions = bt.build_suggestions()
+            summary     = bt.portfolio_summary(trades)
+    except Exception as e:
+        print(f"  Barbell module load failed: {e}")
+
+    return suggestions, trades, summary
 
 
 def main():
-    today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    records = load_json(SCORES_FILE, [])
+    today_str    = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    records      = load_json(SCORES_FILE, [])
     pending_list = load_json(PENDING_FILE, [])
 
-    raw_trades, paper_balance, paper_exposure = load_paper_trades()
-    paper_trades = [fmt_paper_trade(t) for t in raw_trades]
-    paper_pnl = round(paper_balance - 1000, 2)
+    suggestions, barbell_trades, summary = load_barbell_data()
 
     if not records and not pending_list:
         print("No data yet — skipping email.")
@@ -757,9 +795,10 @@ def main():
     fg_val, fg_label = fetch_fear_greed()
     print(f"  {fg_val} ({fg_label})" if fg_val else "  Could not fetch.")
 
-    html = build_html(records, pending_list, paper_trades, paper_balance,
-                      paper_pnl, paper_exposure, today_str, fg_val, fg_label)
+    html = build_html(records, pending_list, suggestions, barbell_trades,
+                      summary, today_str, fg_val, fg_label)
     send_email(html, today_str)
+
 
 if __name__ == "__main__":
     main()
