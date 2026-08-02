@@ -5,5 +5,17 @@
     "demo_last_updated": "2026-07-04 11:00:26",
     "prediction_timestamp": "2026-07-04 11:00:26",
     "scrape_timestamp": "2026-08-02T19:11:44.967163+00:00"
+  },
+  {
+    "upside_prob": 0.5667,
+    "vol_amplification_prob": 0.2333,
+    "demo_last_updated": "2026-08-02 20:00:00",
+    "prediction_timestamp": "2026-08-02 20:00:00",
+    "scrape_timestamp": "2026-08-02T20:34:47.185756+00:00",
+    "current_price": 63402.35,
+    "mean_forecast_close": 63499.33,
+    "mean_forecast_change_pct": 0.153,
+    "paths_generated": 30,
+    "source": "kronos-mini-local"
   }
 ]
