@@ -58,6 +58,15 @@ jobs:
         run: |
           python tracker/barbell_tracker.py 2>&1 | tee -a tracker_output.txt
 
+      - name: Run EV scanner (optional, standalone)
+        continue-on-error: true
+        run: |
+          if [ -f tracker/ev_scanner.py ]; then
+            python tracker/ev_scanner.py 2>&1 | tee -a tracker_output.txt
+          else
+            echo "ev_scanner.py not present — skipping (this is fine, it's optional)."
+          fi
+
       - name: Upload tracker output
         uses: actions/upload-artifact@v4
         with:
@@ -72,6 +81,7 @@ jobs:
           git add scores.json        || true
           git add pending.json       || true
           git add barbell_trades.json || true
+          git add ev_trades.json || true
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
