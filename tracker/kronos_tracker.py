@@ -1,23 +1,18 @@
 """
-Kronos BTC Accuracy Tracker — v2 (Native Inference Edition)
-============================================================
-Replaced demo scraping with direct Kronos-mini inference.
-All scoring, reporting, and pending/scores.json schemas
-remain identical — nothing downstream needs to change.
+Kronos BTC Accuracy Tracker — v3 (Dual Horizon)
+================================================
+Scores 1h predictions after 1 hour, 24h predictions after 24 hours.
+Reports accuracy separately per horizon so you can see which
+timeframe Kronos is actually good at.
 
 Run modes:
-  python kronos_tracker.py --scrape    # generate prediction via Kronos-mini
-  python kronos_tracker.py --score     # score pending predictions 24h+ old
-  python kronos_tracker.py --report    # print accuracy summary
-  python kronos_tracker.py --all       # score + scrape (GitHub Actions mode)
+  --scrape   generate 1h + 24h predictions via Kronos-mini
+  --score    score any matured predictions
+  --report   print accuracy summary (split by horizon)
+  --all      score + scrape (GitHub Actions mode)
 """
 
-import argparse
-import json
-import math
-import subprocess
-import sys
-import urllib.request
+import argparse, json, math, subprocess, sys, urllib.request
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -26,11 +21,12 @@ SCORES_FILE  = REPO_ROOT / "scores.json"
 PENDING_FILE = REPO_ROOT / "pending.json"
 
 BINANCE_URL = "https://api.binance.us/api/v3/klines"
-SYMBOL      = "BTCUSDT"
-INTERVAL    = "1h"
+SYMBOL, INTERVAL = "BTCUSDT", "1h"
+
+HORIZON_HOURS = {"1h": 1, "24h": 24}
 
 
-# ─── Binance helpers ──────────────────────────────────────────────────────────
+# ─── Binance ──────────────────────────────────────────────────────────────────
 
 def fetch_klines(limit=25, start_ms=None):
     url = f"{BINANCE_URL}?symbol={SYMBOL}&interval={INTERVAL}&limit={limit}"
@@ -46,8 +42,7 @@ def get_price_at(dt_utc):
     now_h   = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0)
     if aligned >= now_h:
         aligned = now_h - timedelta(hours=1)
-    ms  = int(aligned.timestamp()*1000)
-    raw = fetch_klines(limit=2, start_ms=ms)
+    raw = fetch_klines(limit=2, start_ms=int(aligned.timestamp()*1000))
     return float(raw[0][4]) if raw else None
 
 def compute_realized_vol(dt_utc, hours=24):
@@ -57,8 +52,7 @@ def compute_realized_vol(dt_utc, hours=24):
     if len(closes) < 2: raise ValueError("Not enough candles")
     lr   = [math.log(closes[i]/closes[i-1]) for i in range(1,len(closes))]
     mean = sum(lr)/len(lr)
-    var  = sum((r-mean)**2 for r in lr)/len(lr)
-    return math.sqrt(var)
+    return math.sqrt(sum((r-mean)**2 for r in lr)/len(lr))
 
 
 # ─── I/O ──────────────────────────────────────────────────────────────────────
@@ -76,6 +70,9 @@ def save_json(path, data):
 # ─── Scoring ──────────────────────────────────────────────────────────────────
 
 def score_prediction(pending):
+    horizon = pending.get("horizon", "24h")
+    hours   = HORIZON_HOURS.get(horizon, 24)
+
     raw_ts = pending["prediction_timestamp"]
     try:
         pred_dt = datetime.strptime(raw_ts, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc)
@@ -83,46 +80,51 @@ def score_prediction(pending):
         pred_dt = datetime.fromisoformat(raw_ts)
         if pred_dt.tzinfo is None: pred_dt = pred_dt.replace(tzinfo=timezone.utc)
 
-    price_t0  = get_price_at(pred_dt)
-    price_t24 = get_price_at(pred_dt + timedelta(hours=24))
-    if price_t0 is None or price_t24 is None:
+    price_t0 = pending.get("current_price") or get_price_at(pred_dt)
+    price_tN = get_price_at(pred_dt + timedelta(hours=hours))
+    if price_t0 is None or price_tN is None:
         raise ValueError("Could not fetch BTC prices")
 
-    price_change_pct = (price_t24 - price_t0) / price_t0 * 100
-    went_up          = price_t24 > price_t0
+    change_pct = (price_tN - price_t0) / price_t0 * 100
+    went_up    = price_tN > price_t0
 
-    hist_vol     = compute_realized_vol(pred_dt - timedelta(hours=24), hours=24)
-    realized_vol = compute_realized_vol(pred_dt, hours=24)
+    # Vol comparison over the matching window
+    vol_window = max(hours, 2)
+    hist_vol     = compute_realized_vol(pred_dt - timedelta(hours=vol_window), hours=vol_window)
+    realized_vol = compute_realized_vol(pred_dt, hours=vol_window)
     vol_ratio    = realized_vol / hist_vol if hist_vol > 0 else 1.0
-    vol_amplified= vol_ratio > 1.0
+    vol_amplified = vol_ratio > 1.0
 
-    upside_prob      = pending["upside_prob"]
-    direction_correct= (upside_prob > 0.5) == went_up
-    brier_score      = (upside_prob - (1.0 if went_up else 0.0))**2
+    up_p  = pending["upside_prob"]
+    vol_p = pending["vol_amplification_prob"]
 
-    vol_prob    = pending["vol_amplification_prob"]
-    vol_correct = (vol_prob > 0.5) == vol_amplified
-    vol_brier   = (vol_prob - (1.0 if vol_amplified else 0.0))**2
+    # How close was the dollar target?
+    target = pending.get("mean_forecast_close")
+    target_error_pct = None
+    if target:
+        target_error_pct = round(abs(target - price_tN) / price_tN * 100, 4)
 
     return {
         **pending,
         "score_timestamp":    datetime.now(timezone.utc).isoformat(),
         "price_t0":           price_t0,
-        "price_t24":          price_t24,
-        "price_change_pct":   round(price_change_pct, 4),
+        "price_t24":          price_tN,   # kept as price_t24 for schema compat
+        "price_at_horizon":   price_tN,
+        "price_change_pct":   round(change_pct, 4),
         "went_up":            went_up,
-        "direction_correct":  direction_correct,
-        "brier_score":        round(brier_score, 6),
+        "direction_correct":  (up_p > 0.5) == went_up,
+        "brier_score":        round((up_p - (1.0 if went_up else 0.0))**2, 6),
         "hist_vol":           round(hist_vol, 8),
         "realized_vol":       round(realized_vol, 8),
         "realized_vol_ratio": round(vol_ratio, 4),
         "vol_amplified":      vol_amplified,
-        "vol_correct":        vol_correct,
-        "vol_brier_score":    round(vol_brier, 6),
+        "vol_correct":        (vol_p > 0.5) == vol_amplified,
+        "vol_brier_score":    round((vol_p - (1.0 if vol_amplified else 0.0))**2, 6),
+        "target_error_pct":   target_error_pct,
     }
 
 
-# ─── Stats & report ───────────────────────────────────────────────────────────
+# ─── Stats ────────────────────────────────────────────────────────────────────
 
 def compute_stats(records, window=None):
     if window: records = records[-window:]
@@ -131,180 +133,141 @@ def compute_stats(records, window=None):
     dc = sum(1 for r in records if r.get("direction_correct"))
     vc = sum(1 for r in records if r.get("vol_correct"))
     ab = sum(r.get("brier_score",0.5) for r in records)/n
+    errs = [r["target_error_pct"] for r in records if r.get("target_error_pct") is not None]
     streak = 0
     for r in reversed(records):
-        if r.get("direction_correct"): streak+=1
+        if r.get("direction_correct"): streak += 1
         else: break
     return {
-        "n": n,
+        "n": n, "dir_correct": dc,
         "direction_accuracy_pct": round(dc/n*100,1),
         "vol_accuracy_pct":       round(vc/n*100,1),
         "avg_brier_score":        round(ab,4),
+        "avg_target_error_pct":   round(sum(errs)/len(errs),3) if errs else None,
         "correct_streak":         streak,
-        "dir_correct":            dc,
     }
+
+def split_by_horizon(records):
+    out = {"1h": [], "24h": []}
+    for r in records:
+        out.setdefault(r.get("horizon","24h"), []).append(r)
+    return out
 
 def print_report(records):
     if not records:
         print("No scored records yet."); return
-    print("\n" + "="*60)
-    print("  KRONOS BTC ACCURACY REPORT (Native Inference Edition)")
+    print("\n" + "="*62)
+    print("  KRONOS ACCURACY REPORT — dual horizon")
     print(f"  {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}")
-    print("="*60)
-    for label, window in [("All-time",None),("Last 30",30),("Last 7",7)]:
-        s = compute_stats(records, window)
-        if not s: continue
-        print(f"\n  {label} (n={s['n']})")
-        print(f"    Direction accuracy: {s['direction_accuracy_pct']}%")
-        print(f"    Vol accuracy      : {s['vol_accuracy_pct']}%")
-        print(f"    Avg Brier score   : {s['avg_brier_score']}")
-        print(f"    Streak            : {s['correct_streak']}")
+    print("="*62)
+
+    for horizon, recs in split_by_horizon(records).items():
+        if not recs: continue
+        print(f"\n  ── {horizon.upper()} HORIZON ({len(recs)} scored) ──")
+        for label, w in [("All-time",None),("Last 30",30),("Last 7",7)]:
+            s = compute_stats(recs, w)
+            if not s: continue
+            tgt = f" | Avg target error: {s['avg_target_error_pct']}%" if s['avg_target_error_pct'] is not None else ""
+            print(f"    {label:<9} n={s['n']:<4} dir={s['direction_accuracy_pct']}%"
+                  f"  vol={s['vol_accuracy_pct']}%  brier={s['avg_brier_score']}"
+                  f"  streak={s['correct_streak']}{tgt}")
     print()
 
 
-# ─── CLI commands ─────────────────────────────────────────────────────────────
+# ─── Commands ─────────────────────────────────────────────────────────────────
 
 def find_predictor():
-    """Find kronos_predictor.py — works locally and in GitHub Actions."""
     this_dir  = Path(__file__).parent.resolve()
-    repo_root = this_dir.parent.resolve()
-    cwd       = Path.cwd().resolve()
-
-    candidates = [
-        this_dir / "kronos_predictor.py",
-        repo_root / "tracker" / "kronos_predictor.py",
-        cwd / "tracker" / "kronos_predictor.py",
-        cwd / "kronos_predictor.py",
-    ]
-
-    for path in candidates:
-        if path.exists():
-            print(f"  Found kronos_predictor.py at: {path}")
-            return path
-
-    print("  kronos_predictor.py not found. Searched:")
-    for p in candidates:
-        print(f"    {p}")
+    for p in [this_dir / "kronos_predictor.py",
+              REPO_ROOT / "tracker" / "kronos_predictor.py",
+              Path.cwd() / "tracker" / "kronos_predictor.py"]:
+        if p.exists():
+            print(f"  Found predictor: {p}")
+            return p
+    print("  kronos_predictor.py not found.")
     return None
 
-
 def cmd_scrape():
-    """Generate a new prediction using Kronos-mini."""
-    predictor_path = find_predictor()
-    if predictor_path is None:
-        print("  ERROR: Cannot find kronos_predictor.py")
-        print("  Make sure tracker/kronos_predictor.py exists in your repo.")
+    path = find_predictor()
+    if path is None:
         sys.exit(1)
-
-    # Add its directory to sys.path so it can be imported
-    pred_dir = str(predictor_path.parent)
-    if pred_dir not in sys.path:
-        sys.path.insert(0, pred_dir)
-
-    # Also add repo root and cwd
-    for extra in [str(REPO_ROOT), str(Path.cwd())]:
-        if extra not in sys.path:
-            sys.path.insert(0, extra)
-
+    sys.path.insert(0, str(path.parent))
     try:
-        # Force fresh import in case of stale cache
-        if "kronos_predictor" in sys.modules:
-            del sys.modules["kronos_predictor"]
-
         import importlib.util
-        spec   = importlib.util.spec_from_file_location("kronos_predictor", predictor_path)
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-
-        result = module.generate_prediction()
-        if result:
-            print(f"\n  Upside: {result['upside_prob']*100:.1f}% | Vol: {result['vol_amplification_prob']*100:.1f}%")
-            print(f"  Mean forecast: ${result.get('mean_forecast_close',0):,.2f} ({result.get('mean_forecast_change_pct',0):+.2f}%)")
-        else:
-            print("  No prediction generated (already have one for this hour or error).")
-
+        spec = importlib.util.spec_from_file_location("kronos_predictor", path)
+        mod  = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        mod.generate_prediction()
     except Exception as e:
-        print(f"  Import/run failed: {e}")
-        print("  Falling back to subprocess...")
-        result = subprocess.run(
-            [sys.executable, str(predictor_path)],
-            capture_output=True, text=True
-        )
-        print(result.stdout)
-        if result.returncode != 0:
-            print(f"  Subprocess error: {result.stderr}")
-            sys.exit(1)
-
+        print(f"  Import failed ({e}) — trying subprocess...")
+        res = subprocess.run([sys.executable, str(path)], capture_output=True, text=True)
+        print(res.stdout)
+        if res.returncode != 0:
+            print(f"  Error: {res.stderr}"); sys.exit(1)
 
 def cmd_score():
-    """Score pending predictions that are 24h+ old."""
     pending = load_json(PENDING_FILE, [])
     if not pending:
         print("No pending predictions."); return
 
-    now      = datetime.now(timezone.utc)
-    scored   = load_json(SCORES_FILE, [])
-    remaining= []
-    count    = 0
+    now       = datetime.now(timezone.utc)
+    scored    = load_json(SCORES_FILE, [])
+    remaining = []
+    counts    = {"1h": 0, "24h": 0}
 
     for p in pending:
-        scrape_ts = datetime.fromisoformat(p["scrape_timestamp"])
-        if scrape_ts.tzinfo is None: scrape_ts = scrape_ts.replace(tzinfo=timezone.utc)
-        age = (now - scrape_ts).total_seconds()/3600
+        horizon = p.get("horizon", "24h")
+        needed  = HORIZON_HOURS.get(horizon, 24)
 
-        if age >= 24:
-            print(f"  Scoring {p['prediction_timestamp']}...")
+        ts = datetime.fromisoformat(p["scrape_timestamp"])
+        if ts.tzinfo is None: ts = ts.replace(tzinfo=timezone.utc)
+        age = (now - ts).total_seconds()/3600
+
+        if age >= needed:
             try:
                 result = score_prediction(p)
                 scored.append(result)
-                count += 1
+                counts[horizon] = counts.get(horizon, 0) + 1
                 icon = "✅" if result["direction_correct"] else "❌"
-                print(f"    {icon} direction={'UP' if result['went_up'] else 'DOWN'} | Δ{result['price_change_pct']:+.2f}% | Brier={result['brier_score']:.3f}")
+                tgt  = f" | target off by {result['target_error_pct']}%" if result.get("target_error_pct") is not None else ""
+                print(f"  {icon} [{horizon}] {p['prediction_timestamp']} "
+                      f"Δ{result['price_change_pct']:+.2f}% brier={result['brier_score']:.3f}{tgt}")
             except Exception as e:
-                print(f"    Error: {e} — keeping in pending")
+                print(f"  Error scoring [{horizon}] {p['prediction_timestamp']}: {e}")
                 remaining.append(p)
         else:
             remaining.append(p)
 
-    if count > 0:
+    if sum(counts.values()) > 0:
         save_json(SCORES_FILE, scored)
     save_json(PENDING_FILE, remaining)
-    print(f"  Scored {count} predictions. {len(remaining)} still pending.")
-
+    print(f"  Scored {counts.get('1h',0)} × 1h, {counts.get('24h',0)} × 24h. "
+          f"{len(remaining)} still pending.")
 
 def cmd_report():
-    scores = load_json(SCORES_FILE, [])
-    print_report(scores)
-
+    print_report(load_json(SCORES_FILE, []))
 
 def cmd_all():
-    pending = load_json(PENDING_FILE, [])
-    if pending:
-        print("--- Scoring pending predictions ---")
-        cmd_score()
-    else:
-        print("No pending predictions to score yet.")
-    print("\n--- Generating new prediction ---")
+    print("--- Scoring matured predictions ---")
+    cmd_score()
+    print("\n--- Generating new predictions ---")
     cmd_scrape()
     print("\n--- Current report ---")
     cmd_report()
 
 
-# ─── Entry point ──────────────────────────────────────────────────────────────
-
 def main():
-    parser = argparse.ArgumentParser(description="Kronos BTC Tracker v2")
+    parser = argparse.ArgumentParser(description="Kronos BTC Tracker v3 (dual horizon)")
     g = parser.add_mutually_exclusive_group(required=True)
     g.add_argument("--scrape", action="store_true")
     g.add_argument("--score",  action="store_true")
     g.add_argument("--report", action="store_true")
     g.add_argument("--all",    action="store_true")
-    args = parser.parse_args()
-
-    if args.scrape:   cmd_scrape()
-    elif args.score:  cmd_score()
-    elif args.report: cmd_report()
-    elif args.all:    cmd_all()
+    a = parser.parse_args()
+    if a.scrape: cmd_scrape()
+    elif a.score: cmd_score()
+    elif a.report: cmd_report()
+    elif a.all: cmd_all()
 
 if __name__ == "__main__":
     main()
