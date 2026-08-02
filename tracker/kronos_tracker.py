@@ -15,12 +15,13 @@ Run modes:
 import argparse
 import json
 import math
+import subprocess
 import sys
 import urllib.request
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-REPO_ROOT    = Path(__file__).parent.parent
+REPO_ROOT    = Path(__file__).parent.parent.resolve()
 SCORES_FILE  = REPO_ROOT / "scores.json"
 PENDING_FILE = REPO_ROOT / "pending.json"
 
@@ -163,23 +164,77 @@ def print_report(records):
 
 # ─── CLI commands ─────────────────────────────────────────────────────────────
 
+def find_predictor():
+    """Find kronos_predictor.py — works locally and in GitHub Actions."""
+    this_dir  = Path(__file__).parent.resolve()
+    repo_root = this_dir.parent.resolve()
+    cwd       = Path.cwd().resolve()
+
+    candidates = [
+        this_dir / "kronos_predictor.py",
+        repo_root / "tracker" / "kronos_predictor.py",
+        cwd / "tracker" / "kronos_predictor.py",
+        cwd / "kronos_predictor.py",
+    ]
+
+    for path in candidates:
+        if path.exists():
+            print(f"  Found kronos_predictor.py at: {path}")
+            return path
+
+    print("  kronos_predictor.py not found. Searched:")
+    for p in candidates:
+        print(f"    {p}")
+    return None
+
+
 def cmd_scrape():
     """Generate a new prediction using Kronos-mini."""
-    # Import the native predictor
-    tracker_dir = Path(__file__).parent
-    if str(tracker_dir) not in sys.path:
-        sys.path.insert(0, str(tracker_dir))
+    predictor_path = find_predictor()
+    if predictor_path is None:
+        print("  ERROR: Cannot find kronos_predictor.py")
+        print("  Make sure tracker/kronos_predictor.py exists in your repo.")
+        sys.exit(1)
+
+    # Add its directory to sys.path so it can be imported
+    pred_dir = str(predictor_path.parent)
+    if pred_dir not in sys.path:
+        sys.path.insert(0, pred_dir)
+
+    # Also add repo root and cwd
+    for extra in [str(REPO_ROOT), str(Path.cwd())]:
+        if extra not in sys.path:
+            sys.path.insert(0, extra)
+
     try:
-        from kronos_predictor import generate_prediction
-        result = generate_prediction()
+        # Force fresh import in case of stale cache
+        if "kronos_predictor" in sys.modules:
+            del sys.modules["kronos_predictor"]
+
+        import importlib.util
+        spec   = importlib.util.spec_from_file_location("kronos_predictor", predictor_path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+
+        result = module.generate_prediction()
         if result:
             print(f"\n  Upside: {result['upside_prob']*100:.1f}% | Vol: {result['vol_amplification_prob']*100:.1f}%")
             print(f"  Mean forecast: ${result.get('mean_forecast_close',0):,.2f} ({result.get('mean_forecast_change_pct',0):+.2f}%)")
         else:
             print("  No prediction generated (already have one for this hour or error).")
-    except ImportError as e:
-        print(f"  kronos_predictor.py not found: {e}")
-        sys.exit(1)
+
+    except Exception as e:
+        print(f"  Import/run failed: {e}")
+        print("  Falling back to subprocess...")
+        result = subprocess.run(
+            [sys.executable, str(predictor_path)],
+            capture_output=True, text=True
+        )
+        print(result.stdout)
+        if result.returncode != 0:
+            print(f"  Subprocess error: {result.stderr}")
+            sys.exit(1)
+
 
 def cmd_score():
     """Score pending predictions that are 24h+ old."""
@@ -216,9 +271,11 @@ def cmd_score():
     save_json(PENDING_FILE, remaining)
     print(f"  Scored {count} predictions. {len(remaining)} still pending.")
 
+
 def cmd_report():
     scores = load_json(SCORES_FILE, [])
     print_report(scores)
+
 
 def cmd_all():
     pending = load_json(PENDING_FILE, [])
