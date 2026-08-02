@@ -1,2 +1,13 @@
+# Core scraping / HTTP
 requests>=2.31.0
 beautifulsoup4>=4.12.0
+
+# Data
+numpy>=1.24.0
+pandas>=2.0.0
+
+# Kronos model dependencies
+torch>=2.0.0
+transformers>=4.38.0
+huggingface_hub>=0.21.0
+einops>=0.7.0
