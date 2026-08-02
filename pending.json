@@ -17,5 +17,17 @@
     "mean_forecast_change_pct": 0.153,
     "paths_generated": 30,
     "source": "kronos-mini-local"
+  },
+  {
+    "upside_prob": 0.6,
+    "vol_amplification_prob": 0.3333,
+    "demo_last_updated": "2026-08-02 21:00:00",
+    "prediction_timestamp": "2026-08-02 21:00:00",
+    "scrape_timestamp": "2026-08-02T21:01:33.063107+00:00",
+    "current_price": 63494.92,
+    "mean_forecast_close": 63687.94,
+    "mean_forecast_change_pct": 0.304,
+    "paths_generated": 30,
+    "source": "kronos-mini-local"
   }
 ]
