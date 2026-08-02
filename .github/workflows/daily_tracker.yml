@@ -83,7 +83,7 @@ jobs:
       - name: Send email report
         env:
           GMAIL_USERNAME:    ${{ secrets.GMAIL_USERNAME }}
-          GMAIL_APP_PASSWORD:${{ secrets.GMAIL_APP_PASSWORD }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
           RECIPIENT_EMAIL:   lemleysergio@gmail.com
         run: |
           HOUR=$(date -u +"%H")
