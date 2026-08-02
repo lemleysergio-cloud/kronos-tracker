@@ -18,6 +18,11 @@ RECIPIENT = os.environ.get("RECIPIENT_EMAIL", "lemleysergio@gmail.com")
 GMAIL_USER = os.environ.get("GMAIL_USERNAME")
 GMAIL_PASS = os.environ.get("GMAIL_APP_PASSWORD")
 
+# Cloudflare Worker endpoint that triggers the GitHub Actions workflow.
+# Clicking this in the email fires kronos_tracker.py --all + auto_trader.py
+# immediately, same as clicking "Run workflow" in GitHub.
+TRIGGER_URL = "https://kronos-trigger.sergio-b69.workers.dev/trigger?key=kronos2026"
+
 # ─── helpers ──────────────────────────────────────────────────────────────────
 def load_json(path, default):
     if path.exists():
@@ -189,6 +194,26 @@ def build_header(today_str):
   </td>
 </tr>
 </table>""", bg="#ffffff", pad="20px 20px 12px")
+
+# ─── run-now button ────────────────────────────────────────────────────────────
+
+def build_run_now_button():
+    """One-click button that triggers the GitHub Actions workflow immediately
+    via the Cloudflare Worker proxy — bypasses waiting for the next hourly cron."""
+    return row(f"""
+<table width="100%" cellpadding="0" cellspacing="0">
+<tr><td align="center" style="padding:4px 0 8px;">
+  <a href="{TRIGGER_URL}"
+     style="display:inline-block;background:#1a1a2e;color:#ffffff;text-decoration:none;
+            font-size:13px;font-weight:700;padding:12px 28px;border-radius:8px;
+            letter-spacing:.02em;">
+    ⚡ Run Latest Prediction Now
+  </a>
+  <p style="margin:8px 0 0;font-size:11px;color:#bbb;">
+    Scrapes the current hour, scores pending predictions, and runs the auto trader. Takes 2-4 minutes.
+  </p>
+</td></tr>
+</table>""", bg="#ffffff", pad="0px 20px 16px")
 
 # ─── fear & greed ─────────────────────────────────────────────────────────────
 
@@ -615,6 +640,7 @@ def build_html(records, pending_list, paper_trades, paper_balance,
     return (
         HEAD
         + build_header(today_str)
+        + build_run_now_button()
         + divider()
         + build_fg(fg_val, fg_label)
         + build_pending(pending_list)
