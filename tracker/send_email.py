@@ -22,6 +22,7 @@ GMAIL_PASS = os.environ.get("GMAIL_APP_PASSWORD")
 # Clicking this in the email fires kronos_tracker.py --all + auto_trader.py
 # immediately, same as clicking "Run workflow" in GitHub.
 TRIGGER_URL = "https://kronos-trigger.sergio-b69.workers.dev/trigger?key=kronos2026"
+LIVE_CHART_URL = "https://www.tradingview.com/symbols/BTCUSD/"
 
 # ─── helpers ──────────────────────────────────────────────────────────────────
 def load_json(path, default):
@@ -198,19 +199,34 @@ def build_header(today_str):
 # ─── run-now button ────────────────────────────────────────────────────────────
 
 def build_run_now_button():
-    """One-click button that triggers the GitHub Actions workflow immediately
-    via the Cloudflare Worker proxy — bypasses waiting for the next hourly cron."""
+    """Two action buttons side by side:
+    - Run Latest Prediction Now: triggers GitHub Actions via Cloudflare Worker
+    - View Live BTC Price: opens TradingView's real-time chart in browser
+      (a link, not an embed — email can't run the JS a live widget needs,
+      so this always shows the true current price no matter when you click it)."""
     return row(f"""
 <table width="100%" cellpadding="0" cellspacing="0">
 <tr><td align="center" style="padding:4px 0 8px;">
-  <a href="{TRIGGER_URL}"
-     style="display:inline-block;background:#1a1a2e;color:#ffffff;text-decoration:none;
-            font-size:13px;font-weight:700;padding:12px 28px;border-radius:8px;
-            letter-spacing:.02em;">
-    ⚡ Run Latest Prediction Now
-  </a>
+  <table cellpadding="0" cellspacing="0"><tr>
+    <td style="padding-right:6px;">
+      <a href="{TRIGGER_URL}"
+         style="display:inline-block;background:#1a1a2e;color:#ffffff;text-decoration:none;
+                font-size:12px;font-weight:700;padding:12px 18px;border-radius:8px;
+                letter-spacing:.02em;white-space:nowrap;">
+        ⚡ Run Latest Prediction
+      </a>
+    </td>
+    <td style="padding-left:6px;">
+      <a href="{LIVE_CHART_URL}"
+         style="display:inline-block;background:#f7931a;color:#ffffff;text-decoration:none;
+                font-size:12px;font-weight:700;padding:12px 18px;border-radius:8px;
+                letter-spacing:.02em;white-space:nowrap;">
+        📈 View Live BTC Price
+      </a>
+    </td>
+  </tr></table>
   <p style="margin:8px 0 0;font-size:11px;color:#bbb;">
-    Scrapes the current hour, scores pending predictions, and runs the auto trader. Takes 2-4 minutes.
+    Run: scrapes current hour + scores + trades (2-4 min) &nbsp;·&nbsp; Live price: opens TradingView, always current
   </p>
 </td></tr>
 </table>""", bg="#ffffff", pad="0px 20px 16px")
@@ -275,6 +291,8 @@ def build_pending(pending_list):
             up_col = prob_color(r["upside_prob"])
             dw = "▼ Bear" if sig=="bearish" else "▲ Bull" if sig=="bullish" else "— Neutral"
             sc_b = badge(f"{sc}/10 · ${sz}", score_bg(sc), score_color(sc))
+            ref_price = r.get("current_price")
+            ref_price_str = f"${ref_price:,.0f}" if ref_price else "—"
             rows_html += f"""
 <tr style="border-bottom:1px solid #f0f0f0;">
   <td style="padding:7px 10px;font-size:11px;color:#aaa;">{hour}<br>
@@ -283,6 +301,7 @@ def build_pending(pending_list):
   <td style="padding:7px 10px;font-size:13px;font-weight:700;color:{up_col};">{up}%
     <br><span style="font-size:10px;font-weight:500;">{dw}</span>
   </td>
+  <td style="padding:7px 10px;font-size:11px;font-weight:600;color:#555;text-align:center;">{ref_price_str}</td>
   <td class="vol-col" style="padding:7px 10px;font-size:11px;color:#777;text-align:center;">{vp}%</td>
   <td class="score-col" style="padding:7px 10px;text-align:center;">{sc_b}</td>
   <td style="padding:7px 10px;font-size:11px;font-weight:700;color:{cd_col};text-align:right;">~{int(hrs)}h</td>
@@ -298,6 +317,7 @@ def build_pending(pending_list):
     <tr style="background:#f0f6ff;">
       <th style="padding:5px 10px;font-size:9px;color:#999;font-weight:700;text-transform:uppercase;text-align:left;">Hour</th>
       <th style="padding:5px 10px;font-size:9px;color:#999;font-weight:700;text-transform:uppercase;text-align:left;">Upside</th>
+      <th style="padding:5px 10px;font-size:9px;color:#999;font-weight:700;text-transform:uppercase;text-align:center;">BTC @ call</th>
       <th class="vol-col" style="padding:5px 10px;font-size:9px;color:#999;font-weight:700;text-transform:uppercase;text-align:center;">Vol</th>
       <th class="score-col" style="padding:5px 10px;font-size:9px;color:#999;font-weight:700;text-transform:uppercase;text-align:center;">Score / Size</th>
       <th style="padding:5px 10px;font-size:9px;color:#999;font-weight:700;text-transform:uppercase;text-align:right;">In</th>
@@ -335,12 +355,17 @@ def build_scored(records):
             br = r.get("brier_score",0)
             cc = "#2e7d32" if chg>0 else "#c62828" if chg<0 else "#777"
             sc_b = badge(f"{sc}/10", score_bg(sc), score_color(sc))
+            p0 = r.get("price_t0") or r.get("current_price")
+            p24 = r.get("price_t24")
+            ref_str = f"${p0:,.0f}" if p0 else "—"
+            exit_str = f"→ ${p24:,.0f}" if p24 else ""
             rows_html += f"""
 <tr style="border-bottom:1px solid #f5f5f5;">
   <td style="padding:6px 10px;font-size:11px;color:#aaa;">{hour}
     <br><span class="et-col" style="font-size:10px;color:#ccc;">{utc_to_et(hour)}</span>
   </td>
   <td style="padding:6px 10px;font-size:12px;font-weight:700;color:{prob_color(r['upside_prob'])};">{up}%</td>
+  <td style="padding:6px 10px;font-size:10px;color:#666;text-align:center;">{ref_str}<br><span style="font-size:9px;color:#ccc;">{exit_str}</span></td>
   <td class="vol-col" style="padding:6px 10px;font-size:11px;color:#777;text-align:center;">{vp}%</td>
   <td class="score-col" style="padding:6px 10px;text-align:center;">{sc_b}<br><span style="font-size:9px;color:#bbb;">${sz}</span></td>
   <td style="padding:6px 10px;font-size:12px;font-weight:700;color:{cc};text-align:center;">{chg:+.1f}%</td>
@@ -362,6 +387,7 @@ def build_scored(records):
     <tr style="background:#fafafa;">
       <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:left;">Hour</th>
       <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:left;">Upside</th>
+      <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">BTC @ call → 24h</th>
       <th class="vol-col" style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Vol</th>
       <th class="score-col" style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Score/$</th>
       <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">BTC Δ</th>
