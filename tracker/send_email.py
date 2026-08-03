@@ -73,32 +73,10 @@ def utc_to_et(h):
 def prob_color(p):
     return "#2e7d32" if p>=0.65 else "#c62828" if p<=0.35 else "#555"
 
-def score_color(s):
-    return "#00695c" if s>=8 else "#2e7d32" if s>=6 else "#e65100" if s>=4 else "#c62828"
-
-def score_bg(s):
-    return "#e0f2f1" if s>=8 else "#e8f5e9" if s>=6 else "#fff8e1" if s>=4 else "#ffebee"
-
 def fear_color(v):
     return "#c62828" if v<=25 else "#e65100" if v<=45 else "#555" if v<=55 else "#2e7d32" if v<=75 else "#1b5e20"
 
 def get_signal(p): return "bearish" if p<=0.30 else "bullish" if p>=0.70 else "neutral"
-
-def calc_conviction(prob, vol, sig, align="unknown"):
-    s = 0
-    d = abs(prob-0.5)
-    if d>=0.4: s+=3
-    elif d>=0.3: s+=2
-    elif d>=0.2: s+=1
-    if vol is not None:
-        if sig=="bearish": s += 2 if vol>=0.7 else 1 if vol>=0.5 else -1
-        else: s += 2 if vol>=0.7 else 1 if vol>=0.5 else -1
-    if align=="aligned": s+=2
-    elif align=="counter": s-=2
-    if prob<=0.1 or prob>=0.9: s+=1
-    return max(1,min(10,s))
-
-def get_size(sc): return 50 if sc<=3 else 75 if sc<=5 else 100 if sc<=7 else 150
 
 def bottom_line(pct, total):
     if total<24: return f"Only {total} predictions scored — keep collecting data."
@@ -148,7 +126,6 @@ body{margin:0!important;padding:0!important;background:#e8e8e8!important}
   .mob-metric-row td{display:block!important;width:100%!important;padding-bottom:8px!important}
 
   /* Shrink table columns on mobile */
-  .score-col{display:none!important}
   .brier-col{display:none!important}
 
   /* Paper trade table mobile */
@@ -282,13 +259,10 @@ def build_pending(pending_list):
             up = round(r["upside_prob"]*100,1)
             vp = round(r["vol_amplification_prob"]*100,1)
             sig = get_signal(r["upside_prob"])
-            sc = calc_conviction(r["upside_prob"], r["vol_amplification_prob"], sig)
-            sz = get_size(sc)
             hrs = hours_remaining(r.get("scrape_timestamp",""))
             cd_col = "#c62828" if hrs<=2 else "#e65100" if hrs<=6 else "#888"
             up_col = prob_color(r["upside_prob"])
             dw = "▼ Bear" if sig=="bearish" else "▲ Bull" if sig=="bullish" else "— Neutral"
-            sc_b = badge(f"{sc}/10 · ${sz}", score_bg(sc), score_color(sc))
             ref_price = r.get("current_price")
             ref_price_str = f"${ref_price:,.0f}" if ref_price else "—"
             hz = r.get("horizon", "24h")
@@ -307,7 +281,6 @@ def build_pending(pending_list):
   <td style="padding:7px 10px;text-align:center;">{hz_b}</td>
   <td style="padding:7px 10px;font-size:11px;font-weight:600;color:#555;text-align:center;">{ref_price_str}<br><span style="font-size:10px;color:#aaa;">→ {tgt_str}</span></td>
   <td class="vol-col" style="padding:7px 10px;font-size:11px;color:#777;text-align:center;">{vp}%</td>
-  <td class="score-col" style="padding:7px 10px;text-align:center;">{sc_b}</td>
   <td style="padding:7px 10px;font-size:11px;font-weight:700;color:{cd_col};text-align:right;">~{int(hrs)}h</td>
 </tr>"""
 
@@ -324,7 +297,6 @@ def build_pending(pending_list):
       <th style="padding:5px 10px;font-size:9px;color:#999;font-weight:700;text-transform:uppercase;text-align:center;">Hz</th>
       <th style="padding:5px 10px;font-size:9px;color:#999;font-weight:700;text-transform:uppercase;text-align:center;">BTC → target</th>
       <th class="vol-col" style="padding:5px 10px;font-size:9px;color:#999;font-weight:700;text-transform:uppercase;text-align:center;">Vol</th>
-      <th class="score-col" style="padding:5px 10px;font-size:9px;color:#999;font-weight:700;text-transform:uppercase;text-align:center;">Score / Size</th>
       <th style="padding:5px 10px;font-size:9px;color:#999;font-weight:700;text-transform:uppercase;text-align:right;">In</th>
     </tr>
     {rows_html}
@@ -346,33 +318,62 @@ def build_scored(records):
         st = compute_stats(dr)
         pct = st["direction_accuracy_pct"]
         hbg,hcol,grade = ("#e8f5e9","#2e7d32","🔥") if pct>=65 else ("#fff8e1","#e65100","🙂") if pct>=55 else ("#f5f5f5","#555","🎲") if pct>=45 else ("#ffebee","#c62828","😬")
+        # Per-day split so a mixed 1h/24h day is legible at a glance
+        hz_parts = []
+        for hz_key in ["1h", "24h"]:
+            hz_recs = [x for x in dr if x.get("horizon","24h") == hz_key]
+            if not hz_recs: continue
+            hz_ok = sum(1 for x in hz_recs if x.get("direction_correct"))
+            hz_parts.append(f"{hz_key}: {hz_ok}/{len(hz_recs)}")
+        hz_breakdown = " &nbsp;·&nbsp; ".join(hz_parts) if hz_parts else ""
+
         rows_html = ""
         for r in sorted(dr, key=lambda x: x.get("prediction_timestamp",""), reverse=True):
             hour = r.get("prediction_timestamp","")[11:16]
             up = round(r["upside_prob"]*100,1)
             vp = round(r.get("vol_amplification_prob",0)*100,1)
             sig = get_signal(r["upside_prob"])
-            sc = calc_conviction(r["upside_prob"], r.get("vol_amplification_prob"), sig)
-            sz = get_size(sc)
             chg = r.get("price_change_pct",0)
             dok = r.get("direction_correct",False)
             vok = r.get("vol_correct",False)
             br = r.get("brier_score",0)
             cc = "#2e7d32" if chg>0 else "#c62828" if chg<0 else "#777"
-            sc_b = badge(f"{sc}/10", score_bg(sc), score_color(sc))
-            p0 = r.get("price_t0") or r.get("current_price")
-            p24 = r.get("price_t24")
-            ref_str = f"${p0:,.0f}" if p0 else "—"
-            exit_str = f"→ ${p24:,.0f}" if p24 else ""
+
+            # Horizon badge — makes 1h vs 24h calls unmistakable at a glance
+            hz = r.get("horizon", "24h")
+            hz_b = badge(hz, "#eeedfe" if hz=="1h" else "#e6f1fb",
+                             "#3c3489" if hz=="1h" else "#0c447c")
+
+            p0  = r.get("price_t0") or r.get("current_price")
+            pN  = r.get("price_at_horizon") or r.get("price_t24")
+            ref_str  = f"${p0:,.0f}" if p0 else "—"
+            exit_str = f"→ ${pN:,.0f}" if pN else ""
+
+            # Target accuracy: how far Kronos's forecast landed from reality,
+            # shown in BOTH dollars and percent.
+            target = r.get("mean_forecast_close")
+            if target and pN:
+                miss_dollars = pN - target          # +ve = actual came in ABOVE forecast
+                miss_pct     = abs(miss_dollars) / pN * 100
+                miss_col = ("#2e7d32" if miss_pct < 0.25 else
+                            "#e65100" if miss_pct < 0.75 else "#c62828")
+                target_cell = (f'<span style="font-size:11px;font-weight:700;color:{miss_col};">'
+                               f'{miss_pct:.2f}%</span><br>'
+                               f'<span style="font-size:9px;color:#aaa;">'
+                               f'{"+" if miss_dollars>=0 else "−"}${abs(miss_dollars):,.0f}</span>')
+            else:
+                target_cell = '<span style="font-size:10px;color:#ddd;">—</span>'
+
             rows_html += f"""
 <tr style="border-bottom:1px solid #f5f5f5;">
   <td style="padding:6px 10px;font-size:11px;color:#aaa;">{hour}
     <br><span class="et-col" style="font-size:10px;color:#ccc;">{utc_to_et(hour)}</span>
   </td>
+  <td style="padding:6px 10px;text-align:center;">{hz_b}</td>
   <td style="padding:6px 10px;font-size:12px;font-weight:700;color:{prob_color(r['upside_prob'])};">{up}%</td>
   <td style="padding:6px 10px;font-size:10px;color:#666;text-align:center;">{ref_str}<br><span style="font-size:9px;color:#ccc;">{exit_str}</span></td>
+  <td style="padding:6px 10px;text-align:center;">{target_cell}</td>
   <td class="vol-col" style="padding:6px 10px;font-size:11px;color:#777;text-align:center;">{vp}%</td>
-  <td class="score-col" style="padding:6px 10px;text-align:center;">{sc_b}<br><span style="font-size:9px;color:#bbb;">${sz}</span></td>
   <td style="padding:6px 10px;font-size:12px;font-weight:700;color:{cc};text-align:center;">{chg:+.1f}%</td>
   <td style="padding:6px 10px;font-size:14px;text-align:center;">{"✅" if dok else "❌"}</td>
   <td class="vol-col" style="padding:6px 10px;font-size:14px;text-align:center;">{"✅" if vok else "❌"}</td>
@@ -385,16 +386,18 @@ def build_scored(records):
     <td style="padding:9px 12px;">
       <span style="font-size:13px;font-weight:700;color:{hcol};">{grade} {date}</span>
       <span style="font-size:11px;color:{hcol};margin-left:8px;">{st['dir_correct']}/{st['n']} correct &nbsp;·&nbsp; {pct}% &nbsp;·&nbsp; Brier: {st['avg_brier_score']}</span>
+      <br><span style="font-size:10px;color:{hcol};opacity:.75;">{hz_breakdown}</span>
     </td>
   </tr>
   <tr><td>
     <table width="100%" cellpadding="0" cellspacing="0">
     <tr style="background:#fafafa;">
       <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:left;">Hour</th>
+      <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Hz</th>
       <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:left;">Upside</th>
-      <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">BTC @ call → 24h</th>
+      <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">BTC @ call → close</th>
+      <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Target miss</th>
       <th class="vol-col" style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Vol</th>
-      <th class="score-col" style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Score/$</th>
       <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">BTC Δ</th>
       <th style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Dir</th>
       <th class="vol-col" style="padding:5px 10px;font-size:9px;color:#bbb;font-weight:700;text-transform:uppercase;text-align:center;">Vol</th>
