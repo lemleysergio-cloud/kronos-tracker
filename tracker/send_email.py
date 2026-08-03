@@ -150,7 +150,6 @@ body{margin:0!important;padding:0!important;background:#e8e8e8!important}
   /* Shrink table columns on mobile */
   .score-col{display:none!important}
   .brier-col{display:none!important}
-  .et-col{display:none!important}
 
   /* Paper trade table mobile */
   .pt-score-col{display:none!important}
