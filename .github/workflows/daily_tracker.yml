@@ -16,6 +16,14 @@ on:
           - score
           - report
 
+# Prevents two runs (e.g. an hourly schedule firing while a manual run
+# is still in progress) from racing to push at the same time, which was
+# causing "non-fast-forward" push rejections. New runs wait in queue for
+# the previous one to finish instead of colliding with it.
+concurrency:
+  group: kronos-tracker-run
+  cancel-in-progress: false
+
 jobs:
   track:
     runs-on: ubuntu-latest
@@ -87,7 +95,15 @@ jobs:
           else
             DATE=$(date -u +"%Y-%m-%d %H:%M UTC")
             git commit -m "chore: kronos native inference update ${DATE} [skip ci]"
-            git push
+            # Rebase onto whatever landed on main since this run started
+            # (e.g. a manual edit made in the GitHub web UI), then push.
+            # Retries once more after a short wait in the rare case two
+            # pushes still land within the same second.
+            for attempt in 1 2; do
+              git pull --rebase origin main && git push && break
+              echo "Push attempt ${attempt} failed — retrying..."
+              sleep 5
+            done
           fi
 
       - name: Send email report
