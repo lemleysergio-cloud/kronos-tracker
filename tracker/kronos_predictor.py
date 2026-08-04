@@ -40,6 +40,9 @@ SAMPLE_COUNT = 30     # Monte Carlo paths per horizon
 # Price data now comes from Coinbase (a real CF Benchmarks BRTI constituent)
 # instead of Binance.US, so our numbers track Kalshi's actual settlement
 # index far more closely. See price_source.py for the full rationale.
+# price_source.py lives at the repo root, so it needs the root on sys.path
+# (not true by default when this script is run as `python tracker/kronos_predictor.py`).
+sys.path.insert(0, str(REPO_ROOT))
 import price_source
 
 HORIZONS = {

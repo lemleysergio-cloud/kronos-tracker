@@ -59,16 +59,19 @@ jobs:
 
       - name: Run Kronos tracker + native inference
         run: |
+          set -o pipefail
           MODE="${{ github.event.inputs.mode || 'all' }}"
           python tracker/kronos_tracker.py --${MODE} 2>&1 | tee tracker_output.txt
 
       - name: Run barbell tracker
         run: |
+          set -o pipefail
           python tracker/barbell_tracker.py 2>&1 | tee -a tracker_output.txt
 
       - name: Run EV scanner (optional, standalone)
         continue-on-error: true
         run: |
+          set -o pipefail
           if [ -f tracker/ev_scanner.py ]; then
             python tracker/ev_scanner.py 2>&1 | tee -a tracker_output.txt
           else
