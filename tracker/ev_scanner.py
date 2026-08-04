@@ -34,11 +34,15 @@ Files:
 import json
 import math
 import statistics
+import sys
 import urllib.request
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 REPO_ROOT    = Path(__file__).parent.parent
+# price_source.py lives at the repo root, so it needs the root on sys.path
+# before the lazy `import price_source` in get_price_at() below can resolve.
+sys.path.insert(0, str(REPO_ROOT))
 PENDING_FILE = REPO_ROOT / "pending.json"
 SCORES_FILE  = REPO_ROOT / "scores.json"
 EV_FILE      = REPO_ROOT / "ev_trades.json"

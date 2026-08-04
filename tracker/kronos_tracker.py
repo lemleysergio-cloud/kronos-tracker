@@ -22,6 +22,10 @@ PENDING_FILE = REPO_ROOT / "pending.json"
 
 # Price data comes from Coinbase (a CF Benchmarks BRTI constituent), not
 # Binance.US — keeps our scoring aligned with Kalshi's real settlement.
+# price_source.py lives at the repo root, not in tracker/, so it's only
+# importable once the root is on sys.path (not true by default when this
+# script is invoked as `python tracker/kronos_tracker.py`).
+sys.path.insert(0, str(REPO_ROOT))
 import price_source
 
 HORIZON_HOURS = {"1h": 1, "24h": 24}

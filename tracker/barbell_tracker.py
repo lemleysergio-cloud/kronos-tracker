@@ -32,6 +32,7 @@ barbell_trades.json record shape (you add these manually or via helper):
 
 import json
 import math
+import sys
 import urllib.request
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -42,6 +43,10 @@ SCORES_FILE   = REPO_ROOT / "scores.json"
 TRADES_FILE   = REPO_ROOT / "barbell_trades.json"
 
 # Prices from Coinbase (BRTI constituent) — see price_source.py
+# price_source.py lives at the repo root, so it needs the root on sys.path
+# (not true by default when run as `python tracker/barbell_tracker.py`,
+# or loaded via importlib from tracker/send_email.py).
+sys.path.insert(0, str(REPO_ROOT))
 import price_source
 FG_URL        = "https://api.alternative.me/fng/?limit=1"
 
