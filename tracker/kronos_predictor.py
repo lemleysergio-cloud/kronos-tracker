@@ -13,12 +13,19 @@ can measure which timeframe Kronos is actually good at.
 
 Output schema (per record):
   horizon                   "1h" | "24h"
-  upside_prob               P(price at horizon > current price)
-  vol_amplification_prob    P(realized vol > historical vol)
+  upside_prob               P(price at horizon > current price) — raw model output
+  upside_prob_calibrated    upside_prob adjusted against clean historical hit
+                             rate at that confidence level (see calibration.py).
+                             Equals upside_prob until enough clean history exists.
+  upside_prob_calibration_n how many clean historical records backed the
+                             calibration above (0 = passthrough, not yet calibrated)
+  vol_amplification_prob    P(realized vol > historical vol) — raw model output
+  vol_amplification_prob_calibrated / _calibration_n  same idea, for vol
   current_price             BTC price when the call was made
   mean_forecast_close       Kronos's actual dollar target
   mean_forecast_change_pct  % move implied by that target
   forecast_low / forecast_high   5th/95th percentile of MC paths
+  entry_price_source / entry_anchored   data-quality tags, see data_quality.py
 """
 
 import json
@@ -44,6 +51,8 @@ SAMPLE_COUNT = 30     # Monte Carlo paths per horizon
 # (not true by default when this script is run as `python tracker/kronos_predictor.py`).
 sys.path.insert(0, str(REPO_ROOT))
 import price_source
+import data_quality
+import calibration
 
 HORIZONS = {
     "1h":  1,
@@ -242,6 +251,10 @@ def generate_prediction():
         return None
 
     pending = json.load(open(PENDING_FILE)) if PENDING_FILE.exists() else []
+    # Calibration is fit only on price_regime_clean==True history (see
+    # data_quality.py) so the pre-migration Binance/Coinbase source mismatch
+    # can't leak into it. Loaded once per run, not per horizon.
+    clean_history = json.load(open(SCORES_FILE)) if SCORES_FILE.exists() else []
     results = {}
 
     for horizon in todo:
@@ -253,6 +266,11 @@ def generate_prediction():
             print(f"  [{horizon}] No valid signals — skipping.")
             continue
 
+        up_cal, up_n   = calibration.calibrate(signals["upside_prob"], horizon, clean_history,
+                                                "upside_prob", "direction_correct")
+        vol_cal, vol_n = calibration.calibrate(signals["vol_amplification_prob"], horizon, clean_history,
+                                                "vol_amplification_prob", "vol_correct")
+
         record = {
             "horizon":              horizon,
             "prediction_timestamp": hour_str,
@@ -261,11 +279,17 @@ def generate_prediction():
             "source":               "kronos-mini-local",
             "price_source":         price_source.source_name(),
             **signals,
+            "upside_prob_calibrated":              up_cal,
+            "upside_prob_calibration_n":           up_n,
+            "vol_amplification_prob_calibrated":   vol_cal,
+            "vol_amplification_prob_calibration_n": vol_n,
         }
+        data_quality.classify_entry(record)
         pending.append(record)
         results[horizon] = record
 
-        print(f"\n  [{horizon}] Upside: {signals['upside_prob']*100:.1f}%"
+        cal_note = f" (calibrated {up_cal*100:.1f}%, n={up_n})" if up_n else " (calibration: not enough clean history yet)"
+        print(f"\n  [{horizon}] Upside: {signals['upside_prob']*100:.1f}%{cal_note}"
               f" | Vol amp: {signals['vol_amplification_prob']*100:.1f}%")
         print(f"  [{horizon}] Target: ${signals['mean_forecast_close']:,.2f}"
               f" ({signals['mean_forecast_change_pct']:+.2f}%)")
