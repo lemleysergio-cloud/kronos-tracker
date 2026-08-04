@@ -34,11 +34,13 @@ REPO_ROOT    = Path(__file__).parent.parent
 PENDING_FILE = REPO_ROOT / "pending.json"
 SCORES_FILE  = REPO_ROOT / "scores.json"
 
-BINANCE_URL  = "https://api.binance.us/api/v3/klines"
-SYMBOL       = "BTCUSDT"
-INTERVAL     = "1h"
 LOOKBACK     = 360    # hours of context fed to the model
 SAMPLE_COUNT = 30     # Monte Carlo paths per horizon
+
+# Price data now comes from Coinbase (a real CF Benchmarks BRTI constituent)
+# instead of Binance.US, so our numbers track Kalshi's actual settlement
+# index far more closely. See price_source.py for the full rationale.
+import price_source
 
 HORIZONS = {
     "1h":  1,
@@ -49,30 +51,15 @@ MODEL_NAME     = "NeoQuasar/Kronos-mini"
 TOKENIZER_NAME = "NeoQuasar/Kronos-Tokenizer-2k"
 
 
-# ─── Binance ──────────────────────────────────────────────────────────────────
+# ─── Price data (Coinbase) ──────────────────────────────────────────────────────────────────
 
 def fetch_btc_history(lookback=LOOKBACK):
-    print(f"  Fetching {lookback}h of BTC/USDT from Binance...")
-    url = f"{BINANCE_URL}?symbol={SYMBOL}&interval={INTERVAL}&limit={lookback}"
-    try:
-        with urllib.request.urlopen(url, timeout=15) as r:
-            raw = json.loads(r.read())
-    except Exception as e:
-        print(f"  Binance fetch failed: {e}")
+    print(f"  Fetching {lookback}h of BTC-USD from Coinbase...")
+    candles = price_source.fetch_candles(hours=lookback)
+    if not candles:
+        print("  Coinbase fetch returned nothing.")
         return None
-
-    records = []
-    for c in raw:
-        records.append({
-            "timestamps": datetime.fromtimestamp(c[0]/1000, tz=timezone.utc),
-            "open":   float(c[1]),
-            "high":   float(c[2]),
-            "low":    float(c[3]),
-            "close":  float(c[4]),
-            "volume": float(c[5]),
-            "amount": float(c[7]),
-        })
-    df = pd.DataFrame(records)
+    df = pd.DataFrame(candles)
     print(f"  Got {len(df)} candles. Latest close: ${df['close'].iloc[-1]:,.2f}")
     return df
 
@@ -250,6 +237,7 @@ def generate_prediction():
             "scrape_timestamp":     now_utc.isoformat(),
             "current_price":        round(current_price, 2),
             "source":               "kronos-mini-local",
+            "price_source":         price_source.source_name(),
             **signals,
         }
         pending.append(record)
