@@ -41,7 +41,8 @@ PENDING_FILE  = REPO_ROOT / "pending.json"
 SCORES_FILE   = REPO_ROOT / "scores.json"
 TRADES_FILE   = REPO_ROOT / "barbell_trades.json"
 
-BINANCE_URL   = "https://api.binance.us/api/v3/klines"
+# Prices from Coinbase (BRTI constituent) — see price_source.py
+import price_source
 FG_URL        = "https://api.alternative.me/fng/?limit=1"
 
 HORIZON_HOURS = {"1h": 1, "24h": 24}
@@ -93,17 +94,7 @@ def fetch_fear_greed():
         return None, None
 
 def get_price_at(dt_utc):
-    aligned = dt_utc.replace(minute=0, second=0, microsecond=0)
-    now_h   = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0)
-    if aligned >= now_h:
-        aligned = now_h - timedelta(hours=1)
-    url = f"{BINANCE_URL}?symbol=BTCUSDT&interval=1h&limit=2&startTime={int(aligned.timestamp()*1000)}"
-    try:
-        with urllib.request.urlopen(url, timeout=10) as r:
-            raw = json.loads(r.read())
-        return float(raw[0][4]) if raw else None
-    except Exception:
-        return None
+    return price_source.get_price_at(dt_utc)
 
 
 # ─── Strike math ──────────────────────────────────────────────────────────────
