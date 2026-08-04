@@ -301,17 +301,9 @@ def find_best_play(chain, prediction, calib_curve):
 # ─── Scoring open EV trades ─────────────────────────────────────────────────────
 
 def get_price_at(dt_utc):
-    aligned = dt_utc.replace(minute=0, second=0, microsecond=0)
-    now_h   = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0)
-    if aligned >= now_h:
-        aligned = now_h - timedelta(hours=1)
-    url = f"https://api.binance.us/api/v3/klines?symbol=BTCUSDT&interval=1h&limit=2&startTime={int(aligned.timestamp()*1000)}"
-    try:
-        with urllib.request.urlopen(url, timeout=10) as r:
-            raw = json.loads(r.read())
-        return float(raw[0][4]) if raw else None
-    except Exception:
-        return None
+    """Settlement price lookup — delegated to Coinbase price_source."""
+    import price_source
+    return price_source.get_price_at(dt_utc)
 
 
 def score_open_ev_trades(trades):
