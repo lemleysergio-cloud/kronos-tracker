@@ -56,14 +56,29 @@ TOKENIZER_NAME = "NeoQuasar/Kronos-Tokenizer-2k"
 
 # ─── Price data (Coinbase) ──────────────────────────────────────────────────────────────────
 
-def fetch_btc_history(lookback=LOOKBACK):
-    print(f"  Fetching {lookback}h of BTC-USD from Coinbase...")
-    candles = price_source.fetch_candles(hours=lookback)
+def fetch_btc_history(target_hour, lookback=LOOKBACK):
+    """
+    Fetch `lookback` hours of context ending exactly at `target_hour` (the
+    top of the hour this prediction is for), NOT at "now". A manual run
+    clicked 32 minutes into the hour must still anchor to :00 — otherwise
+    current_price drifts with however late the run happened to fire, which
+    also corrupts scoring later since current_price becomes price_t0.
+
+    Coinbase's candle `end` param is inclusive of the still-forming current
+    candle, so we overfetch a couple hours and drop anything at/after
+    target_hour ourselves rather than trusting Coinbase to cut it off.
+    """
+    print(f"  Fetching {lookback}h of BTC-USD from Coinbase (anchored to {target_hour:%Y-%m-%d %H:00} UTC)...")
+    candles = price_source.fetch_candles(end_dt=target_hour, hours=lookback + 2)
     if not candles:
         print("  Coinbase fetch returned nothing.")
         return None
     df = pd.DataFrame(candles)
-    print(f"  Got {len(df)} candles. Latest close: ${df['close'].iloc[-1]:,.2f}")
+    df = df[df["timestamps"] < target_hour].tail(lookback).reset_index(drop=True)
+    if df.empty:
+        print("  No closed candles before the target hour.")
+        return None
+    print(f"  Got {len(df)} candles. Price @ {target_hour:%H:%M} UTC: ${df['close'].iloc[-1]:,.2f}")
     return df
 
 
@@ -197,11 +212,15 @@ def already_predicted(now_utc, horizon):
 # ─── Main ─────────────────────────────────────────────────────────────────────
 
 def generate_prediction():
-    now_utc  = datetime.now(timezone.utc)
-    hour_str = now_utc.strftime("%Y-%m-%d %H:00:00")
+    now_utc     = datetime.now(timezone.utc)
+    target_hour = now_utc.replace(minute=0, second=0, microsecond=0)
+    hour_str    = target_hour.strftime("%Y-%m-%d %H:00:00")
 
     print(f"\n=== Kronos Native Predictor (dual horizon) ===")
     print(f"  {now_utc.strftime('%Y-%m-%d %H:%M UTC')}")
+    if now_utc != target_hour:
+        print(f"  Running {(now_utc - target_hour).total_seconds()/60:.0f} min into the hour "
+              f"(e.g. a manual trigger) — still anchoring the price to {target_hour:%H:00} UTC.")
 
     todo = [h for h in HORIZONS if not already_predicted(now_utc, h)]
     if not todo:
@@ -209,7 +228,7 @@ def generate_prediction():
         return None
     print(f"  Horizons to generate: {', '.join(todo)}")
 
-    df = fetch_btc_history()
+    df = fetch_btc_history(target_hour)
     if df is None or len(df) < 48:
         print("  Insufficient data — aborting.")
         return None
