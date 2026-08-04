@@ -27,6 +27,7 @@ PENDING_FILE = REPO_ROOT / "pending.json"
 # script is invoked as `python tracker/kronos_tracker.py`).
 sys.path.insert(0, str(REPO_ROOT))
 import price_source
+import data_quality
 
 HORIZON_HOURS = {"1h": 1, "24h": 24}
 
@@ -89,7 +90,7 @@ def score_prediction(pending):
     if target:
         target_error_pct = round(abs(target - price_tN) / price_tN * 100, 4)
 
-    return {
+    result = {
         **pending,
         "score_timestamp":    datetime.now(timezone.utc).isoformat(),
         "price_t0":           price_t0,
@@ -108,6 +109,20 @@ def score_prediction(pending):
         "target_error_pct":   target_error_pct,
     }
 
+    # Data-quality tags (see data_quality.py) + calibrated-probability scoring,
+    # so future analysis can filter to consistent data and compare raw vs.
+    # calibrated accuracy side by side. classify_entry() is idempotent —
+    # rerunning it here just re-confirms tags already set at prediction time.
+    data_quality.classify_entry(result)
+    data_quality.classify_exit(result)
+
+    up_cal = result.get("upside_prob_calibrated")
+    if up_cal is not None:
+        result["direction_correct_calibrated"] = (up_cal > 0.5) == went_up
+        result["brier_score_calibrated"]       = round((up_cal - (1.0 if went_up else 0.0))**2, 6)
+
+    return result
+
 
 # ─── Stats ────────────────────────────────────────────────────────────────────
 
@@ -123,6 +138,21 @@ def compute_stats(records, window=None):
     for r in reversed(records):
         if r.get("direction_correct"): streak += 1
         else: break
+
+    # Calibrated side-by-side, where available (only records generated after
+    # calibration.py was wired in carry these — see DATA_CHANGELOG.md).
+    cal_recs = [r for r in records if r.get("direction_correct_calibrated") is not None]
+    cal_stats = None
+    if cal_recs:
+        cn  = len(cal_recs)
+        cdc = sum(1 for r in cal_recs if r.get("direction_correct_calibrated"))
+        cab = sum(r.get("brier_score_calibrated", 0.5) for r in cal_recs) / cn
+        cal_stats = {
+            "n": cn,
+            "direction_accuracy_pct": round(cdc/cn*100, 1),
+            "avg_brier_score":        round(cab, 4),
+        }
+
     return {
         "n": n, "dir_correct": dc,
         "direction_accuracy_pct": round(dc/n*100,1),
@@ -130,6 +160,7 @@ def compute_stats(records, window=None):
         "avg_brier_score":        round(ab,4),
         "avg_target_error_pct":   round(sum(errs)/len(errs),3) if errs else None,
         "correct_streak":         streak,
+        "calibrated":             cal_stats,
     }
 
 def split_by_horizon(records):
@@ -137,6 +168,15 @@ def split_by_horizon(records):
     for r in records:
         out.setdefault(r.get("horizon","24h"), []).append(r)
     return out
+
+def print_data_quality(records):
+    """Backend-only visibility into which price regime backs each scored
+    record — see data_quality.py / DATA_CHANGELOG.md. Not shown in the email."""
+    import collections
+    counts = collections.Counter(r.get("price_regime", "untagged") for r in records)
+    print("\n  ── Data regime (backend only, see DATA_CHANGELOG.md) ──")
+    for regime, n in counts.most_common():
+        print(f"    {regime:<28} {n}")
 
 def print_report(records):
     if not records:
@@ -156,6 +196,12 @@ def print_report(records):
             print(f"    {label:<9} n={s['n']:<4} dir={s['direction_accuracy_pct']}%"
                   f"  vol={s['vol_accuracy_pct']}%  brier={s['avg_brier_score']}"
                   f"  streak={s['correct_streak']}{tgt}")
+            if s.get("calibrated"):
+                c = s["calibrated"]
+                print(f"      └─ calibrated  n={c['n']:<4} dir={c['direction_accuracy_pct']}%"
+                      f"  brier={c['avg_brier_score']}")
+
+    print_data_quality(records)
     print()
 
 

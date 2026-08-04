@@ -43,7 +43,9 @@
       64322.51,
       64561.37,
       64827.94
-    ]
+    ],
+    "entry_price_source": "binance",
+    "entry_anchored": false
   },
   {
     "horizon": "24h",
@@ -89,7 +91,9 @@
       63507.48,
       64473.2,
       64161.85
-    ]
+    ],
+    "entry_price_source": "binance",
+    "entry_anchored": false
   },
   {
     "horizon": "24h",
@@ -135,7 +139,9 @@
       63765.33,
       63225.45,
       64501.3
-    ]
+    ],
+    "entry_price_source": "binance",
+    "entry_anchored": false
   },
   {
     "horizon": "24h",
@@ -181,7 +187,9 @@
       63120.2,
       65157.21,
       63969.66
-    ]
+    ],
+    "entry_price_source": "binance",
+    "entry_anchored": false
   },
   {
     "horizon": "24h",
@@ -227,7 +235,9 @@
       63943.0,
       63473.82,
       63407.23
-    ]
+    ],
+    "entry_price_source": "binance",
+    "entry_anchored": false
   },
   {
     "horizon": "24h",
@@ -273,7 +283,9 @@
       63569.2,
       63248.89,
       64306.9
-    ]
+    ],
+    "entry_price_source": "binance",
+    "entry_anchored": false
   },
   {
     "horizon": "24h",
@@ -319,7 +331,9 @@
       62128.88,
       64735.04,
       63210.22
-    ]
+    ],
+    "entry_price_source": "binance",
+    "entry_anchored": false
   },
   {
     "horizon": "24h",
@@ -366,7 +380,9 @@
       63508.17,
       63514.34,
       63398.1
-    ]
+    ],
+    "entry_price_source": "coinbase",
+    "entry_anchored": false
   },
   {
     "horizon": "24h",
@@ -413,7 +429,9 @@
       63605.33,
       65017.39,
       64188.07
-    ]
+    ],
+    "entry_price_source": "coinbase",
+    "entry_anchored": true
   },
   {
     "horizon": "1h",
@@ -460,7 +478,9 @@
       64044.21,
       63721.86,
       63895.58
-    ]
+    ],
+    "entry_price_source": "coinbase",
+    "entry_anchored": true
   },
   {
     "horizon": "24h",
@@ -507,6 +527,8 @@
       64563.5,
       63157.76,
       63552.36
-    ]
+    ],
+    "entry_price_source": "coinbase",
+    "entry_anchored": true
   }
 ]

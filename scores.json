@@ -17,7 +17,12 @@
     "realized_vol_ratio": 1.1279,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.09
+    "vol_brier_score": 0.09,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5,
@@ -37,7 +42,12 @@
     "realized_vol_ratio": 0.6096,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.400689
+    "vol_brier_score": 0.400689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -57,7 +67,12 @@
     "realized_vol_ratio": 0.7946,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.134689
+    "vol_brier_score": 0.134689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -77,7 +92,12 @@
     "realized_vol_ratio": 0.5702,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.693889
+    "vol_brier_score": 0.693889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.8,
@@ -97,7 +117,12 @@
     "realized_vol_ratio": 3.2951,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -117,7 +142,12 @@
     "realized_vol_ratio": 0.5281,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.218089
+    "vol_brier_score": 0.218089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -137,7 +167,12 @@
     "realized_vol_ratio": 1.2047,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.01
+    "vol_brier_score": 0.01,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -157,7 +192,12 @@
     "realized_vol_ratio": 1.0976,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.16
+    "vol_brier_score": 0.16,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -177,7 +217,12 @@
     "realized_vol_ratio": 1.068,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.444889
+    "vol_brier_score": 0.444889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -197,7 +242,12 @@
     "realized_vol_ratio": 1.1255,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.49
+    "vol_brier_score": 0.49,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -217,7 +267,12 @@
     "realized_vol_ratio": 1.1444,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.218089
+    "vol_brier_score": 0.218089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -237,7 +292,12 @@
     "realized_vol_ratio": 1.1487,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.36
+    "vol_brier_score": 0.36,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -257,7 +317,12 @@
     "realized_vol_ratio": 1.1035,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.537289
+    "vol_brier_score": 0.537289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.433,
@@ -277,7 +342,12 @@
     "realized_vol_ratio": 1.1194,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.444889
+    "vol_brier_score": 0.444889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -297,7 +367,12 @@
     "realized_vol_ratio": 1.1093,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.64
+    "vol_brier_score": 0.64,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -317,7 +392,12 @@
     "realized_vol_ratio": 1.1435,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.935089
+    "vol_brier_score": 0.935089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.733,
@@ -337,7 +417,12 @@
     "realized_vol_ratio": 1.1082,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.81
+    "vol_brier_score": 0.81,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.867,
@@ -357,7 +442,12 @@
     "realized_vol_ratio": 1.0269,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.935089
+    "vol_brier_score": 0.935089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.733,
@@ -377,7 +467,12 @@
     "realized_vol_ratio": 1.0008,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.935089
+    "vol_brier_score": 0.935089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.767,
@@ -397,7 +492,12 @@
     "realized_vol_ratio": 0.9895,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.01
+    "vol_brier_score": 0.01,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.833,
@@ -417,7 +517,12 @@
     "realized_vol_ratio": 0.3683,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.017689
+    "vol_brier_score": 0.017689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5,
@@ -437,7 +542,12 @@
     "realized_vol_ratio": 0.3817,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -457,7 +567,12 @@
     "realized_vol_ratio": 0.3665,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.8,
@@ -477,7 +592,12 @@
     "realized_vol_ratio": 0.3592,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -497,7 +617,12 @@
     "realized_vol_ratio": 0.3463,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -517,7 +642,12 @@
     "realized_vol_ratio": 0.3432,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -537,7 +667,12 @@
     "realized_vol_ratio": 0.3852,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5,
@@ -557,7 +692,12 @@
     "realized_vol_ratio": 0.4278,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.3,
@@ -577,7 +717,12 @@
     "realized_vol_ratio": 0.3764,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.4,
@@ -597,7 +742,12 @@
     "realized_vol_ratio": 0.332,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.667,
@@ -617,7 +767,12 @@
     "realized_vol_ratio": 0.3315,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -637,7 +792,12 @@
     "realized_vol_ratio": 0.3245,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -657,7 +817,12 @@
     "realized_vol_ratio": 0.8098,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.36
+    "vol_brier_score": 0.36,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.667,
@@ -677,7 +842,12 @@
     "realized_vol_ratio": 0.803,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.81
+    "vol_brier_score": 0.81,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.667,
@@ -697,7 +867,12 @@
     "realized_vol_ratio": 0.8502,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.64
+    "vol_brier_score": 0.64,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.667,
@@ -717,7 +892,12 @@
     "realized_vol_ratio": 0.8554,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.64
+    "vol_brier_score": 0.64,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5,
@@ -737,7 +917,12 @@
     "realized_vol_ratio": 0.8974,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.751689
+    "vol_brier_score": 0.751689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -757,7 +942,12 @@
     "realized_vol_ratio": 0.9454,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.751689
+    "vol_brier_score": 0.751689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -777,7 +967,12 @@
     "realized_vol_ratio": 0.9929,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.81
+    "vol_brier_score": 0.81,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -797,7 +992,12 @@
     "realized_vol_ratio": 1.1424,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.04
+    "vol_brier_score": 0.04,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.733,
@@ -817,7 +1017,12 @@
     "realized_vol_ratio": 1.2852,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.04
+    "vol_brier_score": 0.04,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.8,
@@ -837,7 +1042,12 @@
     "realized_vol_ratio": 1.2159,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.027889
+    "vol_brier_score": 0.027889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -857,7 +1067,12 @@
     "realized_vol_ratio": 1.433,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5,
@@ -877,7 +1092,12 @@
     "realized_vol_ratio": 1.4201,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -897,7 +1117,12 @@
     "realized_vol_ratio": 1.8461,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.01
+    "vol_brier_score": 0.01,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.667,
@@ -917,7 +1142,12 @@
     "realized_vol_ratio": 2.3648,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.867,
@@ -937,7 +1167,12 @@
     "realized_vol_ratio": 2.3978,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.01
+    "vol_brier_score": 0.01,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -957,7 +1192,12 @@
     "realized_vol_ratio": 2.4422,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.004489
+    "vol_brier_score": 0.004489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -977,7 +1217,12 @@
     "realized_vol_ratio": 2.4446,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.433,
@@ -997,7 +1242,12 @@
     "realized_vol_ratio": 2.6139,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -1017,7 +1267,12 @@
     "realized_vol_ratio": 2.5628,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.027889
+    "vol_brier_score": 0.027889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.667,
@@ -1037,7 +1292,12 @@
     "realized_vol_ratio": 2.1422,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.054289
+    "vol_brier_score": 0.054289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5,
@@ -1057,7 +1317,12 @@
     "realized_vol_ratio": 1.6161,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.01
+    "vol_brier_score": 0.01,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 1.0,
@@ -1077,7 +1342,12 @@
     "realized_vol_ratio": 1.6654,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.218089
+    "vol_brier_score": 0.218089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 1.0,
@@ -1097,7 +1367,12 @@
     "realized_vol_ratio": 1.733,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.36
+    "vol_brier_score": 0.36,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9670000000000001,
@@ -1117,7 +1392,12 @@
     "realized_vol_ratio": 1.0635,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.588289
+    "vol_brier_score": 0.588289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9329999999999999,
@@ -1137,7 +1417,12 @@
     "realized_vol_ratio": 0.9577,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.01
+    "vol_brier_score": 0.01,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9329999999999999,
@@ -1157,7 +1442,12 @@
     "realized_vol_ratio": 0.691,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9,
@@ -1177,7 +1467,12 @@
     "realized_vol_ratio": 0.6846,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9670000000000001,
@@ -1197,7 +1492,12 @@
     "realized_vol_ratio": 0.765,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9329999999999999,
@@ -1217,7 +1517,12 @@
     "realized_vol_ratio": 0.6576,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9,
@@ -1237,7 +1542,12 @@
     "realized_vol_ratio": 0.7285,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.867,
@@ -1257,7 +1567,12 @@
     "realized_vol_ratio": 0.6585,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9329999999999999,
@@ -1277,7 +1592,12 @@
     "realized_vol_ratio": 0.8275,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9329999999999999,
@@ -1297,7 +1617,12 @@
     "realized_vol_ratio": 0.7144,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.04
+    "vol_brier_score": 0.04,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.833,
@@ -1317,7 +1642,12 @@
     "realized_vol_ratio": 0.8753,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.04
+    "vol_brier_score": 0.04,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -1337,7 +1667,12 @@
     "realized_vol_ratio": 0.8423,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.110889
+    "vol_brier_score": 0.110889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.867,
@@ -1357,7 +1692,12 @@
     "realized_vol_ratio": 0.8572,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.027889
+    "vol_brier_score": 0.027889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -1377,7 +1717,12 @@
     "realized_vol_ratio": 1.0291,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.588289
+    "vol_brier_score": 0.588289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -1397,7 +1742,12 @@
     "realized_vol_ratio": 0.8905,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.027889
+    "vol_brier_score": 0.027889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.433,
@@ -1417,7 +1767,12 @@
     "realized_vol_ratio": 1.125,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.537289
+    "vol_brier_score": 0.537289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.33299999999999996,
@@ -1437,7 +1792,12 @@
     "realized_vol_ratio": 0.9041,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.134689
+    "vol_brier_score": 0.134689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -1457,7 +1817,12 @@
     "realized_vol_ratio": 1.3688,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.187489
+    "vol_brier_score": 0.187489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -1477,7 +1842,12 @@
     "realized_vol_ratio": 1.5283,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.187489
+    "vol_brier_score": 0.187489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.433,
@@ -1497,7 +1867,12 @@
     "realized_vol_ratio": 1.5428,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.284089
+    "vol_brier_score": 0.284089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -1517,7 +1892,12 @@
     "realized_vol_ratio": 1.3987,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.218089
+    "vol_brier_score": 0.218089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -1537,7 +1917,12 @@
     "realized_vol_ratio": 1.4082,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.444889
+    "vol_brier_score": 0.444889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -1557,7 +1942,12 @@
     "realized_vol_ratio": 1.4184,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.321489
+    "vol_brier_score": 0.321489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.667,
@@ -1577,7 +1967,12 @@
     "realized_vol_ratio": 1.2043,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.588289
+    "vol_brier_score": 0.588289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -1597,7 +1992,12 @@
     "realized_vol_ratio": 1.413,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.25
+    "vol_brier_score": 0.25,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -1617,7 +2017,12 @@
     "realized_vol_ratio": 0.5859,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.054289
+    "vol_brier_score": 0.054289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -1637,7 +2042,12 @@
     "realized_vol_ratio": 0.6865,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.004489
+    "vol_brier_score": 0.004489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.433,
@@ -1657,7 +2067,12 @@
     "realized_vol_ratio": 0.6965,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.027889
+    "vol_brier_score": 0.027889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.36700000000000005,
@@ -1677,7 +2092,12 @@
     "realized_vol_ratio": 0.7015,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.071289
+    "vol_brier_score": 0.071289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -1697,7 +2117,12 @@
     "realized_vol_ratio": 0.7063,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -1717,7 +2142,12 @@
     "realized_vol_ratio": 0.974,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.027889
+    "vol_brier_score": 0.027889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.4,
@@ -1737,7 +2167,12 @@
     "realized_vol_ratio": 0.9762,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.054289
+    "vol_brier_score": 0.054289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -1757,7 +2192,12 @@
     "realized_vol_ratio": 0.9857,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.04
+    "vol_brier_score": 0.04,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -1777,7 +2217,12 @@
     "realized_vol_ratio": 1.6256,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.321489
+    "vol_brier_score": 0.321489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.36700000000000005,
@@ -1797,7 +2242,12 @@
     "realized_vol_ratio": 1.645,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.017689
+    "vol_brier_score": 0.017689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -1817,7 +2267,12 @@
     "realized_vol_ratio": 1.8537,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.537289
+    "vol_brier_score": 0.537289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -1837,7 +2292,12 @@
     "realized_vol_ratio": 1.7968,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.25
+    "vol_brier_score": 0.25,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -1857,7 +2317,12 @@
     "realized_vol_ratio": 1.8731,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.284089
+    "vol_brier_score": 0.284089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -1877,7 +2342,12 @@
     "realized_vol_ratio": 1.2708,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.284089
+    "vol_brier_score": 0.284089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9670000000000001,
@@ -1897,7 +2367,12 @@
     "realized_vol_ratio": 1.2853,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.400689
+    "vol_brier_score": 0.400689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.767,
@@ -1917,7 +2392,12 @@
     "realized_vol_ratio": 1.2995,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.64
+    "vol_brier_score": 0.64,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9,
@@ -1937,7 +2417,12 @@
     "realized_vol_ratio": 1.206,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.36
+    "vol_brier_score": 0.36,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -1957,7 +2442,12 @@
     "realized_vol_ratio": 1.2486,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.935089
+    "vol_brier_score": 0.935089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -1977,7 +2467,12 @@
     "realized_vol_ratio": 1.2114,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 1.0
+    "vol_brier_score": 1.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.36700000000000005,
@@ -1997,7 +2492,12 @@
     "realized_vol_ratio": 0.5438,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.017689
+    "vol_brier_score": 0.017689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.233,
@@ -2017,7 +2517,12 @@
     "realized_vol_ratio": 0.4328,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.017689
+    "vol_brier_score": 0.017689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.033,
@@ -2037,7 +2542,12 @@
     "realized_vol_ratio": 0.5496,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.16699999999999998,
@@ -2057,7 +2567,12 @@
     "realized_vol_ratio": 0.6375,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.3,
@@ -2077,7 +2592,12 @@
     "realized_vol_ratio": 0.6865,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.233,
@@ -2097,7 +2617,12 @@
     "realized_vol_ratio": 0.7716,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -2117,7 +2642,12 @@
     "realized_vol_ratio": 0.7627,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.433,
@@ -2137,7 +2667,12 @@
     "realized_vol_ratio": 0.751,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.433,
@@ -2157,7 +2692,12 @@
     "realized_vol_ratio": 0.6724,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.433,
@@ -2177,7 +2717,12 @@
     "realized_vol_ratio": 0.6798,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -2197,7 +2742,12 @@
     "realized_vol_ratio": 0.7004,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -2217,7 +2767,12 @@
     "realized_vol_ratio": 1.2303,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 1.0
+    "vol_brier_score": 1.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -2237,7 +2792,12 @@
     "realized_vol_ratio": 1.0822,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.284089
+    "vol_brier_score": 0.284089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.733,
@@ -2257,7 +2817,12 @@
     "realized_vol_ratio": 0.6554,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.25
+    "vol_brier_score": 0.25,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.4,
@@ -2277,7 +2842,12 @@
     "realized_vol_ratio": 0.7829,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.027889
+    "vol_brier_score": 0.027889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.133,
@@ -2297,7 +2867,12 @@
     "realized_vol_ratio": 0.6986,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.01
+    "vol_brier_score": 0.01,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.4,
@@ -2317,7 +2892,12 @@
     "realized_vol_ratio": 0.9681,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.071289
+    "vol_brier_score": 0.071289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.36700000000000005,
@@ -2337,7 +2917,12 @@
     "realized_vol_ratio": 1.0828,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.537289
+    "vol_brier_score": 0.537289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.4,
@@ -2357,7 +2942,12 @@
     "realized_vol_ratio": 1.1819,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.588289
+    "vol_brier_score": 0.588289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.4,
@@ -2377,7 +2967,12 @@
     "realized_vol_ratio": 1.1621,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.64
+    "vol_brier_score": 0.64,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.4,
@@ -2397,7 +2992,12 @@
     "realized_vol_ratio": 1.619,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.284089
+    "vol_brier_score": 0.284089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.36700000000000005,
@@ -2417,7 +3017,12 @@
     "realized_vol_ratio": 1.2977,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.04
+    "vol_brier_score": 0.04,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -2437,7 +3042,12 @@
     "realized_vol_ratio": 1.4835,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.110889
+    "vol_brier_score": 0.110889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -2457,7 +3067,12 @@
     "realized_vol_ratio": 1.4512,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.09
+    "vol_brier_score": 0.09,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -2477,7 +3092,12 @@
     "realized_vol_ratio": 0.9444,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.071289
+    "vol_brier_score": 0.071289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -2497,7 +3117,12 @@
     "realized_vol_ratio": 0.8057,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.027889
+    "vol_brier_score": 0.027889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -2517,7 +3142,12 @@
     "realized_vol_ratio": 1.0728,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.751689
+    "vol_brier_score": 0.751689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -2537,7 +3167,12 @@
     "realized_vol_ratio": 1.0691,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.751689
+    "vol_brier_score": 0.751689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -2557,7 +3192,12 @@
     "realized_vol_ratio": 1.1279,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.870489
+    "vol_brier_score": 0.870489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.133,
@@ -2577,7 +3217,12 @@
     "realized_vol_ratio": 1.3731,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.64
+    "vol_brier_score": 0.64,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.33299999999999996,
@@ -2597,7 +3242,12 @@
     "realized_vol_ratio": 1.8624,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.751689
+    "vol_brier_score": 0.751689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -2617,7 +3267,12 @@
     "realized_vol_ratio": 1.542,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.134689
+    "vol_brier_score": 0.134689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.267,
@@ -2637,7 +3292,12 @@
     "realized_vol_ratio": 1.6895,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.25
+    "vol_brier_score": 0.25,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.3,
@@ -2657,7 +3317,12 @@
     "realized_vol_ratio": 1.6572,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.110889
+    "vol_brier_score": 0.110889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.2,
@@ -2677,7 +3342,12 @@
     "realized_vol_ratio": 1.1229,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.04
+    "vol_brier_score": 0.04,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -2697,7 +3367,12 @@
     "realized_vol_ratio": 1.1513,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.588289
+    "vol_brier_score": 0.588289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -2717,7 +3392,12 @@
     "realized_vol_ratio": 1.1323,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.49
+    "vol_brier_score": 0.49,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.767,
@@ -2737,7 +3417,12 @@
     "realized_vol_ratio": 0.7241,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.071289
+    "vol_brier_score": 0.071289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9670000000000001,
@@ -2757,7 +3442,12 @@
     "realized_vol_ratio": 0.6862,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9,
@@ -2777,7 +3467,12 @@
     "realized_vol_ratio": 0.6475,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9670000000000001,
@@ -2797,7 +3492,12 @@
     "realized_vol_ratio": 0.7063,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9670000000000001,
@@ -2817,7 +3517,12 @@
     "realized_vol_ratio": 0.7563,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9,
@@ -2837,7 +3542,12 @@
     "realized_vol_ratio": 0.8196,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.01
+    "vol_brier_score": 0.01,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 1.0,
@@ -2857,7 +3567,12 @@
     "realized_vol_ratio": 0.8073,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.017689
+    "vol_brier_score": 0.017689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9670000000000001,
@@ -2877,7 +3592,12 @@
     "realized_vol_ratio": 1.0274,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.321489
+    "vol_brier_score": 0.321489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -2897,7 +3617,12 @@
     "realized_vol_ratio": 1.0017,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.187489
+    "vol_brier_score": 0.187489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.667,
@@ -2917,7 +3642,12 @@
     "realized_vol_ratio": 0.9638,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.36
+    "vol_brier_score": 0.36,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.733,
@@ -2937,7 +3667,12 @@
     "realized_vol_ratio": 0.7406,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.588289
+    "vol_brier_score": 0.588289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.8,
@@ -2957,7 +3692,12 @@
     "realized_vol_ratio": 0.4463,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.588289
+    "vol_brier_score": 0.588289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.667,
@@ -2977,7 +3717,12 @@
     "realized_vol_ratio": 0.4124,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5,
@@ -2997,7 +3742,12 @@
     "realized_vol_ratio": 0.4135,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.01
+    "vol_brier_score": 0.01,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5,
@@ -3017,7 +3767,12 @@
     "realized_vol_ratio": 0.3293,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.04
+    "vol_brier_score": 0.04,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -3037,7 +3792,12 @@
     "realized_vol_ratio": 0.3362,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.09
+    "vol_brier_score": 0.09,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -3057,7 +3817,12 @@
     "realized_vol_ratio": 0.3608,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.071289
+    "vol_brier_score": 0.071289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -3077,7 +3842,12 @@
     "realized_vol_ratio": 0.3799,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.027889
+    "vol_brier_score": 0.027889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -3097,7 +3867,12 @@
     "realized_vol_ratio": 0.4139,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.071289
+    "vol_brier_score": 0.071289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.4,
@@ -3117,7 +3892,12 @@
     "realized_vol_ratio": 0.5529,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.36
+    "vol_brier_score": 0.36,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5,
@@ -3137,7 +3917,12 @@
     "realized_vol_ratio": 0.8651,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.400689
+    "vol_brier_score": 0.400689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.3,
@@ -3157,7 +3942,12 @@
     "realized_vol_ratio": 0.9695,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 1.0
+    "vol_brier_score": 1.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.433,
@@ -3177,7 +3967,12 @@
     "realized_vol_ratio": 1.1526,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -3197,7 +3992,12 @@
     "realized_vol_ratio": 1.2634,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -3217,7 +4017,12 @@
     "realized_vol_ratio": 1.6762,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -3237,7 +4042,12 @@
     "realized_vol_ratio": 2.9857,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.733,
@@ -3257,7 +4067,12 @@
     "realized_vol_ratio": 2.573,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -3277,7 +4092,12 @@
     "realized_vol_ratio": 2.5075,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.667,
@@ -3297,7 +4117,12 @@
     "realized_vol_ratio": 2.6473,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -3317,7 +4142,12 @@
     "realized_vol_ratio": 2.5464,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -3337,7 +4167,12 @@
     "realized_vol_ratio": 2.6353,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -3357,7 +4192,12 @@
     "realized_vol_ratio": 2.6542,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.733,
@@ -3377,7 +4217,12 @@
     "realized_vol_ratio": 2.3228,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -3397,7 +4242,12 @@
     "realized_vol_ratio": 2.0911,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.833,
@@ -3417,7 +4267,12 @@
     "realized_vol_ratio": 1.475,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.004489
+    "vol_brier_score": 0.004489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -3437,7 +4292,12 @@
     "realized_vol_ratio": 1.2786,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.537289
+    "vol_brier_score": 0.537289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.833,
@@ -3457,7 +4317,12 @@
     "realized_vol_ratio": 1.2355,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.64
+    "vol_brier_score": 0.64,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 1.0,
@@ -3477,7 +4342,12 @@
     "realized_vol_ratio": 1.1655,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.693889
+    "vol_brier_score": 0.693889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9329999999999999,
@@ -3497,7 +4367,12 @@
     "realized_vol_ratio": 1.381,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.588289
+    "vol_brier_score": 0.588289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9670000000000001,
@@ -3517,7 +4392,12 @@
     "realized_vol_ratio": 1.3961,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.693889
+    "vol_brier_score": 0.693889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9670000000000001,
@@ -3537,7 +4417,12 @@
     "realized_vol_ratio": 1.7731,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.444889
+    "vol_brier_score": 0.444889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.767,
@@ -3557,7 +4442,12 @@
     "realized_vol_ratio": 1.6649,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.187489
+    "vol_brier_score": 0.187489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9,
@@ -3577,7 +4467,12 @@
     "realized_vol_ratio": 1.3606,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.25
+    "vol_brier_score": 0.25,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -3597,7 +4492,12 @@
     "realized_vol_ratio": 1.5044,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.017689
+    "vol_brier_score": 0.017689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -3617,7 +4517,12 @@
     "realized_vol_ratio": 1.1974,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.054289
+    "vol_brier_score": 0.054289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -3637,7 +4542,12 @@
     "realized_vol_ratio": 1.2889,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.054289
+    "vol_brier_score": 0.054289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -3657,7 +4567,12 @@
     "realized_vol_ratio": 1.254,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.16
+    "vol_brier_score": 0.16,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.8,
@@ -3677,7 +4592,12 @@
     "realized_vol_ratio": 1.2797,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.870489
+    "vol_brier_score": 0.870489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.767,
@@ -3697,7 +4617,12 @@
     "realized_vol_ratio": 1.5294,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.64
+    "vol_brier_score": 0.64,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -3717,7 +4642,12 @@
     "realized_vol_ratio": 1.4892,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.49
+    "vol_brier_score": 0.49,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.733,
@@ -3737,7 +4667,12 @@
     "realized_vol_ratio": 1.359,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.218089
+    "vol_brier_score": 0.218089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.8,
@@ -3757,7 +4692,12 @@
     "realized_vol_ratio": 1.1826,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.321489
+    "vol_brier_score": 0.321489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.767,
@@ -3777,7 +4717,12 @@
     "realized_vol_ratio": 0.8456,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.054289
+    "vol_brier_score": 0.054289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.767,
@@ -3797,7 +4742,12 @@
     "realized_vol_ratio": 1.088,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.400689
+    "vol_brier_score": 0.400689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.867,
@@ -3817,7 +4767,12 @@
     "realized_vol_ratio": 0.8215,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.36
+    "vol_brier_score": 0.36,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9670000000000001,
@@ -3837,7 +4792,12 @@
     "realized_vol_ratio": 0.904,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.017689
+    "vol_brier_score": 0.017689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9670000000000001,
@@ -3857,7 +4817,12 @@
     "realized_vol_ratio": 1.1251,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.81
+    "vol_brier_score": 0.81,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9329999999999999,
@@ -3877,7 +4842,12 @@
     "realized_vol_ratio": 1.2754,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.935089
+    "vol_brier_score": 0.935089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9329999999999999,
@@ -3897,7 +4867,12 @@
     "realized_vol_ratio": 1.3307,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.870489
+    "vol_brier_score": 0.870489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.8,
@@ -3917,7 +4892,12 @@
     "realized_vol_ratio": 1.5034,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.935089
+    "vol_brier_score": 0.935089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -3937,7 +4917,12 @@
     "realized_vol_ratio": 1.3471,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.36
+    "vol_brier_score": 0.36,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9,
@@ -3957,7 +4942,12 @@
     "realized_vol_ratio": 1.1594,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.870489
+    "vol_brier_score": 0.870489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9,
@@ -3977,7 +4967,12 @@
     "realized_vol_ratio": 1.1024,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.537289
+    "vol_brier_score": 0.537289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9,
@@ -3997,7 +4992,12 @@
     "realized_vol_ratio": 1.0804,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.36
+    "vol_brier_score": 0.36,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.867,
@@ -4017,7 +5017,12 @@
     "realized_vol_ratio": 0.948,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.36
+    "vol_brier_score": 0.36,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.867,
@@ -4037,7 +5042,12 @@
     "realized_vol_ratio": 0.7049,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.110889
+    "vol_brier_score": 0.110889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.767,
@@ -4057,7 +5067,12 @@
     "realized_vol_ratio": 0.4221,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.09
+    "vol_brier_score": 0.09,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.833,
@@ -4077,7 +5092,12 @@
     "realized_vol_ratio": 0.4166,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.01
+    "vol_brier_score": 0.01,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 1.0,
@@ -4097,7 +5117,12 @@
     "realized_vol_ratio": 0.4595,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.004489
+    "vol_brier_score": 0.004489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.8,
@@ -4117,7 +5142,12 @@
     "realized_vol_ratio": 0.3493,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.01
+    "vol_brier_score": 0.01,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -4137,7 +5167,12 @@
     "realized_vol_ratio": 0.3933,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.054289
+    "vol_brier_score": 0.054289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -4157,7 +5192,12 @@
     "realized_vol_ratio": 0.384,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.054289
+    "vol_brier_score": 0.054289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -4177,7 +5217,12 @@
     "realized_vol_ratio": 0.4903,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.01
+    "vol_brier_score": 0.01,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5,
@@ -4197,7 +5242,12 @@
     "realized_vol_ratio": 0.4957,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.187489
+    "vol_brier_score": 0.187489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -4217,7 +5267,12 @@
     "realized_vol_ratio": 0.5416,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.09
+    "vol_brier_score": 0.09,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.733,
@@ -4237,7 +5292,12 @@
     "realized_vol_ratio": 0.7826,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.693889
+    "vol_brier_score": 0.693889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.867,
@@ -4257,7 +5317,12 @@
     "realized_vol_ratio": 1.159,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -4277,7 +5342,12 @@
     "realized_vol_ratio": 1.3252,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -4297,7 +5367,12 @@
     "realized_vol_ratio": 1.1942,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.233,
@@ -4317,7 +5392,12 @@
     "realized_vol_ratio": 1.6575,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.4,
@@ -4337,7 +5417,12 @@
     "realized_vol_ratio": 1.5877,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.16699999999999998,
@@ -4357,7 +5442,12 @@
     "realized_vol_ratio": 1.3068,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.3,
@@ -4377,7 +5467,12 @@
     "realized_vol_ratio": 1.3111,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.033,
@@ -4397,7 +5492,12 @@
     "realized_vol_ratio": 1.3264,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.2,
@@ -4417,7 +5517,12 @@
     "realized_vol_ratio": 1.3528,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.16699999999999998,
@@ -4437,7 +5542,12 @@
     "realized_vol_ratio": 0.9428,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.935089
+    "vol_brier_score": 0.935089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.3,
@@ -4457,7 +5567,12 @@
     "realized_vol_ratio": 0.6727,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 1.0
+    "vol_brier_score": 1.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.433,
@@ -4477,7 +5592,12 @@
     "realized_vol_ratio": 0.6204,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.870489
+    "vol_brier_score": 0.870489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.3,
@@ -4497,7 +5617,12 @@
     "realized_vol_ratio": 0.6443,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.693889
+    "vol_brier_score": 0.693889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.233,
@@ -4517,7 +5642,12 @@
     "realized_vol_ratio": 0.5969,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.751689
+    "vol_brier_score": 0.751689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.067,
@@ -4537,7 +5667,12 @@
     "realized_vol_ratio": 0.7179,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.935089
+    "vol_brier_score": 0.935089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.4,
@@ -4557,7 +5692,12 @@
     "realized_vol_ratio": 0.7646,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.537289
+    "vol_brier_score": 0.537289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5,
@@ -4577,7 +5717,12 @@
     "realized_vol_ratio": 0.9065,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.751689
+    "vol_brier_score": 0.751689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.133,
@@ -4597,7 +5742,12 @@
     "realized_vol_ratio": 1.1236,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.36700000000000005,
@@ -4617,7 +5767,12 @@
     "realized_vol_ratio": 1.0237,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.004489
+    "vol_brier_score": 0.004489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.433,
@@ -4637,7 +5792,12 @@
     "realized_vol_ratio": 1.0761,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.01
+    "vol_brier_score": 0.01,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.133,
@@ -4657,7 +5817,12 @@
     "realized_vol_ratio": 1.214,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.1,
@@ -4677,7 +5842,12 @@
     "realized_vol_ratio": 1.5372,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.267,
@@ -4697,7 +5867,12 @@
     "realized_vol_ratio": 1.0178,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.3,
@@ -4717,7 +5892,12 @@
     "realized_vol_ratio": 0.9312,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 1.0
+    "vol_brier_score": 1.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.133,
@@ -4737,7 +5917,12 @@
     "realized_vol_ratio": 0.9922,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.870489
+    "vol_brier_score": 0.870489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.233,
@@ -4757,7 +5942,12 @@
     "realized_vol_ratio": 1.0486,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.4,
@@ -4777,7 +5967,12 @@
     "realized_vol_ratio": 1.1399,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.33299999999999996,
@@ -4797,7 +5992,12 @@
     "realized_vol_ratio": 1.1201,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.3,
@@ -4817,7 +6017,12 @@
     "realized_vol_ratio": 0.9635,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.870489
+    "vol_brier_score": 0.870489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.16699999999999998,
@@ -4837,7 +6042,12 @@
     "realized_vol_ratio": 0.8417,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.870489
+    "vol_brier_score": 0.870489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.2,
@@ -4857,7 +6067,12 @@
     "realized_vol_ratio": 1.0223,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.004489
+    "vol_brier_score": 0.004489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.133,
@@ -4877,7 +6092,12 @@
     "realized_vol_ratio": 0.9287,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.693889
+    "vol_brier_score": 0.693889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.133,
@@ -4897,7 +6117,12 @@
     "realized_vol_ratio": 0.935,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.935089
+    "vol_brier_score": 0.935089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.233,
@@ -4917,7 +6142,12 @@
     "realized_vol_ratio": 0.864,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.751689
+    "vol_brier_score": 0.751689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -4937,7 +6167,12 @@
     "realized_vol_ratio": 0.8823,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.25
+    "vol_brier_score": 0.25,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -4957,7 +6192,12 @@
     "realized_vol_ratio": 1.0071,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.218089
+    "vol_brier_score": 0.218089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.433,
@@ -4977,7 +6217,12 @@
     "realized_vol_ratio": 1.3854,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.054289
+    "vol_brier_score": 0.054289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.3,
@@ -4997,7 +6242,12 @@
     "realized_vol_ratio": 0.8976,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.751689
+    "vol_brier_score": 0.751689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.433,
@@ -5017,7 +6267,12 @@
     "realized_vol_ratio": 0.9856,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.537289
+    "vol_brier_score": 0.537289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.433,
@@ -5037,7 +6292,12 @@
     "realized_vol_ratio": 0.977,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.321489
+    "vol_brier_score": 0.321489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -5057,7 +6317,12 @@
     "realized_vol_ratio": 0.9696,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.870489
+    "vol_brier_score": 0.870489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -5077,7 +6342,12 @@
     "realized_vol_ratio": 0.7801,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.537289
+    "vol_brier_score": 0.537289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.36700000000000005,
@@ -5097,7 +6367,12 @@
     "realized_vol_ratio": 0.7121,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.25
+    "vol_brier_score": 0.25,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -5117,7 +6392,12 @@
     "realized_vol_ratio": 0.3999,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.284089
+    "vol_brier_score": 0.284089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.36700000000000005,
@@ -5137,7 +6417,12 @@
     "realized_vol_ratio": 0.3949,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.36
+    "vol_brier_score": 0.36,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.4,
@@ -5157,7 +6442,12 @@
     "realized_vol_ratio": 0.4161,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.134689
+    "vol_brier_score": 0.134689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -5177,7 +6467,12 @@
     "realized_vol_ratio": 0.4216,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.444889
+    "vol_brier_score": 0.444889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.233,
@@ -5197,7 +6492,12 @@
     "realized_vol_ratio": 0.3851,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.218089
+    "vol_brier_score": 0.218089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.233,
@@ -5217,7 +6517,12 @@
     "realized_vol_ratio": 0.4792,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.49
+    "vol_brier_score": 0.49,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.36700000000000005,
@@ -5237,7 +6542,12 @@
     "realized_vol_ratio": 0.4985,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.537289
+    "vol_brier_score": 0.537289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.433,
@@ -5257,7 +6567,12 @@
     "realized_vol_ratio": 0.5817,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.693889
+    "vol_brier_score": 0.693889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.16699999999999998,
@@ -5277,7 +6592,12 @@
     "realized_vol_ratio": 1.1488,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.004489
+    "vol_brier_score": 0.004489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.16699999999999998,
@@ -5297,7 +6617,12 @@
     "realized_vol_ratio": 1.201,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.233,
@@ -5317,7 +6642,12 @@
     "realized_vol_ratio": 1.1968,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.133,
@@ -5337,7 +6667,12 @@
     "realized_vol_ratio": 2.543,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.36700000000000005,
@@ -5357,7 +6692,12 @@
     "realized_vol_ratio": 2.5621,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.3,
@@ -5377,7 +6717,12 @@
     "realized_vol_ratio": 2.8524,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.4,
@@ -5397,7 +6742,12 @@
     "realized_vol_ratio": 2.7728,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -5417,7 +6767,12 @@
     "realized_vol_ratio": 2.5603,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.3,
@@ -5437,7 +6792,12 @@
     "realized_vol_ratio": 2.3188,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -5457,7 +6817,12 @@
     "realized_vol_ratio": 2.3448,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.433,
@@ -5477,7 +6842,12 @@
     "realized_vol_ratio": 2.5519,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -5497,7 +6867,12 @@
     "realized_vol_ratio": 0.8312,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 1.0
+    "vol_brier_score": 1.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.733,
@@ -5517,7 +6892,12 @@
     "realized_vol_ratio": 0.7898,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 1.0
+    "vol_brier_score": 1.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -5537,7 +6917,12 @@
     "realized_vol_ratio": 0.769,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.751689
+    "vol_brier_score": 0.751689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -5557,7 +6942,12 @@
     "realized_vol_ratio": 0.8494,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.870489
+    "vol_brier_score": 0.870489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -5577,7 +6967,12 @@
     "realized_vol_ratio": 0.9676,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 1.0
+    "vol_brier_score": 1.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -5597,7 +6992,12 @@
     "realized_vol_ratio": 0.8061,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.935089
+    "vol_brier_score": 0.935089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5,
@@ -5617,7 +7017,12 @@
     "realized_vol_ratio": 1.123,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.667,
@@ -5637,7 +7042,12 @@
     "realized_vol_ratio": 1.1736,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5,
@@ -5657,7 +7067,12 @@
     "realized_vol_ratio": 0.8546,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 1.0
+    "vol_brier_score": 1.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -5677,7 +7092,12 @@
     "realized_vol_ratio": 0.6278,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.935089
+    "vol_brier_score": 0.935089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -5697,7 +7117,12 @@
     "realized_vol_ratio": 0.7676,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 1.0
+    "vol_brier_score": 1.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.867,
@@ -5717,7 +7142,12 @@
     "realized_vol_ratio": 1.1904,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.8,
@@ -5737,7 +7167,12 @@
     "realized_vol_ratio": 1.2185,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.004489
+    "vol_brier_score": 0.004489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.8,
@@ -5757,7 +7192,12 @@
     "realized_vol_ratio": 1.1984,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.004489
+    "vol_brier_score": 0.004489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9,
@@ -5777,7 +7217,12 @@
     "realized_vol_ratio": 1.6716,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.8,
@@ -5797,7 +7242,12 @@
     "realized_vol_ratio": 1.8299,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9,
@@ -5817,7 +7267,12 @@
     "realized_vol_ratio": 2.0241,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.733,
@@ -5837,7 +7292,12 @@
     "realized_vol_ratio": 1.0657,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.054289
+    "vol_brier_score": 0.054289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.867,
@@ -5857,7 +7317,12 @@
     "realized_vol_ratio": 1.0826,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.218089
+    "vol_brier_score": 0.218089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.767,
@@ -5877,7 +7342,12 @@
     "realized_vol_ratio": 1.0714,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.25
+    "vol_brier_score": 0.25,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.8,
@@ -5897,7 +7367,12 @@
     "realized_vol_ratio": 1.0337,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.25
+    "vol_brier_score": 0.25,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -5917,7 +7392,12 @@
     "realized_vol_ratio": 1.0187,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.444889
+    "vol_brier_score": 0.444889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.433,
@@ -5937,7 +7417,12 @@
     "realized_vol_ratio": 1.0002,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.321489
+    "vol_brier_score": 0.321489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.36700000000000005,
@@ -5957,7 +7442,12 @@
     "realized_vol_ratio": 0.4603,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.33299999999999996,
@@ -5977,7 +7467,12 @@
     "realized_vol_ratio": 0.5237,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.004489
+    "vol_brier_score": 0.004489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.3,
@@ -5997,7 +7492,12 @@
     "realized_vol_ratio": 0.5644,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.004489
+    "vol_brier_score": 0.004489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.233,
@@ -6017,7 +7517,12 @@
     "realized_vol_ratio": 0.5833,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.4,
@@ -6037,7 +7542,12 @@
     "realized_vol_ratio": 0.5049,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.004489
+    "vol_brier_score": 0.004489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.3,
@@ -6057,7 +7567,12 @@
     "realized_vol_ratio": 0.4798,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5,
@@ -6077,7 +7592,12 @@
     "realized_vol_ratio": 1.0021,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.017689
+    "vol_brier_score": 0.017689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -6097,7 +7617,12 @@
     "realized_vol_ratio": 1.0073,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.054289
+    "vol_brier_score": 0.054289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -6117,7 +7642,12 @@
     "realized_vol_ratio": 0.9618,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.537289
+    "vol_brier_score": 0.537289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.667,
@@ -6137,7 +7667,12 @@
     "realized_vol_ratio": 0.8899,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.588289
+    "vol_brier_score": 0.588289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -6157,7 +7692,12 @@
     "realized_vol_ratio": 0.9072,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.693889
+    "vol_brier_score": 0.693889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -6177,7 +7717,12 @@
     "realized_vol_ratio": 1.0348,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.027889
+    "vol_brier_score": 0.027889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -6197,7 +7742,12 @@
     "realized_vol_ratio": 0.923,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.751689
+    "vol_brier_score": 0.751689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -6217,7 +7767,12 @@
     "realized_vol_ratio": 0.9708,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 1.0
+    "vol_brier_score": 1.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -6237,7 +7792,12 @@
     "realized_vol_ratio": 0.6458,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.870489
+    "vol_brier_score": 0.870489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -6257,7 +7817,12 @@
     "realized_vol_ratio": 0.6484,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.588289
+    "vol_brier_score": 0.588289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -6277,7 +7842,12 @@
     "realized_vol_ratio": 0.6358,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.751689
+    "vol_brier_score": 0.751689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.3,
@@ -6297,7 +7867,12 @@
     "realized_vol_ratio": 0.8014,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.751689
+    "vol_brier_score": 0.751689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.4,
@@ -6317,7 +7892,12 @@
     "realized_vol_ratio": 0.7301,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.693889
+    "vol_brier_score": 0.693889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -6337,7 +7917,12 @@
     "realized_vol_ratio": 1.37,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.054289
+    "vol_brier_score": 0.054289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -6357,7 +7942,12 @@
     "realized_vol_ratio": 1.4892,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.017689
+    "vol_brier_score": 0.017689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -6377,7 +7967,12 @@
     "realized_vol_ratio": 1.4928,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.01
+    "vol_brier_score": 0.01,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -6397,7 +7992,12 @@
     "realized_vol_ratio": 2.3837,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -6417,7 +8017,12 @@
     "realized_vol_ratio": 2.5401,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.667,
@@ -6437,7 +8042,12 @@
     "realized_vol_ratio": 2.6515,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.8,
@@ -6457,7 +8067,12 @@
     "realized_vol_ratio": 2.2041,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.733,
@@ -6477,7 +8092,12 @@
     "realized_vol_ratio": 2.4348,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.767,
@@ -6497,7 +8117,12 @@
     "realized_vol_ratio": 1.4427,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.767,
@@ -6517,7 +8142,12 @@
     "realized_vol_ratio": 0.9503,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.36
+    "vol_brier_score": 0.36,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -6537,7 +8167,12 @@
     "realized_vol_ratio": 0.9072,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.284089
+    "vol_brier_score": 0.284089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.733,
@@ -6557,7 +8192,12 @@
     "realized_vol_ratio": 0.6271,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.004489
+    "vol_brier_score": 0.004489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.767,
@@ -6577,7 +8217,12 @@
     "realized_vol_ratio": 0.644,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.004489
+    "vol_brier_score": 0.004489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.667,
@@ -6597,7 +8242,12 @@
     "realized_vol_ratio": 0.6723,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.004489
+    "vol_brier_score": 0.004489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -6617,7 +8267,12 @@
     "realized_vol_ratio": 0.831,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.09
+    "vol_brier_score": 0.09,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -6637,7 +8292,12 @@
     "realized_vol_ratio": 0.6779,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.071289
+    "vol_brier_score": 0.071289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5,
@@ -6657,7 +8317,12 @@
     "realized_vol_ratio": 0.5445,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.027889
+    "vol_brier_score": 0.027889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.3,
@@ -6677,7 +8342,12 @@
     "realized_vol_ratio": 1.4597,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.537289
+    "vol_brier_score": 0.537289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -6697,7 +8367,12 @@
     "realized_vol_ratio": 1.7678,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.321489
+    "vol_brier_score": 0.321489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5,
@@ -6717,7 +8392,12 @@
     "realized_vol_ratio": 1.8429,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.284089
+    "vol_brier_score": 0.284089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -6737,7 +8417,12 @@
     "realized_vol_ratio": 2.135,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.444889
+    "vol_brier_score": 0.444889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.36700000000000005,
@@ -6757,7 +8442,12 @@
     "realized_vol_ratio": 2.1921,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.218089
+    "vol_brier_score": 0.218089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -6777,7 +8467,12 @@
     "realized_vol_ratio": 2.1268,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.36
+    "vol_brier_score": 0.36,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -6797,7 +8492,12 @@
     "realized_vol_ratio": 2.3927,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.25
+    "vol_brier_score": 0.25,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -6817,7 +8517,12 @@
     "realized_vol_ratio": 3.2957,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.054289
+    "vol_brier_score": 0.054289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -6837,7 +8542,12 @@
     "realized_vol_ratio": 2.6796,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.027889
+    "vol_brier_score": 0.027889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.8,
@@ -6857,7 +8567,12 @@
     "realized_vol_ratio": 2.1957,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.870489
+    "vol_brier_score": 0.870489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9670000000000001,
@@ -6877,7 +8592,12 @@
     "realized_vol_ratio": 2.0836,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.537289
+    "vol_brier_score": 0.537289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.867,
@@ -6897,7 +8617,12 @@
     "realized_vol_ratio": 1.6261,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.751689
+    "vol_brier_score": 0.751689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.767,
@@ -6917,7 +8642,12 @@
     "realized_vol_ratio": 1.669,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 1.0
+    "vol_brier_score": 1.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.833,
@@ -6937,7 +8667,12 @@
     "realized_vol_ratio": 1.7013,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 1.0
+    "vol_brier_score": 1.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.767,
@@ -6957,7 +8692,12 @@
     "realized_vol_ratio": 1.7881,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 1.0
+    "vol_brier_score": 1.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.33299999999999996,
@@ -6977,7 +8717,12 @@
     "realized_vol_ratio": 1.791,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 1.0
+    "vol_brier_score": 1.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.4,
@@ -6997,7 +8742,12 @@
     "realized_vol_ratio": 1.8204,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 1.0
+    "vol_brier_score": 1.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -7017,7 +8767,12 @@
     "realized_vol_ratio": 0.6584,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.833,
@@ -7037,7 +8792,12 @@
     "realized_vol_ratio": 0.6962,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9670000000000001,
@@ -7057,7 +8817,12 @@
     "realized_vol_ratio": 0.7419,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 1.0,
@@ -7077,7 +8842,12 @@
     "realized_vol_ratio": 0.6771,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.9,
@@ -7097,7 +8867,12 @@
     "realized_vol_ratio": 0.6793,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.833,
@@ -7117,7 +8892,12 @@
     "realized_vol_ratio": 0.4332,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.767,
@@ -7137,7 +8917,12 @@
     "realized_vol_ratio": 0.4128,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.767,
@@ -7157,7 +8942,12 @@
     "realized_vol_ratio": 0.3675,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.833,
@@ -7177,7 +8967,12 @@
     "realized_vol_ratio": 0.4018,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.767,
@@ -7197,7 +8992,12 @@
     "realized_vol_ratio": 0.3065,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -7217,7 +9017,12 @@
     "realized_vol_ratio": 0.2953,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -7237,7 +9042,12 @@
     "realized_vol_ratio": 0.2959,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.767,
@@ -7257,7 +9067,12 @@
     "realized_vol_ratio": 0.3086,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -7277,7 +9092,12 @@
     "realized_vol_ratio": 0.3137,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5,
@@ -7297,7 +9117,12 @@
     "realized_vol_ratio": 0.3953,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.1,
@@ -7317,7 +9142,12 @@
     "realized_vol_ratio": 0.4381,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -7337,7 +9167,12 @@
     "realized_vol_ratio": 0.502,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.33299999999999996,
@@ -7357,7 +9192,12 @@
     "realized_vol_ratio": 0.6668,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.36700000000000005,
@@ -7377,7 +9217,12 @@
     "realized_vol_ratio": 0.9042,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.321489
+    "vol_brier_score": 0.321489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.233,
@@ -7397,7 +9242,12 @@
     "realized_vol_ratio": 0.9014,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 1.0
+    "vol_brier_score": 1.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -7417,7 +9267,12 @@
     "realized_vol_ratio": 0.8312,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.935089
+    "vol_brier_score": 0.935089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -7437,7 +9292,12 @@
     "realized_vol_ratio": 0.8941,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.870489
+    "vol_brier_score": 0.870489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -7457,7 +9317,12 @@
     "realized_vol_ratio": 1.0282,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.004489
+    "vol_brier_score": 0.004489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.433,
@@ -7477,7 +9342,12 @@
     "realized_vol_ratio": 1.1876,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.36700000000000005,
@@ -7497,7 +9367,12 @@
     "realized_vol_ratio": 1.5621,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -7517,7 +9392,12 @@
     "realized_vol_ratio": 1.403,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.667,
@@ -7537,7 +9417,12 @@
     "realized_vol_ratio": 1.3718,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.004489
+    "vol_brier_score": 0.004489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.867,
@@ -7557,7 +9442,12 @@
     "realized_vol_ratio": 1.4925,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.027889
+    "vol_brier_score": 0.027889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.667,
@@ -7577,7 +9467,12 @@
     "realized_vol_ratio": 1.6,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.017689
+    "vol_brier_score": 0.017689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.833,
@@ -7597,7 +9492,12 @@
     "realized_vol_ratio": 1.884,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.004489
+    "vol_brier_score": 0.004489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -7617,7 +9517,12 @@
     "realized_vol_ratio": 1.9975,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.0
+    "vol_brier_score": 0.0,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -7637,7 +9542,12 @@
     "realized_vol_ratio": 1.6434,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -7657,7 +9567,12 @@
     "realized_vol_ratio": 1.3205,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.004489
+    "vol_brier_score": 0.004489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -7677,7 +9592,12 @@
     "realized_vol_ratio": 1.1382,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.134689
+    "vol_brier_score": 0.134689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -7697,7 +9617,12 @@
     "realized_vol_ratio": 1.1435,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.16
+    "vol_brier_score": 0.16,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -7717,7 +9642,12 @@
     "realized_vol_ratio": 1.0693,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.110889
+    "vol_brier_score": 0.110889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5329999999999999,
@@ -7737,7 +9667,12 @@
     "realized_vol_ratio": 0.9,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.49
+    "vol_brier_score": 0.49,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.433,
@@ -7757,7 +9692,12 @@
     "realized_vol_ratio": 0.9153,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.04
+    "vol_brier_score": 0.04,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -7777,7 +9717,12 @@
     "realized_vol_ratio": 1.0166,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.64
+    "vol_brier_score": 0.64,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -7797,7 +9742,12 @@
     "realized_vol_ratio": 0.9129,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.16
+    "vol_brier_score": 0.16,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -7817,7 +9767,12 @@
     "realized_vol_ratio": 0.9504,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.49
+    "vol_brier_score": 0.49,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -7837,7 +9792,12 @@
     "realized_vol_ratio": 1.0364,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.071289
+    "vol_brier_score": 0.071289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -7857,7 +9817,12 @@
     "realized_vol_ratio": 0.6336,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.284089
+    "vol_brier_score": 0.284089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.833,
@@ -7877,7 +9842,12 @@
     "realized_vol_ratio": 1.107,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.027889
+    "vol_brier_score": 0.027889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -7897,7 +9867,12 @@
     "realized_vol_ratio": 1.2166,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.04
+    "vol_brier_score": 0.04,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -7917,7 +9892,12 @@
     "realized_vol_ratio": 1.2665,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.017689
+    "vol_brier_score": 0.017689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.633,
@@ -7937,7 +9917,12 @@
     "realized_vol_ratio": 1.3691,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.071289
+    "vol_brier_score": 0.071289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -7957,7 +9942,12 @@
     "realized_vol_ratio": 1.5331,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.017689
+    "vol_brier_score": 0.017689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -7977,7 +9967,12 @@
     "realized_vol_ratio": 1.5496,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.071289
+    "vol_brier_score": 0.071289,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.4,
@@ -7997,7 +9992,12 @@
     "realized_vol_ratio": 1.5873,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.110889
+    "vol_brier_score": 0.110889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.767,
@@ -8017,7 +10017,12 @@
     "realized_vol_ratio": 1.3634,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.017689
+    "vol_brier_score": 0.017689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.36700000000000005,
@@ -8037,7 +10042,12 @@
     "realized_vol_ratio": 1.1639,
     "vol_amplified": true,
     "vol_correct": true,
-    "vol_brier_score": 0.134689
+    "vol_brier_score": 0.134689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.8,
@@ -8057,7 +10067,12 @@
     "realized_vol_ratio": 1.1528,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.81
+    "vol_brier_score": 0.81,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -8077,7 +10092,12 @@
     "realized_vol_ratio": 1.0076,
     "vol_amplified": true,
     "vol_correct": false,
-    "vol_brier_score": 0.751689
+    "vol_brier_score": 0.751689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5,
@@ -8097,7 +10117,12 @@
     "realized_vol_ratio": 0.8288,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.017689
+    "vol_brier_score": 0.017689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5670000000000001,
@@ -8117,7 +10142,12 @@
     "realized_vol_ratio": 0.7499,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.001089
+    "vol_brier_score": 0.001089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.467,
@@ -8137,7 +10167,12 @@
     "realized_vol_ratio": 0.6013,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.04
+    "vol_brier_score": 0.04,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -8157,7 +10192,12 @@
     "realized_vol_ratio": 0.417,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.004489
+    "vol_brier_score": 0.004489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.7,
@@ -8177,7 +10217,12 @@
     "realized_vol_ratio": 0.4301,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.110889
+    "vol_brier_score": 0.110889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.767,
@@ -8197,7 +10242,12 @@
     "realized_vol_ratio": 0.4253,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.321489
+    "vol_brier_score": 0.321489,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.667,
@@ -8217,7 +10267,12 @@
     "realized_vol_ratio": 0.4574,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.444889
+    "vol_brier_score": 0.444889,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.667,
@@ -8237,7 +10292,12 @@
     "realized_vol_ratio": 0.4091,
     "vol_amplified": false,
     "vol_correct": false,
-    "vol_brier_score": 0.400689
+    "vol_brier_score": 0.400689,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5,
@@ -8257,7 +10317,12 @@
     "realized_vol_ratio": 0.5342,
     "vol_amplified": false,
     "vol_correct": true,
-    "vol_brier_score": 0.218089
+    "vol_brier_score": 0.218089,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "horizon": "1h",
@@ -8286,7 +10351,12 @@
     "vol_amplified": false,
     "vol_correct": false,
     "vol_brier_score": 0.934509,
-    "target_error_pct": 0.1862
+    "target_error_pct": 0.1862,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "horizon": "1h",
@@ -8347,7 +10417,12 @@
     "vol_amplified": false,
     "vol_correct": true,
     "vol_brier_score": 0.25,
-    "target_error_pct": 0.4565
+    "target_error_pct": 0.4565,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "horizon": "1h",
@@ -8408,7 +10483,12 @@
     "vol_amplified": true,
     "vol_correct": true,
     "vol_brier_score": 0.027789,
-    "target_error_pct": 0.4437
+    "target_error_pct": 0.4437,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "horizon": "1h",
@@ -8469,7 +10549,12 @@
     "vol_amplified": true,
     "vol_correct": true,
     "vol_brier_score": 0.027789,
-    "target_error_pct": 0.71
+    "target_error_pct": 0.71,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "horizon": "1h",
@@ -8530,7 +10615,12 @@
     "vol_amplified": false,
     "vol_correct": false,
     "vol_brier_score": 0.871049,
-    "target_error_pct": 0.373
+    "target_error_pct": 0.373,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "horizon": "1h",
@@ -8591,7 +10681,12 @@
     "vol_amplified": false,
     "vol_correct": false,
     "vol_brier_score": 0.694389,
-    "target_error_pct": 0.1299
+    "target_error_pct": 0.1299,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "horizon": "1h",
@@ -8652,7 +10747,12 @@
     "vol_amplified": true,
     "vol_correct": true,
     "vol_brier_score": 0.001109,
-    "target_error_pct": 2.158
+    "target_error_pct": 2.158,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "horizon": "1h",
@@ -8713,7 +10813,12 @@
     "vol_amplified": false,
     "vol_correct": false,
     "vol_brier_score": 0.537729,
-    "target_error_pct": 0.0481
+    "target_error_pct": 0.0481,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.667,
@@ -8735,7 +10840,12 @@
     "vol_amplified": false,
     "vol_correct": false,
     "vol_brier_score": 0.693889,
-    "target_error_pct": null
+    "target_error_pct": null,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "horizon": "1h",
@@ -8796,7 +10906,12 @@
     "vol_amplified": true,
     "vol_correct": true,
     "vol_brier_score": 0.027789,
-    "target_error_pct": 0.1681
+    "target_error_pct": 0.1681,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5667,
@@ -8823,7 +10938,12 @@
     "vol_amplified": true,
     "vol_correct": false,
     "vol_brier_score": 0.587829,
-    "target_error_pct": 0.4698
+    "target_error_pct": 0.4698,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.6,
@@ -8850,7 +10970,12 @@
     "vol_amplified": true,
     "vol_correct": false,
     "vol_brier_score": 0.444489,
-    "target_error_pct": 0.1742
+    "target_error_pct": 0.1742,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "horizon": "1h",
@@ -8911,7 +11036,12 @@
     "vol_amplified": true,
     "vol_correct": true,
     "vol_brier_score": 0.187749,
-    "target_error_pct": 0.6346
+    "target_error_pct": 0.6346,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "upside_prob": 0.5,
@@ -8938,7 +11068,12 @@
     "vol_amplified": true,
     "vol_correct": false,
     "vol_brier_score": 0.36,
-    "target_error_pct": 0.2159
+    "target_error_pct": 0.2159,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "horizon": "1h",
@@ -8999,7 +11134,12 @@
     "vol_amplified": false,
     "vol_correct": true,
     "vol_brier_score": 0.25,
-    "target_error_pct": 0.1249
+    "target_error_pct": 0.1249,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "horizon": "24h",
@@ -9028,7 +11168,12 @@
     "vol_amplified": true,
     "vol_correct": false,
     "vol_brier_score": 0.49,
-    "target_error_pct": 0.2354
+    "target_error_pct": 0.2354,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "horizon": "24h",
@@ -9089,7 +11234,12 @@
     "vol_amplified": true,
     "vol_correct": false,
     "vol_brier_score": 0.401069,
-    "target_error_pct": 0.322
+    "target_error_pct": 0.322,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "horizon": "1h",
@@ -9150,7 +11300,12 @@
     "vol_amplified": false,
     "vol_correct": false,
     "vol_brier_score": 0.694389,
-    "target_error_pct": 0.1685
+    "target_error_pct": 0.1685,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "horizon": "1h",
@@ -9211,7 +11366,12 @@
     "vol_amplified": false,
     "vol_correct": false,
     "vol_brier_score": 0.444489,
-    "target_error_pct": 0.2411
+    "target_error_pct": 0.2411,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "horizon": "1h",
@@ -9272,7 +11432,12 @@
     "vol_amplified": true,
     "vol_correct": false,
     "vol_brier_score": 0.36,
-    "target_error_pct": 0.3881
+    "target_error_pct": 0.3881,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "binance",
+    "price_regime": "binance_legacy",
+    "price_regime_clean": false
   },
   {
     "horizon": "24h",
@@ -9333,7 +11498,12 @@
     "vol_amplified": true,
     "vol_correct": true,
     "vol_brier_score": 0.054429,
-    "target_error_pct": 0.9471
+    "target_error_pct": 0.9471,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "coinbase",
+    "price_regime": "binance_to_coinbase_mixed",
+    "price_regime_clean": false
   },
   {
     "horizon": "24h",
@@ -9394,7 +11564,12 @@
     "vol_amplified": true,
     "vol_correct": true,
     "vol_brier_score": 0.09,
-    "target_error_pct": 0.9344
+    "target_error_pct": 0.9344,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "coinbase",
+    "price_regime": "binance_to_coinbase_mixed",
+    "price_regime_clean": false
   },
   {
     "horizon": "24h",
@@ -9455,7 +11630,12 @@
     "vol_amplified": true,
     "vol_correct": true,
     "vol_brier_score": 0.04,
-    "target_error_pct": 1.2053
+    "target_error_pct": 1.2053,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "coinbase",
+    "price_regime": "binance_to_coinbase_mixed",
+    "price_regime_clean": false
   },
   {
     "horizon": "24h",
@@ -9516,7 +11696,12 @@
     "vol_amplified": true,
     "vol_correct": true,
     "vol_brier_score": 0.027789,
-    "target_error_pct": 1.4093
+    "target_error_pct": 1.4093,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "coinbase",
+    "price_regime": "binance_to_coinbase_mixed",
+    "price_regime_clean": false
   },
   {
     "horizon": "24h",
@@ -9577,7 +11762,12 @@
     "vol_amplified": true,
     "vol_correct": true,
     "vol_brier_score": 0.111089,
-    "target_error_pct": 1.3236
+    "target_error_pct": 1.3236,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "coinbase",
+    "price_regime": "binance_to_coinbase_mixed",
+    "price_regime_clean": false
   },
   {
     "horizon": "1h",
@@ -9638,7 +11828,12 @@
     "vol_amplified": false,
     "vol_correct": false,
     "vol_brier_score": 0.444489,
-    "target_error_pct": 0.2482
+    "target_error_pct": 0.2482,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "coinbase",
+    "price_regime": "binance_to_coinbase_mixed",
+    "price_regime_clean": false
   },
   {
     "horizon": "24h",
@@ -9699,7 +11894,12 @@
     "vol_amplified": false,
     "vol_correct": true,
     "vol_brier_score": 0.0,
-    "target_error_pct": 0.1548
+    "target_error_pct": 0.1548,
+    "entry_price_source": "binance",
+    "entry_anchored": false,
+    "exit_price_source": "coinbase",
+    "price_regime": "binance_to_coinbase_mixed",
+    "price_regime_clean": false
   },
   {
     "horizon": "1h",
@@ -9761,7 +11961,12 @@
     "vol_amplified": false,
     "vol_correct": false,
     "vol_brier_score": 0.751169,
-    "target_error_pct": 0.5991
+    "target_error_pct": 0.5991,
+    "entry_price_source": "coinbase",
+    "entry_anchored": false,
+    "exit_price_source": "coinbase",
+    "price_regime": "coinbase_mixed",
+    "price_regime_clean": false
   },
   {
     "horizon": "1h",
@@ -9823,6 +12028,11 @@
     "vol_amplified": false,
     "vol_correct": false,
     "vol_brier_score": 0.537729,
-    "target_error_pct": 0.2697
+    "target_error_pct": 0.2697,
+    "entry_price_source": "coinbase",
+    "entry_anchored": true,
+    "exit_price_source": "coinbase",
+    "price_regime": "coinbase_clean",
+    "price_regime_clean": true
   }
 ]
