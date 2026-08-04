@@ -20,39 +20,20 @@ REPO_ROOT    = Path(__file__).parent.parent.resolve()
 SCORES_FILE  = REPO_ROOT / "scores.json"
 PENDING_FILE = REPO_ROOT / "pending.json"
 
-BINANCE_URL = "https://api.binance.us/api/v3/klines"
-SYMBOL, INTERVAL = "BTCUSDT", "1h"
+# Price data comes from Coinbase (a CF Benchmarks BRTI constituent), not
+# Binance.US — keeps our scoring aligned with Kalshi's real settlement.
+import price_source
 
 HORIZON_HOURS = {"1h": 1, "24h": 24}
 
 
-# ─── Binance ──────────────────────────────────────────────────────────────────
-
-def fetch_klines(limit=25, start_ms=None):
-    url = f"{BINANCE_URL}?symbol={SYMBOL}&interval={INTERVAL}&limit={limit}"
-    if start_ms: url += f"&startTime={start_ms}"
-    try:
-        with urllib.request.urlopen(url, timeout=15) as r:
-            return json.loads(r.read())
-    except Exception as e:
-        print(f"  Binance error: {e}"); return []
+# ─── Price helpers (delegated to Coinbase price_source) ──────────────────────
 
 def get_price_at(dt_utc):
-    aligned = dt_utc.replace(minute=0, second=0, microsecond=0)
-    now_h   = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0)
-    if aligned >= now_h:
-        aligned = now_h - timedelta(hours=1)
-    raw = fetch_klines(limit=2, start_ms=int(aligned.timestamp()*1000))
-    return float(raw[0][4]) if raw else None
+    return price_source.get_price_at(dt_utc)
 
 def compute_realized_vol(dt_utc, hours=24):
-    ms  = int(dt_utc.replace(minute=0,second=0,microsecond=0).timestamp()*1000)
-    raw = fetch_klines(limit=hours+1, start_ms=ms)
-    closes = [float(c[4]) for c in raw]
-    if len(closes) < 2: raise ValueError("Not enough candles")
-    lr   = [math.log(closes[i]/closes[i-1]) for i in range(1,len(closes))]
-    mean = sum(lr)/len(lr)
-    return math.sqrt(sum((r-mean)**2 for r in lr)/len(lr))
+    return price_source.compute_realized_vol(dt_utc, hours=hours)
 
 
 # ─── I/O ──────────────────────────────────────────────────────────────────────
