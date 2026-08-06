@@ -14,7 +14,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).parent.parent
 SCORES_FILE = REPO_ROOT / "scores.json"
 PENDING_FILE = REPO_ROOT / "pending.json"
-RECIPIENT = os.environ.get("RECIPIENT_EMAIL", "lemleysergio@gmail.com")
+RECIPIENT = os.environ.get("RECIPIENT_EMAIL")
 GMAIL_USER = os.environ.get("GMAIL_USERNAME")
 GMAIL_PASS = os.environ.get("GMAIL_APP_PASSWORD")
 
@@ -742,8 +742,8 @@ def build_html(records, pending_list, barbell_suggestions, barbell_trades,
 # ─── send ─────────────────────────────────────────────────────────────────────
 
 def send_email(html_body, today_str):
-    if not GMAIL_USER or not GMAIL_PASS:
-        print("ERROR: Set GMAIL_USERNAME and GMAIL_APP_PASSWORD secrets.")
+    if not GMAIL_USER or not GMAIL_PASS or not RECIPIENT:
+        print("ERROR: Set GMAIL_USERNAME, GMAIL_APP_PASSWORD, and RECIPIENT_EMAIL secrets.")
         sys.exit(1)
     subject = f"📊 Kronos — {today_str}"
     msg = MIMEMultipart("alternative")
