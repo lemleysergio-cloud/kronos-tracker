@@ -113,7 +113,7 @@ jobs:
         env:
           GMAIL_USERNAME:    ${{ secrets.GMAIL_USERNAME }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
-          RECIPIENT_EMAIL:   lemleysergio@gmail.com
+          RECIPIENT_EMAIL:   ${{ secrets.RECIPIENT_EMAIL }}
         run: |
           HOUR=$(date -u +"%H")
           if [ "$HOUR" = "17" ] || [ "$HOUR" = "23" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
